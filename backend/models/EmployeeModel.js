@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const Schema = mongoose.Schema;
 
 const EmployeeSchema = new Schema({
   employeeId: { type: String, unique: true, required: true },
-  userName: { type: String, unique: true, required: true },
+  username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
   dateOfBirth: { type: Date, required: true },

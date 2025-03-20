@@ -11,7 +11,7 @@ import { verifyToken, checkPermission } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// ✅ Only employees with "employee-control" permission can access these routes
+// Only employees with "employee-control" permission can access these routes
 
 // Get all employees (Protected)
 router.get("/", verifyToken, checkPermission("employee-control"), getAllEmployees);
@@ -19,7 +19,7 @@ router.get("/", verifyToken, checkPermission("employee-control"), getAllEmployee
 // Get an employee by ID (Protected)
 router.get("/:id", verifyToken, checkPermission("employee-control"), getEmployeeById);
 
-// ✅ Admins (with "employee-control" permission) can add employees
+//  Admins (with "employee-control" permission) can add employees
 router.post("/add", verifyToken, checkPermission("employee-control"), addEmployee);
 
 // Update an employee (Protected)
