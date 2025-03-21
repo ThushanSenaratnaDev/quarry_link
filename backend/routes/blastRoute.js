@@ -1,11 +1,11 @@
 import express from "express";
 const router = express.Router();
-import https from 'https';
-import Blast from '../models/Blast.js';
-import formidable from 'formidable';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
+import https from "https";
+import Blast from "../models/Blast.js";
+import formidable from "formidable";
+import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
 
 const Router = express.Router();
 
@@ -30,52 +30,74 @@ const handleFormData = (req, res, next) => {
     next(); // Proceed to next middleware or route handler
   });
 };
-  // Add a new blast
-router.post("/add", handleFormData, async (req, res) => {   
-  try {
-    
-    const { PlannedBy, ExpDate, ExpStartTime, ExpEndTime, Zone, AdditionalInfo } = fields;
-    const Documentation = files.Documentation ? files.Documentation[0].path : null;
+// Add a new blast
+router.post("/add", (req, res) => {
+  const form = formidable({
+    uploadDir: path.join(__dirname, "uploads"),
+    keepExtensions: true,
+    multiples: false, // Expecting only one file
+  });
 
-    // Validate required fields
-    if (!PlannedBy || !ExpDate || !ExpStartTime || !ExpEndTime || !Zone) {
-      return res.status(400).json({ error: "All fields are required!" });
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return res.status(400).json({ error: "Error processing the form data." });
     }
 
-    // Ensure start time is before end time
-    if (ExpStartTime >= ExpEndTime) {
-      return res.status(400).json({ error: "Start time must be before end time." });
+    try {
+      const {
+        PlannedBy,
+        ExpDate,
+        ExpStartTime,
+        ExpEndTime,
+        Zone,
+        AdditionalInfo,
+      } = fields;
+      const Documentation = files.Documentation
+        ? files.Documentation.filepath
+        : null;
+
+      // Validate required fields
+      if (!PlannedBy || !ExpDate || !ExpStartTime || !ExpEndTime || !Zone) {
+        return res.status(400).json({ error: "All fields are required!" });
+      }
+
+      // Ensure start time is before end time
+      // if (ExpStartTime >= ExpEndTime) {
+      //   return res
+      //     .status(400)
+      //     .json({ error: "Start time must be before end time." });
+      // }
+
+      // Ensure blast date is in the future
+      // if (new Date(ExpDate) < new Date()) {
+      //   return res
+      //     .status(400)
+      //     .json({ error: "Blast date must be in the future." });
+      // }
+
+      // Create and save new blast
+      const newBlast = new Blast({
+        PlannedBy,
+        ExpDate,
+        ExpStartTime,
+        ExpEndTime,
+        Zone,
+        Documentation,
+        AdditionalInfo,
+      });
+
+      await newBlast.save();
+      res
+        .status(201)
+        .json({ message: "Blast added successfully!", blast: newBlast });
+    } catch (error) {
+      console.error("Server error while adding blast:", error);
+      res
+        .status(500)
+        .json({ error: "Server error test", details: error.message });
     }
-
-    // Ensure blast date is in the future
-    if (new Date(ExpDate) < new Date()) {
-      return res.status(400).json({ error: "Blast date must be in the future." });
-    }
-
-    // Create a new blast
-    const newBlast = new Blast({
-      PlannedBy,
-      ExpDate,
-      ExpStartTime,
-      ExpEndTime,
-      Zone,
-      Documentation, // Expecting file URL from frontend
-      AdditionalInfo,
-    });
-
-    // Save to database
-    await newBlast.save();
-    res.status(201).json({ message: "Blast added successfully!", blast: newBlast });
-
-    resolve();
-
-  } catch (err) {
-    console.error("Server error while adding blast:", err);  // Log server error
-
-    res.status(500).json({ error: "Server error", details: err.message });
-  }
+  });
 });
-
 
 // Get All Blasts
 router.get("/", async (req, res) => {
@@ -109,10 +131,19 @@ router.put("/:id", async (req, res) => {
 
     form.parse(req, async (err, fields, files) => {
       if (err) {
-        return res.status(400).json({ error: "Error processing the form data." });
+        return res
+          .status(400)
+          .json({ error: "Error processing the form data." });
       }
 
-      const { PlannedBy, ExpDate, ExpStartTime, ExpEndTime, Zone, AdditionalInfo } = fields;
+      const {
+        PlannedBy,
+        ExpDate,
+        ExpStartTime,
+        ExpEndTime,
+        Zone,
+        AdditionalInfo,
+      } = fields;
       let Documentation = null;
 
       // If a file is uploaded, save the path
@@ -126,15 +157,20 @@ router.put("/:id", async (req, res) => {
       }
 
       if (new Date(ExpDate) < new Date()) {
-        return res.status(400).json({ error: "Blast date must be in the future." });
+        return res
+          .status(400)
+          .json({ error: "Blast date must be in the future." });
       }
 
       if (ExpStartTime >= ExpEndTime) {
-        return res.status(400).json({ error: "Start time must be before end time." });
+        return res
+          .status(400)
+          .json({ error: "Start time must be before end time." });
       }
 
       const existingBlast = await Blast.findById(req.params.id);
-      if (!existingBlast) return res.status(404).json({ error: "Blast not found" });
+      if (!existingBlast)
+        return res.status(404).json({ error: "Blast not found" });
 
       // Remove old documentation file if a new one is uploaded
       if (Documentation && existingBlast.Documentation) {
@@ -155,7 +191,10 @@ router.put("/:id", async (req, res) => {
       }
 
       await existingBlast.save();
-      res.json({ message: "Blast updated successfully!", blast: existingBlast });
+      res.json({
+        message: "Blast updated successfully!",
+        blast: existingBlast,
+      });
     });
   } catch (err) {
     console.error("Server error:", err);
@@ -177,7 +216,6 @@ router.delete("/:id", async (req, res) => {
 
     await Blast.findByIdAndDelete(req.params.id);
     res.json({ message: "Blast deleted successfully" });
-
   } catch (err) {
     res.status(500).json({ message: "Error deleting blast", error: err });
   }
@@ -189,27 +227,31 @@ router.get("/weather/:date", (req, res) => {
   const location = "Colombo"; // Replace with actual location
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${location}&dt=${req.params.date}`;
 
-  https.get(url, (response) => {
-    let data = "";
+  https
+    .get(url, (response) => {
+      let data = "";
 
-    response.on("data", (chunk) => {
-      data += chunk;
-    });
+      response.on("data", (chunk) => {
+        data += chunk;
+      });
 
-    response.on("end", () => {
-      try {
-        const weatherData = JSON.parse(data);
-        res.json({
-          condition: weatherData.forecast.forecastday[0].day.condition.text,
-          temperature: weatherData.forecast.forecastday[0].day.avgtemp_c,
-        });
-      } catch (error) {
-        res.status(500).json({ message: "Error parsing weather data" });
-      }
+      response.on("end", () => {
+        try {
+          const weatherData = JSON.parse(data);
+          res.json({
+            condition: weatherData.forecast.forecastday[0].day.condition.text,
+            temperature: weatherData.forecast.forecastday[0].day.avgtemp_c,
+          });
+        } catch (error) {
+          res.status(500).json({ message: "Error parsing weather data" });
+        }
+      });
+    })
+    .on("error", (err) => {
+      res
+        .status(500)
+        .json({ message: "Error fetching weather data", error: err.message });
     });
-  }).on("error", (err) => {
-    res.status(500).json({ message: "Error fetching weather data", error: err.message });
-  });
 });
 
 export default router;

@@ -17,7 +17,7 @@ const UpdateBlast = () => {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:505/api/blasts/${id}`)
+    fetch(`http://localhost:5002/api/blasts/${id}`)
       .then((res) => res.json())
       .then((data) => setBlast(data))
       .catch((err) => console.error("Error fetching blast:", err));
@@ -44,7 +44,7 @@ const UpdateBlast = () => {
       formData.append("Documentation", file);
     }
 
-    const response = await fetch(`http://localhost:505/api/blasts/${id}`, {
+    const response = await fetch(`http://localhost:5002/api/blasts/${id}`, {
       method: "PUT",
       body: formData,
     });

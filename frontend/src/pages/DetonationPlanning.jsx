@@ -14,7 +14,7 @@ const ViewBlasts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:505/api/blasts")
+    axios.get("http://localhost:5002/api/blasts")
       .then((res) => {
         console.log("Blasts Data:", res.data); // Log the response data
         setBlasts(res.data);
@@ -27,7 +27,7 @@ const ViewBlasts = () => {
   const fetchWeather = async (date, blastId) => {
     try {
       console.log("Fetching weather for date:", date);  // Add log to check if function is being called
-      const res = await axios.get(`http://localhost:505/api/blasts/weather/${date}`);
+      const res = await axios.get(`http://localhost:5002/api/blasts/weather/${date}`);
       console.log("Fetching weather for date:", date);  // Add log to check if function is being called
       setWeather(res.data);
       setSelectedBlastId(blastId);
@@ -45,7 +45,7 @@ const ViewBlasts = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this blast?")) {
       try {
-        await axios.delete(`http://localhost:505/api/blasts/${id}`);
+        await axios.delete(`http://localhost:5002/api/blasts/${id}`);
         alert("Blast deleted successfully!");
         setBlasts(blasts.filter(blast => blast._id !== id)); // Refresh UI
       } catch (err) {
@@ -123,7 +123,7 @@ const ViewBlasts = () => {
                 <td>{blast.ExpEndTime}</td>
                 <td>{blast.Zone}</td>
                 <td>{blast.Documentation ? (
-                    <a href={`http://localhost:505/${blast.Documentation}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`http://localhost:5002/${blast.Documentation}`} target="_blank" rel="noopener noreferrer">
                       View File
                     </a>
                   ) : (

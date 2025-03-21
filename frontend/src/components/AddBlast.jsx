@@ -47,17 +47,15 @@ function AddBlast() {
       const [hour, minutePart] = time.split(":");
       let [minutes, period] = minutePart.split(" ");
       let hours = parseInt(hour, 10);
-    
+
       if (period?.toLowerCase() === "pm" && hours !== 12) {
         hours += 12;
       } else if (period?.toLowerCase() === "am" && hours === 12) {
         hours = 0;
       }
-    
+
       return `${hours.toString().padStart(2, "0")}:${minutes}`;
     };
-    
-    
 
     // Zone
     if (!zone.trim()) {
@@ -77,7 +75,7 @@ function AddBlast() {
       errors.additionalinfo = "Maximum 500 characters allowed.";
     }
 
-    if(!location.trim()){
+    if (!location.trim()) {
       errors.location = "Location is required.";
     }
 
@@ -88,7 +86,7 @@ function AddBlast() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    // if (!validateForm()) return;
 
     const formData = new FormData();
     formData.append("PlannedBy", plannedby);
@@ -100,7 +98,7 @@ function AddBlast() {
     formData.append("AdditionalInfo", additionalinfo);
 
     axios
-      .post("http://localhost:505/api/blasts/add", formData, {
+      .post("http://localhost:5002/api/blasts/add", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => alert("Blast scheduled successfully!"))
@@ -117,13 +115,15 @@ function AddBlast() {
               type="text"
               className="form-control"
               id="PlannedBy"
-              name="PlannedBy" 
+              name="PlannedBy"
               placeholder="Planned By"
               value={plannedby || ""}
               onChange={(e) => setPlannedBy(e.target.value)}
               required
             />
-            {errors.plannedby && <span className="error">{errors.plannedby}</span>}
+            {errors.plannedby && (
+              <span className="error">{errors.plannedby}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -132,8 +132,8 @@ function AddBlast() {
               type="date"
               className="form-control"
               id="ExpDate"
-              name="ExpDate" 
-              placeholder="Enter explosion date"  
+              name="ExpDate"
+              placeholder="Enter explosion date"
               value={expdate ? expdate.split("T")[0] : ""}
               onChange={(e) => setExpDate(e.target.value)}
               required
@@ -147,13 +147,17 @@ function AddBlast() {
               type="time"
               className="form-control"
               id="ExpStartTime"
-              name="ExpStartTime" 
-              placeholder="Enter explosion start time"  
+              name="ExpStartTime"
               value={expstarttime || ""}
-              onChange={(e) => setExpStartTime(convertTo24Hour(e.target.value))}
+              onChange={(e) => {
+                console.log("Selected Start Time:", e.target.value);
+                setExpStartTime(e.target.value);
+              }}
               required
             />
-            {errors.expstarttime && <span className="error">{errors.expstarttime}</span>}
+            {errors.expstarttime && (
+              <span className="error">{errors.expstarttime}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -161,14 +165,18 @@ function AddBlast() {
             <input
               type="time"
               className="form-control"
-              name="ExpEndTime" 
               id="ExpEndTime"
-              placeholder="Enter explosion end time" 
+              name="ExpEndTime"
               value={expendtime || ""}
-              onChange={(e) => setExpEndTime(convertTo24Hour(e.target.value))}
+              onChange={(e) => {
+                console.log("Selected End Time:", e.target.value);
+                setExpEndTime(e.target.value);
+              }}
               required
             />
-            {errors.expendtime && <span className="error">{errors.expendtime}</span>}
+            {errors.expendtime && (
+              <span className="error">{errors.expendtime}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -177,7 +185,7 @@ function AddBlast() {
               type="text"
               className="form-control"
               id="Zone"
-              name="Zone" 
+              name="Zone"
               placeholder="Enter explosion zone"
               value={zone || ""}
               onChange={(e) => setZone(e.target.value)}
@@ -193,11 +201,13 @@ function AddBlast() {
               className="form-control"
               id="Documentation"
               name="Documentation"
-              value={documentation || ""} 
+              value={documentation || ""}
               placeholder="Upload documents"
               onChange={(e) => setDocumentation(e.target.files[0])}
             />
-            {errors.documentation && <span className="error">{errors.documentation}</span>}
+            {errors.documentation && (
+              <span className="error">{errors.documentation}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -211,7 +221,9 @@ function AddBlast() {
               onChange={(e) => setAdditionalInfo(e.target.value)}
               required
             />
-            {errors.additionalinfo && <span className="error">{errors.additionalinfo}</span>}
+            {errors.additionalinfo && (
+              <span className="error">{errors.additionalinfo}</span>
+            )}
           </div>
 
           {/* <div className="form-group">
