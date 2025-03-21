@@ -4,13 +4,20 @@ dotenv.config(); // Make sure this is at the top
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import { Server } from "socket.io";
+import { createServer } from "http";
 import inventoryRoutes from "./routes/inventoryRoutes.js";
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
 app.use(express.json());
 app.use(cors());
-
-console.log("MONGO_URI:", process.env.MONGO_URI); // Debugging line to check if MONGO_URI is loaded
 
 // Connect to MongoDB
 mongoose
@@ -24,5 +31,18 @@ mongoose
 // Inventory Routes
 app.use("/api/inventory", inventoryRoutes);
 
+// Socket.io Real-time Chat
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  socket.on("sendMessage", (message) => {
+    socket.broadcast.emit("receiveMessage", message);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected:", socket.id);
+  });
+});
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
