@@ -1,11 +1,9 @@
-import { useState } from 'react'
-
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css'
+import ProductCatalogue from './pages/ProductCatalogue';
+import InventoryControl from './pages/InventoryControl';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       
