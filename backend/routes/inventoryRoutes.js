@@ -8,5 +8,5 @@ router.get("/", inventoryController.getAllProducts);
 router.put("/:id", inventoryController.updateProduct);
 router.delete("/:id", inventoryController.deleteProduct);
 
-// Export the router using ES modules syntax
+// Export the router
 export default router;

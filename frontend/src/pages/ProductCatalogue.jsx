@@ -16,6 +16,7 @@ const ProductCatalogue = () => {
   const [editedValues, setEditedValues] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("name"); // Default search by name
+  const [errors, setErrors] = useState({}); // State for validation errors
 
   // Fetch products from the backend
   useEffect(() => {
@@ -28,10 +29,30 @@ const ProductCatalogue = () => {
   // Handle form input change
   const handleChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" }); // Clear error when user types
+  };
+
+  const validateForm = () => {
+    let newErrors = {};
+    if (!newProduct.name.trim()) newErrors.name = "Name is required!";
+    if (!newProduct.category.trim())
+      newErrors.category = "Category is required!";
+    if (!newProduct.description.trim())
+      newErrors.description = "Description is required!";
+    if (!newProduct.price || isNaN(newProduct.price)) {
+      newErrors.price = "Price is required!";
+    } else if (newProduct.price <= 0) {
+      newErrors.price = "Price must be a valid positive number!";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   // Add a new product
   const addProduct = () => {
+    if (!validateForm()) return; // Stop if validation fails
+
     fetch("http://localhost:5001/api/inventory", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -95,9 +116,9 @@ const ProductCatalogue = () => {
       <ChatBox />
       <h2>Product Catalogue</h2>
       <button onClick={() => setShowForm(true)}>Add Product</button>
-      <button>
-        <Link to="/inventory_control">Go to Inventory Control</Link>
-      </button>
+      <Link to="/inventory_control" className="link-button">
+        Go to Inventory Control
+      </Link>
 
       <div className="catalogue-header">
         <select
@@ -124,6 +145,14 @@ const ProductCatalogue = () => {
             onChange={handleChange}
             required
           />
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          />
+          <span className={`error ${errors.name ? "active" : ""}`}>
+            {errors.name}
+          </span>
+          {/* Display error */}
           <input
             type="text"
             name="category"
@@ -131,11 +160,17 @@ const ProductCatalogue = () => {
             onChange={handleChange}
             required
           />
+          <span className={`error ${errors.category ? "active" : ""}`}>
+            {errors.category}
+          </span>
           <textarea
             name="description"
             placeholder="Description"
             onChange={handleChange}
           ></textarea>
+          <span className={`error ${errors.description ? "active" : ""}`}>
+            {errors.description}
+          </span>
           <input
             type="number"
             name="price"
@@ -143,6 +178,9 @@ const ProductCatalogue = () => {
             onChange={handleChange}
             required
           />
+          <span className={`error ${errors.price ? "active" : ""}`}>
+            {errors.price}
+          </span>
           <button className="form-add-btn" onClick={addProduct}>
             Add
           </button>

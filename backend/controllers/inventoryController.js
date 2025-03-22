@@ -38,7 +38,7 @@ export const getAllProducts = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params; // Extract the ID from the URL
-    console.log("Product ID from request:", id); // This will log the ID in the backend console
+    console.log("Product ID from request:", id);
 
     // Check if the ID is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
