@@ -21,6 +21,7 @@ router.get("/:id", verifyToken, checkPermission("employee-control"), getEmployee
 
 //  Admins (with "employee-control" permission) can add employees
 router.post("/add", verifyToken, checkPermission("employee-control"), addEmployee);
+//router.post("/add",  addEmployee);
 
 // Update an employee (Protected)
 router.put("/update/:id", verifyToken, checkPermission("employee-control"), UpdateEmployee);

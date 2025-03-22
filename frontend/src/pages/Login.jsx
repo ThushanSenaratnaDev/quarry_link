@@ -1,3 +1,4 @@
+import './pageCss/Login.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,13 +22,9 @@ const Login = () => {
             if (response.ok) {
                 localStorage.setItem("token", data.token); // Store token in localStorage
                 setMessage("Login successful! Redirecting...");
-                //console.log("Token stored:", data.token);
                 setTimeout(() => {
                     navigate("/EmployeeManagement"); //Redirect after storing token
                 }, 1000);
-
-               // console.log("User data:", data.user);
-                //navigate("/EmployeeManagement");
             } else {
                 setMessage(data.message);
             }
@@ -38,24 +35,26 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <div className="login-container">
             <h2>Login</h2>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="login-form">
                 <input
                     type="email"
                     placeholder="Email"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    className="login-input"
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className="login-input"
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="login-button">Login</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="login-message">{message}</p>}
         </div>
     );
 };

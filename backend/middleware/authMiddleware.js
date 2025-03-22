@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_jwt_secret";
 
-// ✅ Middleware to verify JWT token
+// Middleware to verify JWT token
 export const verifyToken = (req, res, next) => {
     const token = req.header("Authorization");
 
@@ -19,7 +19,7 @@ export const verifyToken = (req, res, next) => {
     }
 };
 
-// ✅ Middleware to check if user has a specific permission
+// Middleware to check if user has a specific permission
 export const checkPermission = (requiredPermission) => {
     return (req, res, next) => {
         if (!req.user || !req.user.permissions.includes(requiredPermission)) {

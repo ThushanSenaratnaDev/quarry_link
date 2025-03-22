@@ -31,7 +31,7 @@ const EmployeeRow = ({ employee }) => {
                 </TableCell>
                 <TableCell>{employee.name}</TableCell>
                 <TableCell>{employee.position}</TableCell>
-                <TableCell align="right">${employee.salary.toLocaleString()}</TableCell>
+                <TableCell align="right">LKR {employee.salary.toLocaleString()}</TableCell>
                 <TableCell align="right">{employee.employmentStatus}</TableCell>
             </TableRow>
 
@@ -140,7 +140,7 @@ const EmployeeTable = () => {
                         <TableCell />
                         <TableCell>Employee Name</TableCell>
                         <TableCell>Position</TableCell>
-                        <TableCell align="right">Salary ($)</TableCell>
+                        <TableCell align="right">Salary (LKR)</TableCell>
                         <TableCell align="right">Employment Status</TableCell>
                     </TableRow>
                 </TableHead>

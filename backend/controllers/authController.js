@@ -27,7 +27,7 @@ export const loginEmployee = async (req, res) => {
                 id: employee._id,
                 username: employee.username,
                 position: employee.position,
-                permissions: employee.permissions // ✅ Store permissions in token
+                permissions: employee.permissions // Store permissions in token
             },
             SECRET_KEY,
             { expiresIn: "1h" }

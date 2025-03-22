@@ -3,6 +3,7 @@ import Employee from "../models/EmployeeModel.js";
 // Add Employee Controller
 export const addEmployee = async (req, res) => {
     try {
+        console.log("📩 Received Employee Data:", req.body);
         const {
             employeeId,
             username,
