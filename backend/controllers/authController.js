@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_jwt_secret";
 
-// 📌 Employee Login Function
+// Employee Login Function
 export const loginEmployee = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -27,7 +27,7 @@ export const loginEmployee = async (req, res) => {
                 id: employee._id,
                 username: employee.username,
                 position: employee.position,
-                permissions: employee.permissions // Store permissions in token
+                permissions: employee.permissions //Store permissions in token
             },
             SECRET_KEY,
             { expiresIn: "1h" }
