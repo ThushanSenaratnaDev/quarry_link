@@ -58,6 +58,43 @@ const AddEmployee = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // --- Form Validations ---
+        const phoneRegex = /^[0-9]{10}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const dob = new Date(employeeData.dateOfBirth);
+        const age = new Date().getFullYear() - dob.getFullYear();
+        const password = employeeData.password;
+
+        // Contact Number
+        if (!phoneRegex.test(employeeData.contactNumber)) {
+            alert("Contact number must be exactly 10 digits and contain only numbers.");
+            return;
+        }
+
+        // Emergency Contact Number
+        if (!phoneRegex.test(employeeData.emergencyContactPhone)) {
+            alert("Emergency contact number must be exactly 10 digits and contain only numbers.");
+            return;
+        }
+
+        // Age Check
+        if (age < 18) {
+            alert("Employee must be at least 18 years old.");
+            return;
+        }
+
+        // Password Length
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return;
+        }
+
+        // Email format
+        if (!emailRegex.test(employeeData.username)) {
+            alert("Please enter a valid email address for the username.");
+            return;
+        }
+
         try {
             const token = localStorage.getItem("token");
             if (!token) {
@@ -66,16 +103,15 @@ const AddEmployee = () => {
                 return;
             }
 
-            // Prepare employee data
             const employeePayload = {
                 employeeId: employeeData.employeeId,
                 username: employeeData.username.trim(),
-                password: employeeData.password, //Password hashing happens in the model, so send raw password
+                password: employeeData.password,
                 name: employeeData.name,
                 dateOfBirth: employeeData.dateOfBirth,
                 contactNumber: employeeData.contactNumber,
                 address: employeeData.address,
-                qualification: employeeData.qualification.split(","), // Convert to array
+                qualification: employeeData.qualification.split(","),
                 bankAccount: employeeData.bankAccount,
                 hireDate: employeeData.hireDate,
                 employmentStatus: employeeData.employmentStatus,
@@ -84,14 +120,13 @@ const AddEmployee = () => {
                     phoneNumber: employeeData.emergencyContactPhone,
                     relationship: employeeData.emergencyContactRelationship,
                 },
-                permissions: employeeData.permissions, // Already an array
+                permissions: employeeData.permissions,
                 position: employeeData.position,
                 salary: parseFloat(employeeData.salary),
             };
 
-            console.log("Sending Employee Data:", employeePayload); //Log data before sending
+            console.log("Sending Employee Data:", employeePayload);
 
-            // ✅ Send request to backend
             const response = await fetch("http://localhost:5001/api/employees/add", {
                 method: "POST",
                 headers: {

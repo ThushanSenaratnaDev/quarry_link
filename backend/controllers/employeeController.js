@@ -28,6 +28,7 @@ export const addEmployee = async (req, res) => {
             return res.status(400).json({ message: "Employee ID already exists." });
         }
 
+
         const newEmployee = new Employee({
             employeeId,
             username,

@@ -13,12 +13,20 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const EmployeeRow = ({ employee }) => {
+const EmployeeRow = ({ employee, onDelete }) => {
     const [open, setOpen] = useState(false);
 
+    const handleDeleteClick = () => {
+        const confirmDelete = window.confirm(`Are you sure you want to delete ${employee.name}?`);
+        if (confirmDelete) {
+            onDelete(employee._id); // Pass employee Mongo _id to parent delete handler
+        }
+    };
+
     return (
-        <React.Fragment>
+        <>
             <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
                 <TableCell>
                     <IconButton
@@ -33,9 +41,13 @@ const EmployeeRow = ({ employee }) => {
                 <TableCell>{employee.position}</TableCell>
                 <TableCell align="right">LKR {employee.salary.toLocaleString()}</TableCell>
                 <TableCell align="right">{employee.employmentStatus}</TableCell>
+                <TableCell align="right">
+                    <IconButton aria-label="delete" color="error" onClick={handleDeleteClick}>
+                        <DeleteIcon />
+                    </IconButton>
+                </TableCell>
             </TableRow>
 
-            {/* Collapsible Section */}
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -71,22 +83,13 @@ const EmployeeRow = ({ employee }) => {
                     </Collapse>
                 </TableCell>
             </TableRow>
-        </React.Fragment>
+        </>
     );
 };
 
 EmployeeRow.propTypes = {
-    employee: PropTypes.shape({
-        employeeId: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        position: PropTypes.string.isRequired,
-        salary: PropTypes.number.isRequired,
-        employmentStatus: PropTypes.string.isRequired,
-        contactNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        address: PropTypes.string.isRequired,
-        hireDate: PropTypes.string.isRequired,
-        permissions: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
+    employee: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 const EmployeeTable = () => {
@@ -94,38 +97,60 @@ const EmployeeTable = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const fetchEmployees = async () => {
+        try {
+            const token = localStorage.getItem("token");
 
-                const response = await fetch("http://localhost:5001/api/employees", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}` // Send token in header
-                    }
-                });
+            const response = await fetch("http://localhost:5001/api/employees", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-                if (response.status === 403) {
-                    throw new Error("Access Denied! You don't have permission to view employees.");
-                }
+            const data = await response.json();
 
-                const data = await response.json();
-
-                if (!Array.isArray(employees)) {
-                    throw new Error("Invalid response from server");
-                }
-
-                setEmployees(data);
-            } catch (error) {
-                console.error("Error fetching employees:", error);
-                setError(error.message);
-            } finally {
-                setLoading(false);
+            if (!Array.isArray(data)) {
+                throw new Error("Invalid response from server");
             }
-        };
 
+            setEmployees(data);
+        } catch (error) {
+            console.error("Error fetching employees:", error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(`http://localhost:5001/api/employees/delete/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Employee deleted successfully!");
+                setEmployees((prev) => prev.filter((emp) => emp._id !== id)); // Update state
+            } else {
+                alert(`Error: ${data.message}`);
+            }
+        } catch (error) {
+            console.error("Delete error:", error);
+            alert("Server error while deleting employee.");
+        }
+    };
+
+    useEffect(() => {
         fetchEmployees();
     }, []);
 
@@ -142,11 +167,12 @@ const EmployeeTable = () => {
                         <TableCell>Position</TableCell>
                         <TableCell align="right">Salary (LKR)</TableCell>
                         <TableCell align="right">Employment Status</TableCell>
+                        <TableCell align="right">Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {employees.map((employee) => (
-                        <EmployeeRow key={employee.employeeId} employee={employee} />
+                        <EmployeeRow key={employee._id} employee={employee} onDelete={handleDelete} />
                     ))}
                 </TableBody>
             </Table>
