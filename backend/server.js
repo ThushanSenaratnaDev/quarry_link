@@ -18,8 +18,8 @@ const URL = process.env.MONGODB_URL;
 // Connect to MongoDB
 mongoose
     .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("✅ Connected to MongoDB"))
-    .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // Use Routes
 app.use("/api/employees", employeeRoutes);

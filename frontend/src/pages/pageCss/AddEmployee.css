@@ -1,0 +1,94 @@
+/* Ensures the entire page takes full width & height */
+.add-employee-page {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    min-height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background-color: #f0f2f5; /* Light gray background */
+}
+
+/* Form container */
+.add-employee-container {
+    width: 70%;
+    max-width: 900px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Form title */
+.add-employee-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Grid layout for form fields */
+.add-employee-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+}
+
+/* Ensure all input fields and select elements are properly sized */
+.add-employee-form input,
+.add-employee-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Make full-width elements span two columns */
+.full-width {
+    grid-column: span 2;
+}
+
+/* Labels */
+.add-employee-form label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+}
+
+/* Permission checkboxes */
+.permissions-container {
+    grid-column: span 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+/* Align checkboxes correctly */
+.permissions-container label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Center button below form */
+.add-employee-form button {
+    grid-column: span 2;
+    padding: 12px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.add-employee-form button:hover {
+    background-color: #0056b3;
+}
