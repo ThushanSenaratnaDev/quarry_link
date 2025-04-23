@@ -1,0 +1,150 @@
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import Blast from '../models/Blast.js';
+
+const router = express.Router();
+
+// Create uploads directory if not exists
+const uploadDir = path.join(process.cwd(), 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
+// Multer setup
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName);
+  },
+});
+const upload = multer({ storage });
+
+// ✅ Helper to format blast
+const safeFormatBlast = (blast) => {
+  if (!blast) return null;
+
+  return {
+    _id: blast._id,
+    plannedBy: blast.plannedBy,
+    expDate: blast.expDate,
+    expStartTime: blast.expStartTime,
+    expEndTime: blast.expEndTime,
+    zone: blast.zone,
+    explosives: blast.explosives,
+    documentation: blast.documentation,
+    additionalInfo: blast.additionalInfo,
+    status: blast.status,
+  };
+};
+
+// ✅ Create a new blast with file upload
+router.post('/', upload.single('documentation'), async (req, res) => {
+  try {
+    const {
+      expDate,
+      expStartTime,
+      expEndTime,
+      zone,
+      explosives,
+      additionalInfo,
+      status,
+      plannedBy,
+    } = req.body;
+
+    if (!expDate || !expStartTime || !expEndTime || !zone || !explosives) {
+      return res.status(400).json({ error: 'All required fields must be filled.' });
+    }
+
+    const documentation = req.file ? req.file.filename : null;
+
+    const blast = new Blast({
+      plannedBy: plannedBy || 'test_engineer',
+      expDate,
+      expStartTime,
+      expEndTime,
+      zone,
+      explosives,
+      documentation,
+      additionalInfo,
+      status: status || 'Planned',
+    });
+
+    const saved = await blast.save();
+    res.status(201).json(safeFormatBlast(saved));
+  } catch (err) {
+    console.error('Error creating blast:', err.message);
+    res.status(500).json({ error: 'Server error while creating blast.' });
+  }
+});
+
+// ✅ Update a blast with optional new file upload
+router.put('/:id', upload.single('documentation'), async (req, res) => {
+  try {
+    const updateData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      updateData.documentation = req.file.filename;
+    }
+
+    const updatedBlast = await Blast.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    res.json(safeFormatBlast(updatedBlast));
+  } catch (err) {
+    console.error('Error updating blast:', err.message);
+    res.status(400).json({ error: 'Error updating blast.' });
+  }
+});
+
+// ✅ Get all blasts
+router.get('/', async (req, res) => {
+  try {
+    const blasts = await Blast.find();
+    res.json(blasts.map(safeFormatBlast));
+  } catch (err) {
+    console.error('Error fetching blasts:', err.message);
+    res.status(500).json({ error: 'Server error while fetching blasts.' });
+  }
+});
+
+// ✅ Delete a blast
+router.delete('/:id', async (req, res) => {
+  try {
+    await Blast.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Blast deleted successfully.' });
+  } catch (err) {
+    console.error('Error deleting blast:', err.message);
+    res.status(400).json({ error: 'Error deleting blast.' });
+  }
+});
+
+// ✅ Monthly summary report
+router.get('/report/:year/:month', async (req, res) => {
+  try {
+    const { year, month } = req.params;
+    const start = new Date(year, month - 1, 1);
+    const end = new Date(year, month, 0, 23, 59, 59);
+
+    const blasts = await Blast.find({ expDate: { $gte: start, $lte: end } });
+
+    const report = {
+      total: blasts.length,
+      completed: blasts.filter(b => b.status === 'Completed').length,
+      canceled: blasts.filter(b => b.status === 'Canceled').length,
+      misfires: blasts.filter(b => b.status === 'Misfire').length,
+      planned: blasts.filter(b => b.status === 'Planned').length,
+      explosivesUsed: blasts.reduce((sum, b) => sum + (parseFloat(b.explosives) || 0), 0),
+      blasts,
+    };
+
+    res.json(report);
+  } catch (err) {
+    console.error('Error generating report:', err);
+    res.status(500).json({ error: 'Failed to generate report' });
+  }
+});
+
+export default router;
