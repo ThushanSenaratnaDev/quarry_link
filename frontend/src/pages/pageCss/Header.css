@@ -1,0 +1,22 @@
+.header {
+    background-color: #004080;
+    padding: 10px 20px;
+    color: white;
+  }
+  
+  .nav {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .nav a {
+    color: white;
+    text-decoration: none;
+    margin: 8px;
+    font-weight: 500;
+  }
+  
+  .nav a:hover {
+    text-decoration: underline;
+  }

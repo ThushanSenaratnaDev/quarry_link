@@ -14,14 +14,44 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeRow = ({ employee, onDelete }) => {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleDeleteClick = () => {
         const confirmDelete = window.confirm(`Are you sure you want to delete ${employee.name}?`);
         if (confirmDelete) {
-            onDelete(employee._id); // Pass employee Mongo _id to parent delete handler
+            onDelete(employee._id);
+        }
+    };
+
+    const handleUpdateClick = () => {
+        navigate(`/update-employee/${employee._id}`);
+    };
+
+    const downloadPayslip = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:5001/api/employees/salary-slip/${employee._id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `${employee.name}_SalarySlip.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error downloading payslip:", error);
+            alert("Failed to download payslip.");
         }
     };
 
@@ -42,12 +72,19 @@ const EmployeeRow = ({ employee, onDelete }) => {
                 <TableCell align="right">LKR {employee.salary.toLocaleString()}</TableCell>
                 <TableCell align="right">{employee.employmentStatus}</TableCell>
                 <TableCell align="right">
-                    <IconButton aria-label="delete" color="error" onClick={handleDeleteClick}>
-                        <DeleteIcon />
-                    </IconButton>
+                    <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
+                        <Button variant="outlined" size="small" onClick={downloadPayslip}>
+                            🧾 Payslip
+                        </Button>
+                        <Button variant="outlined" size="small" color="primary" onClick={handleUpdateClick}>
+                            ✏️ Update
+                        </Button>
+                        <IconButton aria-label="delete" color="error" onClick={handleDeleteClick}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Box>
                 </TableCell>
             </TableRow>
-
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -100,7 +137,6 @@ const EmployeeTable = () => {
     const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem("token");
-
             const response = await fetch("http://localhost:5001/api/employees", {
                 method: "GET",
                 headers: {
@@ -108,13 +144,10 @@ const EmployeeTable = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
             const data = await response.json();
-
             if (!Array.isArray(data)) {
                 throw new Error("Invalid response from server");
             }
-
             setEmployees(data);
         } catch (error) {
             console.error("Error fetching employees:", error);
@@ -127,7 +160,6 @@ const EmployeeTable = () => {
     const handleDelete = async (id) => {
         try {
             const token = localStorage.getItem("token");
-
             const response = await fetch(`http://localhost:5001/api/employees/delete/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -135,12 +167,10 @@ const EmployeeTable = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
             const data = await response.json();
-
             if (response.ok) {
                 alert("Employee deleted successfully!");
-                setEmployees((prev) => prev.filter((emp) => emp._id !== id)); // Update state
+                setEmployees((prev) => prev.filter((emp) => emp._id !== id));
             } else {
                 alert(`Error: ${data.message}`);
             }

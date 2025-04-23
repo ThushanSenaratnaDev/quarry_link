@@ -1,0 +1,26 @@
+.body {
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 60vh;
+  }
+  
+  .notice-board {
+    background-color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notice-board h2 {
+    margin-bottom: 10px;
+    color: #004080;
+  }
+  
+  .notice-board ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  .notice-board li {
+    margin-bottom: 8px;
+  }

@@ -1,0 +1,24 @@
+.footer {
+    background-color: #004080;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+  }
+  
+  .footer p {
+    margin: 5px 0;
+  }
+  
+  .quick-links {
+    margin-top: 10px;
+  }
+  
+  .quick-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .quick-links a:hover {
+    text-decoration: underline;
+  }
