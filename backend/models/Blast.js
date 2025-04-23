@@ -1,35 +1,20 @@
 import mongoose from 'mongoose';
 
-const BlastSchema = new mongoose.Schema({
-  PlannedBy: {
-    type: String, // Proper date storage
-    required: true,
-  },
-  ExpDate: {
-    type: Date, // Proper date storage
-    required: true,
-  },
-  ExpStartTime: {
-    type: String, // Store time as HH:MM
-    required: true,
-  },
-  ExpEndTime: {
+const blastSchema = new mongoose.Schema({
+  plannedBy: { type: String, required: true },
+  expDate: { type: Date, required: true },
+  expStartTime: { type: String, required: true },
+  expEndTime: { type: String, required: true },
+  zone: { type: String, required: true },
+  explosives: { type: String, required: true },
+  documentation: { type: String },
+  additionalInfo: { type: String },
+
+  status: {
     type: String,
-    required: true,
-  },
-  Zone: {
-    type: String,
-    required: true,
-  },
-  Documentation: {
-    type: String, // Store multiple image file paths or URLs
-  },
-  AdditionalInfo: {
-    type: String,
+    enum: ['Completed', 'Cancelled', 'Misfire', 'Planned'],
+    default: 'Planned',
   },
 });
 
-//module.exports = mongoose.model("Blast", BlastSchema);
-const Blast = mongoose.model('Blast', BlastSchema);
-
-export default Blast;
+export default mongoose.model('Blast', blastSchema);
