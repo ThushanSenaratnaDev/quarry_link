@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_jwt_secret";
-
+console.log("JWT_SECRET:", process.env.JWT_SECRET); //remove this line in production
 // Employee Login Function
 export const loginEmployee = async (req, res) => {
     try {
@@ -26,6 +26,8 @@ export const loginEmployee = async (req, res) => {
             {
                 id: employee._id,
                 username: employee.username,
+                name: employee.name,               //  full name
+                employeeId: employee.employeeId,
                 position: employee.position,
                 permissions: employee.permissions //Store permissions in token
             },
