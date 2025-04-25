@@ -8,6 +8,20 @@ import "react-calendar/dist/Calendar.css";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
+// 🟡 Step 1: Add JWT decode utility at the top
+const getCurrentUser = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the JWT payload
+    return payload.name || payload.username || "unknown_user"; // Adjust based on token contents
+  } catch (err) {
+    console.error("Failed to decode token", err);
+    return null;
+  }
+};
+
 const localizer = momentLocalizer(moment);
 
 const CalendarPage = () => {
@@ -15,6 +29,7 @@ const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showForm, setShowForm] = useState(false);
   const [editingBlast, setEditingBlast] = useState(null);
+  const [currentUser, setCurrentUser] = useState(getCurrentUser()); // 🟡 Added
   const [searchParams, setSearchParams] = useState({
     date: "",
     startTime: "",
@@ -36,7 +51,7 @@ const CalendarPage = () => {
 
   const fetchBlasts = async () => {
     try {
-      const res = await fetch("http://localhost:5002/api/blasts");
+      const res = await fetch("http://localhost:5001/api/blasts");
       const data = await res.json();
       const events = data.map((blast) => {
         const date = new Date(blast.expDate);
@@ -278,6 +293,7 @@ const CalendarPage = () => {
             <BlastForm
               selectedDate={selectedDate}
               blast={editingBlast}
+              plannedBy={currentUser}
               onClose={() => setShowForm(false)}
               onSave={handleSave}
             />

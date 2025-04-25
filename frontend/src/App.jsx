@@ -1,43 +1,41 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import EmployeeManagement from "./pages/EmployeeManagement";
-import AddEmployee from "./pages/AddEmployee";
-import UpdateEmployee from "./pages/UpdateEmployees.jsx"; //
 import Login from "./pages/Login";
 
+// Employee Management
+import EmployeeManagement from "./pages/EmployeeManagement";
+import AddEmployee from "./pages/AddEmployee";
+import UpdateEmployee from "./pages/UpdateEmployees";
+import HomePage from "./pages/HomePage";
+
+// Detonation Planning
+import CalendarPage from "./pages/DetonationPlanning"; // assume this is your detonation main view
+
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/EmployeeManagement" element={<EmployeeManagement />} />
-                <Route path="/add-employee" element={<AddEmployee />} />
-                <Route path="/update-employee/:id" element={<UpdateEmployee />} />
-            </Routes>
-        </Router>
-    );
+  return (
+    <Router>
+      <Routes>
+        {/* Auth */}
+        <Route path="/" element={<Login />} />
+
+        {/* Home */}
+        <Route path="/home" element={<HomePage />} />
+
+        {/* Employee Management */}
+        <Route path="/employee-management" element={<EmployeeManagement />} />
+        <Route path="/add-employee" element={<AddEmployee />} />
+        <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+
+        {/* Detonation Planning */}
+        <Route path="/detonation-planning" element={<CalendarPage />} />
+
+
+        {/* <Route path="/inventory" element={<InventoryPage />} />
+<Route path="/event-planning" element={<EventPage />} />
+<Route path="/order-management" element={<OrderPage />} />
+<Route path="/client-management" element={<ClientPage />} /> */}
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
-
-
-// import React from "react";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import CalendarPage from "./pages/DetonationPlanning";
-// //import BlastForm from "./components/BlastForm";
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <div className="font-sans min-h-screen bg-gray-100">
-        
-//         <Routes>
-//           <Route path="/" element={<CalendarPage />} />
-          
-          
-//         </Routes>
-//       </div>
-//     </Router>
-//   );
-// };
-
-// export default App;

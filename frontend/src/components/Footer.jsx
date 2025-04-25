@@ -7,12 +7,12 @@ const Footer = () => {
     <footer className="footer">
       <p>© 2025 Amano Aggregated Pvt Ltd</p>
       <div className="quick-links">
-        <Link to="/employees">Employees</Link>
-        <Link to="/detonation">Detonation</Link>
+        <Link to="/employee-management">Employees</Link>
+        <Link to="/detonation-planning">Detonation</Link>
         <Link to="/inventory">Inventory</Link>
-        <Link to="/events">Events</Link>
-        <Link to="/orders">Orders</Link>
-        <Link to="/clients">Clients</Link>
+        <Link to="/event-planning">Events</Link>
+        <Link to="/order-management">Orders</Link>
+        <Link to="/client-management">Clients</Link>
       </div>
     </footer>
   );

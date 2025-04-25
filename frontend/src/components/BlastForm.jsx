@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const BlastForm = ({ selectedDate, blast, onClose, onSave }) => {
+const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     expDate: selectedDate.toISOString().split('T')[0],
     expStartTime: '',
@@ -97,11 +97,11 @@ const BlastForm = ({ selectedDate, blast, onClose, onSave }) => {
     formDataToSend.append('documentation', formData.documentation); // file
     formDataToSend.append('additionalInfo', formData.additionalInfo);
     formDataToSend.append('status', formData.status);
-    formDataToSend.append('plannedBy', blast?.plannedBy || 'test_engineer');
+    formDataToSend.append('plannedBy', plannedBy || blast?.plannedBy || 'unknown'); // 🔧 Replaced 'test_engineer'
   
     const url = blast
-      ? `http://localhost:5002/api/blasts/${blast._id}`
-      : 'http://localhost:5002/api/blasts';
+      ? `http://localhost:5001/api/blasts/${blast._id}`
+      : 'http://localhost:5001/api/blasts';
   
     try {
       const response = await fetch(url, {
@@ -130,7 +130,7 @@ const BlastForm = ({ selectedDate, blast, onClose, onSave }) => {
     if (!confirmed) return;
 
     try {
-      await fetch(`http://localhost:5002/api/blasts/${blast._id}`, {
+      await fetch(`http://localhost:5001/api/blasts/${blast._id}`, {
         method: 'DELETE',
       });
       onSave();
@@ -176,6 +176,11 @@ const BlastForm = ({ selectedDate, blast, onClose, onSave }) => {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      {(plannedBy || blast?.plannedBy) && (
+  <div className="mb-4 text-gray-700 font-medium">
+    Planned By: <span className="text-black">{plannedBy || blast?.plannedBy}</span>
+  </div>
+)}
         <label>
           Date:
           <input type="date" name="expDate" value={formData.expDate} onChange={handleChange} required />
