@@ -17,6 +17,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
+
+
+
+
 const EmployeeRow = ({ employee, onDelete }) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
@@ -57,6 +61,7 @@ const EmployeeRow = ({ employee, onDelete }) => {
 
     return (
         <>
+            
             <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
                 <TableCell>
                     <IconButton
@@ -114,6 +119,7 @@ const EmployeeRow = ({ employee, onDelete }) => {
                                         <TableCell><b>Permissions:</b></TableCell>
                                         <TableCell>{employee.permissions.join(", ")}</TableCell>
                                     </TableRow>
+									
                                 </TableBody>
                             </Table>
                         </Box>
@@ -133,8 +139,15 @@ const EmployeeTable = () => {
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+	const [searchTerm, setSearchTerm] = useState("");
 
-    const fetchEmployees = async () => {
+    const filteredEmployees = employees.filter((employee) => {
+		const nameMatch = employee.name.toLowerCase().includes(searchTerm.toLowerCase());
+		const idMatch = employee.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
+		return nameMatch || idMatch;
+	});
+	
+	const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem("token");
             console.log("Using token:", token);
@@ -189,6 +202,24 @@ const EmployeeTable = () => {
     if (error) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
+		<>
+		
+		<div style={{ marginBottom: "1rem" }}>
+                <input
+                    type="text"
+                    placeholder="Search by Name or Employee ID..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                        width: "100%",
+                        padding: "10px",
+                        fontSize: "16px",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc"
+                    }}
+                />
+            </div>
+
         <TableContainer component={Paper}>
             <Table aria-label="employee table">
                 <TableHead>
@@ -202,12 +233,13 @@ const EmployeeTable = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {employees.map((employee) => (
+                    {filteredEmployees.map((employee) => (
                         <EmployeeRow key={employee._id} employee={employee} onDelete={handleDelete} />
                     ))}
                 </TableBody>
             </Table>
         </TableContainer>
+		</>
     );
 };
 
