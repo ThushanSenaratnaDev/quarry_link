@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./pageCss/ProductCatalogue.css";
-import ChatBox from "../components/ChatBox";
+// import ChatBox from "../components/ChatBox";
 
 const ProductCatalogue = () => {
   const [products, setProducts] = useState([]);
@@ -113,7 +113,7 @@ const ProductCatalogue = () => {
 
   return (
     <div className="product-catalogue">
-      <ChatBox />
+      {/* <ChatBox /> */}
       <h2>Product Catalogue</h2>
       <button onClick={() => setShowForm(true)}>Add Product</button>
       <Link to="/inventory_control" className="link-button">
