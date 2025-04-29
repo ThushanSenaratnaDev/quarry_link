@@ -145,7 +145,7 @@ const UpdateEmployee = () => {
     const result = await response.json();
     if (response.ok) {
       alert("Employee updated successfully!");
-      navigate("/EmployeeManagement");
+      navigate("/employee-management");
     } else {
       alert("Error updating employee: " + result.message);
     }

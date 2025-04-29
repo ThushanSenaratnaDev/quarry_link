@@ -6,7 +6,6 @@ export const addEmployee = async (req, res) => {
     try {
         console.log("📩 Received Employee Data:", req.body);
         const {
-            employeeId,
             username,
             password,
             name,
@@ -23,15 +22,28 @@ export const addEmployee = async (req, res) => {
             salary,
         } = req.body;
 
-        // Check if employee already exists
-        const existingEmployee = await Employee.findOne({ employeeId });
-        if (existingEmployee) {
-            return res.status(400).json({ message: "Employee ID already exists." });
+        // Find the highest employeeId in the database
+        const lastEmployee = await Employee.findOne()
+            .sort({ employeeId: -1 }) // Sort in descending order
+            .collation({ locale: "en_US", numericOrdering: true }); // Proper sorting like E1 < E2 < E10
+
+        let newEmployeeId = "E001"; // Default if no employee yet
+
+        if (lastEmployee && lastEmployee.employeeId) {
+            // Extract numeric part and increment
+            const numPart = parseInt(lastEmployee.employeeId.substring(1), 10);
+            const nextNum = numPart + 1;
+            newEmployeeId = "E" + nextNum.toString().padStart(3, '0');
         }
 
+        // Ensure uniqueness (just in case)
+        const existingEmployee = await Employee.findOne({ employeeId: newEmployeeId });
+        if (existingEmployee) {
+            return res.status(500).json({ message: "Auto-generated Employee ID conflict. Try again." });
+        }
 
         const newEmployee = new Employee({
-            employeeId,
+            employeeId: newEmployeeId,
             username,
             password,
             name,
@@ -49,7 +61,7 @@ export const addEmployee = async (req, res) => {
         });
 
         await newEmployee.save();
-        res.status(201).json({ message: "Employee Added Successfully!" });
+        res.status(201).json({ message: "Employee Added Successfully!", employeeId: newEmployeeId });
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
     }
@@ -177,7 +189,7 @@ export const generateSalarySlip = async (req, res) => {
     } catch (error) {
         // 🔐 If error occurs after piping, we can't safely send JSON
         console.error("PDF generation error:", error);
-        // DO NOT send res.json here, as response may already be streaming
+        
         if (!res.headersSent) {
             res.status(500).json({ message: "Server Error", error: error.message });
         }

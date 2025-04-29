@@ -8,7 +8,7 @@ import UpdateEmployee from "./pages/UpdateEmployees";
 import HomePage from "./pages/HomePage";
 
 // Detonation Planning
-import CalendarPage from "./pages/DetonationPlanning"; // assume this is your detonation main view
+import CalendarPage from "./pages/DetonationPlanning"; 
 
 function App() {
   return (

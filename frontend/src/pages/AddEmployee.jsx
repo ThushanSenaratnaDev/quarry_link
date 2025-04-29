@@ -127,7 +127,7 @@ const AddEmployee = () => {
       }
 
       const employeePayload = {
-        employeeId: employeeData.employeeId,
+        //employeeId: employeeData.employeeId,
         username: employeeData.username.trim(),
         password: employeeData.password,
         name: employeeData.name,
@@ -161,7 +161,7 @@ const AddEmployee = () => {
 
       if (response.ok) {
         alert("Employee added successfully!");
-        navigate("/EmployeeManagement");
+        navigate("/employee-management");
       } else {
         console.error("Server Error:", data);
         alert(`Error: ${data.message || "Unknown error occurred"}`);
@@ -177,7 +177,7 @@ const AddEmployee = () => {
       <div className="add-employee-container">
         <h2>Add Employee</h2>
         <form className="add-employee-form" onSubmit={handleSubmit}>
-          <input type="text" name="employeeId" placeholder="Employee ID" required onChange={handleChange} />
+          
           <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
           <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
           <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
