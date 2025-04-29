@@ -1,4 +1,33 @@
-/* Inventory Control Container */
+.inventory-control {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.inventory-control div {
+  width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.inventory-control h2 {
+  text-align: center;
+}
+
+.inventory-control button {
+  background-color: #e6890f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+  margin: 5px;
+}
+
 .inventory-header {
   display: flex;
   justify-content: center;
@@ -7,7 +36,7 @@
 }
 
 /* Table Styling */
-table {
+.im-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
@@ -18,36 +47,36 @@ table {
 }
 
 /* Table Header */
-thead {
+.im-table thead {
   background-color: #e6890f;
   color: white;
 }
 
-th {
+.im-table th {
   padding: 12px;
   text-align: left;
   font-size: 14px;
 }
 
 /* Table Rows */
-tbody tr {
+.im-table tbody tr {
   border-bottom: 1px solid #ddd;
   transition: background-color 0.3s;
 }
 
-tbody tr:hover {
+.im-table tbody tr:hover {
   background-color: #f4f4f9;
 }
 
 /* Table Cells */
-td {
+.im-table td {
   padding: 10px;
   font-size: 14px;
   color: #333;
 }
 
 /* Input Fields Inside Table */
-td input {
+.im-table input {
   width: 80px;
   padding: 5px;
   border: 1px solid #ccc;
@@ -56,7 +85,7 @@ td input {
 }
 
 /* Edit & Save Buttons */
-td button {
+.im-table button {
   padding: 5px 10px;
   font-size: 12px;
   border-radius: 5px;
@@ -65,25 +94,25 @@ td button {
   transition: 0.3s;
 }
 
-td button:hover {
+.im-table button:hover {
   background-color: #995c0c;
   color: white;
 }
 
 /* Responsive Table */
 @media (max-width: 768px) {
-  table {
+  .im-table {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
   }
 
-  th,
-  td {
+  .im-table th,
+  .im-table td {
     padding: 8px;
   }
 
-  td input {
+  .im-table input {
     width: 60px;
   }
 }

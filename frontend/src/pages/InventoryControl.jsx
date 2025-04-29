@@ -55,7 +55,7 @@ const InventoryControl = () => {
   };
 
   return (
-    <div>
+    <div className="inventory-control">
       <h2>Inventory Control</h2>
       <ChatBox />
       <button>
@@ -83,7 +83,7 @@ const InventoryControl = () => {
       ).map((category) => (
         <div key={category}>
           <h3>{category}</h3>
-          <table border="1">
+          <table border="1" className="im-table">
             <thead>
               <tr>
                 <th>Name</th>
