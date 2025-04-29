@@ -7,15 +7,21 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-calendar/dist/Calendar.css";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import "../pages/pageCss/DetonationPlanning.css";
+import { Tooltip } from "react-tooltip";
+import holidays from "../components/Holidays";
+import { toast } from 'sonner';
+import { motion } from "framer-motion"; // 🆕 For animation
+import { Search } from "lucide-react"; // 🆕 Search Icon
 
-// 🟡 Step 1: Add JWT decode utility at the top
+
+// 🟡 JWT Decode helper
 const getCurrentUser = () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
-
   try {
-    const payload = JSON.parse(atob(token.split('.')[1])); // Decode the JWT payload
-    return payload.name || payload.username || "unknown_user"; // Adjust based on token contents
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.name || payload.username || "unknown_user";
   } catch (err) {
     console.error("Failed to decode token", err);
     return null;
@@ -29,7 +35,7 @@ const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showForm, setShowForm] = useState(false);
   const [editingBlast, setEditingBlast] = useState(null);
-  const [currentUser, setCurrentUser] = useState(getCurrentUser()); // 🟡 Added
+  const [currentUser, setCurrentUser] = useState(getCurrentUser());
   const [searchParams, setSearchParams] = useState({
     date: "",
     startTime: "",
@@ -37,19 +43,18 @@ const CalendarPage = () => {
     zone: "",
     status: "",
   });
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [filteredBlasts, setFilteredBlasts] = useState(blasts);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState(Views.MONTH);
 
-  useEffect(() => {
-    fetchBlasts();
-  }, []);
+  // 🟡 Setup Calendar: Fetch detonations and render calendar
+  async function setupCalendar() {
+    const detonations = await fetchDetonations();
+    renderCalendar(detonations);
+  }
 
-  useEffect(() => {
-    filterBlasts();
-  }, [searchParams, blasts]);
-
-  const fetchBlasts = async () => {
+  const fetchDetonations = async () => {
     try {
       const res = await fetch("http://localhost:5001/api/blasts");
       const data = await res.json();
@@ -71,11 +76,34 @@ const CalendarPage = () => {
           raw: blast,
         };
       });
-      setBlasts(events);
-    } catch (err) {
-      console.error("Error loading blasts:", err);
-    }
+
+      // 🔥 FIXED: Convert holidays object to array of events
+    const holidayEvents = Object.entries(holidays).map(([date, name]) => ({
+      title: name,
+      start: new Date(date),
+      end: new Date(date),
+      isHoliday: true,
+    }));
+
+    return [...events, ...holidayEvents];
+  } catch (err) {
+    console.error("Error loading detonations:", err);
+    return [];
+  }
+};
+
+  // 🟡 Render calendar after fetching detonations
+  const renderCalendar = (detonations) => {
+    setBlasts(detonations);
   };
+
+  useEffect(() => {
+    setupCalendar(); // Fetch detonations and set up the calendar on component mount
+  }, []);
+
+  useEffect(() => {
+    filterBlasts();
+  }, [searchParams, blasts]);
 
   const getBlastStatus = (blast) => {
     if (blast.additionalInfo?.toLowerCase().includes("cancel")) return "Cancelled";
@@ -85,18 +113,17 @@ const CalendarPage = () => {
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
-    setSearchParams({
-      ...searchParams,
-      [name]: value,
-    });
+    setSearchParams({ ...searchParams, [name]: value });
   };
 
   const handleSearchClick = () => {
     filterBlasts();
+    setIsSearchExpanded(false);
   };
 
   const filterBlasts = () => {
     const filtered = blasts.filter((blast) => {
+      if (blast.isHoliday) return true;
       const raw = blast.raw;
       const dateMatch = searchParams.date
         ? moment(raw.expDate).format("YYYY-MM-DD") === moment(searchParams.date).format("YYYY-MM-DD")
@@ -113,24 +140,20 @@ const CalendarPage = () => {
       const statusMatch = searchParams.status
         ? getBlastStatus(raw).toLowerCase() === searchParams.status.toLowerCase()
         : true;
-
       return dateMatch && startTimeMatch && endTimeMatch && zoneMatch && statusMatch;
     });
-
     setFilteredBlasts(filtered);
   };
 
   const generatePDFReport = () => {
     const doc = new jsPDF();
-
     doc.setFontSize(16);
     doc.text("Monthly Blast Report", 14, 20);
-
     const currentMonth = moment(currentDate).format("MMMM YYYY");
     doc.setFontSize(12);
     doc.text(`Month: ${currentMonth}`, 14, 30);
 
-    const rows = filteredBlasts.map((event, idx) => {
+    const rows = filteredBlasts.filter(e => !e.isHoliday).map((event, idx) => {
       const raw = event.raw;
       return [
         idx + 1,
@@ -148,21 +171,6 @@ const CalendarPage = () => {
       body: rows,
     });
 
-    const statusCounts = {
-      Completed: 0,
-      Cancelled: 0,
-      Misfire: 0,
-    };
-    rows.forEach((r) => {
-      const status = r[4];
-      statusCounts[status] = (statusCounts[status] || 0) + 1;
-    });
-
-    doc.text("Summary:", 14, doc.lastAutoTable.finalY + 10);
-    doc.text(`Completed: ${statusCounts.Completed}`, 14, doc.lastAutoTable.finalY + 20);
-    doc.text(`Cancelled: ${statusCounts.Cancelled}`, 14, doc.lastAutoTable.finalY + 30);
-    doc.text(`Misfires: ${statusCounts.Misfire}`, 14, doc.lastAutoTable.finalY + 40);
-
     doc.save(`blast_report_${currentMonth}.pdf`);
   };
 
@@ -173,80 +181,147 @@ const CalendarPage = () => {
   };
 
   const handleEventClick = (event) => {
+    if (event.isHoliday) return;
     setEditingBlast(event.raw);
     setSelectedDate(new Date(event.raw.expDate));
     setShowForm(true);
   };
 
-  const handleSave = () => {
-    fetchBlasts();
+  const handleSave = async () => {
+    await setupCalendar();  // Refresh calendar events
     setShowForm(false);
+    toast.success('Blast saved successfully! 🚀');  // 🎉 Show success toast
+  };
+  
+
+  const getMonthDates = () => {
+    const current = moment(currentDate);
+    return [
+      current.clone().subtract(1, "months").toDate(),
+      current.toDate(),
+      current.clone().add(1, "months").toDate(),
+    ];
   };
 
+  const eventPropGetter = (event) => ({
+    style: {
+      backgroundColor: event.isHoliday ? "#EF4444" : "#2563EB",
+      color: "white",
+      borderRadius: "0.375rem",
+      padding: "0.25rem",
+      border: "none",
+    },
+    "data-tip": event.title,
+  });
+
   return (
-    <div className="flex p-4 gap-4 relative">
-      {/* Search Section */}
-      <div className="search-form w-full p-4 border rounded-lg mb-4">
-        <h3 className="text-lg font-semibold">Search Blasts</h3>
-        <div className="grid grid-cols-2 gap-4">
+    <div className="detonation-planning-container">
+      {/* 🔥 New Animated Search Bar */}
+<div className="search-form">
+  <motion.div
+    initial={{ width: 48 }}
+    animate={{ width: isSearchExpanded ? 400 : 48 }}
+    transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+    className="search-bar-wrapper"
+  >
+    <button
+      type="button"
+      onClick={() => setIsSearchExpanded(true)}
+      className="search-icon-button"
+    >
+      <Search size={24} />
+    </button>
+
+    <input
+      type="text"
+      name="zone"
+      placeholder="Search by Zone..."
+      value={searchParams.zone}
+      onChange={handleSearchChange}
+      onFocus={() => setIsSearchExpanded(true)}
+      className={`search-input ${isSearchExpanded ? "opacity-100" : "opacity-0"}`}
+    />
+  </motion.div>
+
+  {/* Dropdown Filters */}
+  {isSearchExpanded && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
+      className="filters-dropdown"
+    >
+      <div className="filters-grid">
+        <div className="filter-item">
+          <label className="filter-label">Date</label>
           <input
             type="date"
             name="date"
             value={searchParams.date}
             onChange={handleSearchChange}
-            className="border p-2 rounded"
+            className="filter-input"
           />
+        </div>
+        <div className="filter-item">
+          <label className="filter-label">Start Time</label>
           <input
             type="time"
             name="startTime"
             value={searchParams.startTime}
             onChange={handleSearchChange}
-            className="border p-2 rounded"
+            className="filter-input"
           />
+        </div>
+        <div className="filter-item">
+          <label className="filter-label">End Time</label>
           <input
             type="time"
             name="endTime"
             value={searchParams.endTime}
             onChange={handleSearchChange}
-            className="border p-2 rounded"
+            className="filter-input"
           />
-          <input
-            type="text"
-            name="zone"
-            placeholder="Zone"
-            value={searchParams.zone}
-            onChange={handleSearchChange}
-            className="border p-2 rounded"
-          />
+        </div>
+        <div className="filter-item">
+          <label className="filter-label">Status</label>
           <select
             name="status"
             value={searchParams.status}
             onChange={handleSearchChange}
-            className="border p-2 rounded"
+            className="filter-input"
           >
-            <option value="">Status</option>
+            <option value="">All Statuses</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
             <option value="misfire">Misfire</option>
           </select>
         </div>
+      </div>
+
+      <div className="filters-action">
         <button
+          type="button"
           onClick={handleSearchClick}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+          className="search-button"
         >
           Search
         </button>
       </div>
+    </motion.div>
+  )}
+</div>
 
       {/* Main Calendar */}
-      <div className="flex-grow">
-        <h2 className="text-2xl font-bold mb-4">Detonation Calendar</h2>
+      <div className="main-calendar">
+        <h2>Detonation Calendar</h2>
         <BigCalendar
           localizer={localizer}
           events={filteredBlasts}
           startAccessor="start"
           endAccessor="end"
           titleAccessor="title"
+          eventPropGetter={eventPropGetter}
           style={{ height: 600 }}
           selectable
           views={["month", "week", "day"]}
@@ -257,39 +332,92 @@ const CalendarPage = () => {
           onSelectSlot={handleDateClick}
           onSelectEvent={handleEventClick}
         />
+        <Tooltip />
       </div>
 
-      {/* Sidebar Mini Monthly Calendar */}
-      <div className="w-72">
-        <h3 className="text-lg font-semibold mb-2">Monthly View</h3>
-        <MiniCalendar
-          value={selectedDate}
-          onChange={(date) => handleDateClick({ start: date })}
-          calendarType="gregory"
-        />
+      {/* Sidebar Monthly View */}
+      <div className="sidebar-calendar">
+        <h3>Monthly View</h3>
+        <div className="mini-calendar-grid">
+          {getMonthDates().map((date, idx) => (
+            <div key={idx} className="mini-calendar-item">
+  <MiniCalendar
+  value={date}
+  tileContent={({ date, view }) => {
+    if (view === 'month') {
+      const formatted = moment(date).format('YYYY-MM-DD');
+      const events = filteredBlasts.filter(e => moment(e.start).format('YYYY-MM-DD') === formatted);
+  
+      if (events.length > 0) {
+        // 🟡 Build tooltip content
+        const eventList = events
+          .filter(e => !e.isHoliday)
+          .map(e => `- ${e.title}`)
+          .join('\n');
+        const holidayList = events
+          .filter(e => e.isHoliday)
+          .map(e => `- ${e.title}`)
+          .join('\n');
+  
+        let tooltipContent = '';
+        if (eventList) tooltipContent += '🔔 Events:\n' + eventList + '\n';
+        if (holidayList) tooltipContent += '🎉 Holidays:\n' + holidayList;
+  
+        return (
+          <div
+            data-tooltip-id="tooltip"
+            data-tooltip-content={tooltipContent.trim()}
+            style={{ height: '100%', width: '100%' }}
+          />
+        );
+      }
+    }
+  }}
+  
+  tileClassName={({ date, view }) => {
+    if (view === 'month') {
+      const formatted = moment(date).format('YYYY-MM-DD');
+      if (filteredBlasts.some(e => moment(e.start).format('YYYY-MM-DD') === formatted)) {
+        return 'highlighted-date';
+      }
+    }
+    return '';
+  }}
+  onClickDay={(date) => handleDateClick({ start: date })}
+/>
+
+{/* Place this once at the bottom of your calendar area */}
+<Tooltip
+  id="tooltip"
+  place="top"
+  effect="solid"
+  delayShow={100}
+  delayHide={100}
+  float={true}
+/>
+
+
+
+
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Button to generate PDF Report */}
+      {/* PDF Button */}
       <div className="absolute top-5 right-5">
-        <button
-          onClick={generatePDFReport}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Generate PDF Report
+        <button onClick={generatePDFReport} className="pdf-button">
+          Get monthly Report
         </button>
       </div>
 
-      {/* Popup Modal for BlastForm */}
+      {/* Blast Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-2xl w-[90%] max-w-md relative">
-            <button
-              className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-red-500 font-bold"
-              onClick={() => setShowForm(false)}
-            >
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close-button" onClick={() => setShowForm(false)}>
               &times;
             </button>
-
             <BlastForm
               selectedDate={selectedDate}
               blast={editingBlast}

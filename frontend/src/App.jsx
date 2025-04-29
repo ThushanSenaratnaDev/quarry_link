@@ -6,6 +6,7 @@ import EmployeeManagement from "./pages/EmployeeManagement";
 import AddEmployee from "./pages/AddEmployee";
 import UpdateEmployee from "./pages/UpdateEmployees";
 import HomePage from "./pages/HomePage";
+import { Toaster } from 'sonner';
 
 // Detonation Planning
 import CalendarPage from "./pages/DetonationPlanning"; // assume this is your detonation main view
@@ -13,6 +14,9 @@ import CalendarPage from "./pages/DetonationPlanning"; // assume this is your de
 function App() {
   return (
     <Router>
+
+      <Toaster richColors position="top-center" />
+
       <Routes>
         {/* Auth */}
         <Route path="/" element={<Login />} />
@@ -27,7 +31,6 @@ function App() {
 
         {/* Detonation Planning */}
         <Route path="/detonation-planning" element={<CalendarPage />} />
-
 
         {/* <Route path="/inventory" element={<InventoryPage />} />
 <Route path="/event-planning" element={<EventPage />} />

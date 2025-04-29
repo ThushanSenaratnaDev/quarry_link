@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import "../pages/pageCss/BlastForm.css";
 
-const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
+const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     expDate: selectedDate.toISOString().split('T')[0],
     expStartTime: '',
     expEndTime: '',
     zone: '',
     explosives: '',
-    documentation: null, // Change documentation to hold the file
+    documentation: null,
     additionalInfo: '',
     status: 'Planned',
   });
 
   const [weather, setWeather] = useState(null);
+  const [textFileContent, setTextFileContent] = useState('');
 
   useEffect(() => {
     const dateToUse = blast ? new Date(blast.expDate) : selectedDate;
@@ -27,7 +29,7 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
             expEndTime: blast.expEndTime,
             zone: blast.zone,
             explosives: blast.explosives,
-            documentation: blast.documentation, // URL of uploaded file in database
+            documentation: blast.documentation,
             additionalInfo: blast.additionalInfo,
             status: blast.status || 'Planned',
           }
@@ -44,6 +46,22 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
 
     fetchWeather(formattedDate);
   }, [blast, selectedDate]);
+
+  useEffect(() => {
+    const fetchTextContent = async () => {
+      if (formData.documentation && typeof formData.documentation === "string" && formData.documentation.endsWith(".txt")) {
+        try {
+          const response = await fetch(formData.documentation);
+          const text = await response.text();
+          setTextFileContent(text);
+        } catch (error) {
+          console.error('Error loading text file:', error);
+        }
+      }
+    };
+
+    fetchTextContent();
+  }, [formData.documentation]);
 
   const fetchWeather = async (date) => {
     try {
@@ -75,7 +93,7 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
     if (name === 'documentation') {
       setFormData((prevData) => ({
         ...prevData,
-        documentation: files[0], // Update with selected file
+        documentation: files[0],
       }));
     } else {
       setFormData((prevData) => ({
@@ -87,42 +105,60 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    const today = new Date();
+    const selected = new Date(formData.expDate);
+
+    if (selected <= today.setHours(0, 0, 0, 0)) {
+      window.alert('The date must be in the future.');
+      return;
+    }
+
+    if (!formData.expDate || !formData.expStartTime || !formData.expEndTime || !formData.zone.trim() || !formData.explosives.trim()) {
+      window.alert('Please fill all required fields.');
+      return;
+    }
+
+    if (formData.expStartTime >= formData.expEndTime) {
+      window.alert('Start time must be before end time.');
+      return;
+    }
+
     const formDataToSend = new FormData();
     formDataToSend.append('expDate', formData.expDate);
     formDataToSend.append('expStartTime', formData.expStartTime);
     formDataToSend.append('expEndTime', formData.expEndTime);
     formDataToSend.append('zone', formData.zone);
     formDataToSend.append('explosives', formData.explosives);
-    formDataToSend.append('documentation', formData.documentation); // file
+    formDataToSend.append('documentation', formData.documentation);
     formDataToSend.append('additionalInfo', formData.additionalInfo);
     formDataToSend.append('status', formData.status);
-    formDataToSend.append('plannedBy', plannedBy || blast?.plannedBy || 'unknown'); // 🔧 Replaced 'test_engineer'
-  
+    formDataToSend.append('plannedBy', plannedBy || blast?.plannedBy || 'unknown');
+
     const url = blast
       ? `http://localhost:5001/api/blasts/${blast._id}`
       : 'http://localhost:5001/api/blasts';
-  
+
     try {
       const response = await fetch(url, {
         method: blast ? 'PUT' : 'POST',
         body: formDataToSend,
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Save failed:', errorData);
+        window.alert('Failed to save blast. Please try again.');
         return;
       }
-  
+
       const savedBlast = await response.json();
       onSave(savedBlast);
     } catch (err) {
       console.error('Error saving blast:', err);
+      window.alert('An unexpected error occurred while saving.');
     }
   };
-  
-
 
   const handleDelete = async () => {
     if (!blast?._id) return;
@@ -162,13 +198,13 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
     formData.explosives;
 
   return (
-    <div className="blast-form p-6 bg-white shadow-lg rounded-xl">
+    <div className="blast-form">
       <h3 className="text-xl font-semibold mb-4">
         {blast ? 'Edit Blast' : 'Create New Blast'}
       </h3>
 
       {weather && (
-        <div className="mb-4 p-3 bg-blue-50 border border-blue-300 rounded">
+        <div className="weather-forecast">
           <p className="font-medium">Weather Forecast:</p>
           <p>{weather.condition.text}, {weather.avgtemp_c}°C</p>
           <p>Humidity: {weather.avghumidity}% | Max Wind: {weather.maxwind_kph} kph</p>
@@ -176,11 +212,12 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      {(plannedBy || blast?.plannedBy) && (
-  <div className="mb-4 text-gray-700 font-medium">
-    Planned By: <span className="text-black">{plannedBy || blast?.plannedBy}</span>
-  </div>
-)}
+        {(plannedBy || blast?.plannedBy) && (
+          <div className="planned-by">
+            Planned By: <span className="text-black">{plannedBy || blast?.plannedBy}</span>
+          </div>
+        )}
+
         <label>
           Date:
           <input type="date" name="expDate" value={formData.expDate} onChange={handleChange} required />
@@ -201,15 +238,61 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
           Explosives:
           <input type="text" name="explosives" value={formData.explosives} onChange={handleChange} required />
         </label>
+
         <label>
           Documentation:
-          <input
-            type="file"
-            name="documentation"
-            onChange={handleChange}
-            accept=".pdf,.doc,.docx,.txt" // Restrict file types as needed
-          />
+          {formData.documentation && typeof formData.documentation === 'string' ? (
+            <div className="mt-2 w-full">
+              {formData.documentation.endsWith('.pdf') ? (
+                <iframe
+                  src={`http://localhost:5001/uploads/${formData.documentation}`}
+                  title="Uploaded Document"
+                  width="100%"
+                  height="500px"
+                  className="border rounded"
+                />
+              ) : formData.documentation.endsWith('.txt') ? (
+                <textarea
+                  readOnly
+                  value={textFileContent}
+                  className="w-full h-48 p-2 border rounded bg-gray-100"
+                />
+              ) : (
+                <iframe
+                  src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(`http://localhost:5001/${formData.documentation}`)}`}
+                  title="Word Document Viewer"
+                  width="100%"
+                  height="500px"
+                  frameBorder="0"
+                  className="border rounded"
+                ></iframe>
+              )}
+              <button
+        type="button"
+        onClick={() => document.getElementById('documentationInput').click()}
+        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 w-fit"
+      >
+        Change File
+      </button>
+      <input
+        type="file"
+        id="documentationInput"
+        name="documentation"
+        onChange={handleChange}
+        accept=".pdf,.doc,.docx,.txt"
+        style={{ display: 'none' }}
+      />
+            </div>
+          ) : (
+            <input
+              type="file"
+              name="documentation"
+              onChange={handleChange}
+              accept=".pdf,.doc,.docx,.txt"
+            />
+          )}
         </label>
+
         <label>
           Additional Info:
           <textarea name="additionalInfo" value={formData.additionalInfo} onChange={handleChange} />
@@ -239,7 +322,7 @@ const BlastForm = ({ selectedDate, blast,plannedBy, onClose, onSave }) => {
             </button>
           )}
 
-          <button type="button" onClick={handleClose} className="text-gray-600 px-4 py-2">
+          <button type="button" onClick={handleClose} className="cancel-button">
             Cancel
           </button>
         </div>
