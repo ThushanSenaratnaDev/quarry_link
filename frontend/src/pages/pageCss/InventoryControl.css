@@ -1,0 +1,89 @@
+/* Inventory Control Container */
+.inventory-header {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Table Header */
+thead {
+  background-color: #e6890f;
+  color: white;
+}
+
+th {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Table Rows */
+tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+tbody tr:hover {
+  background-color: #f4f4f9;
+}
+
+/* Table Cells */
+td {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Input Fields Inside Table */
+td input {
+  width: 80px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Edit & Save Buttons */
+td button {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+td button:hover {
+  background-color: #995c0c;
+  color: white;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+
+  td input {
+    width: 60px;
+  }
+}
