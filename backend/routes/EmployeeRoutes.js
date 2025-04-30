@@ -6,6 +6,7 @@ import {
     UpdateEmployee,
     DeleteEmployee
 } from "../controllers/employeeController.js";
+import { generateSalarySlip } from "../controllers/employeeController.js";
 
 import { verifyToken, checkPermission } from "../middleware/authMiddleware.js";
 
@@ -29,7 +30,7 @@ router.put("/update/:id", verifyToken, checkPermission("Edit Employees"), Update
 // Delete an employee (Protected)
 router.delete("/delete/:id", verifyToken, checkPermission("Edit Employees"), DeleteEmployee);
 
-import { generateSalarySlip } from "../controllers/employeeController.js";
+
 
 // Generate Salary Slip PDF (Protected)
 router.get("/salary-slip/:id", verifyToken, checkPermission("Edit Employees"), generateSalarySlip);

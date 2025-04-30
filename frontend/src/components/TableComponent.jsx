@@ -1,3 +1,4 @@
+// Import dependencies
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -17,13 +18,23 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
+const getCurrentEmployeeId = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
 
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.employeeId || null; 
+    } catch (err) {
+        console.error("Failed to decode token", err);
+        return null;
+    }
+};
 
-
-
-const EmployeeRow = ({ employee, onDelete }) => {
+const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const isLoggedInUser = employee.employeeId === loggedInEmployeeId;
 
     const handleDeleteClick = () => {
         const confirmDelete = window.confirm(`Are you sure you want to delete ${employee.name}?`);
@@ -61,7 +72,6 @@ const EmployeeRow = ({ employee, onDelete }) => {
 
     return (
         <>
-            
             <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
                 <TableCell>
                     <IconButton
@@ -77,16 +87,22 @@ const EmployeeRow = ({ employee, onDelete }) => {
                 <TableCell align="right">LKR {employee.salary.toLocaleString()}</TableCell>
                 <TableCell align="right">{employee.employmentStatus}</TableCell>
                 <TableCell align="right">
-                    <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
+                    <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end", alignItems: "center" }}>
                         <Button variant="outlined" size="small" onClick={downloadPayslip}>
                             🧾 Payslip
                         </Button>
-                        <Button variant="outlined" size="small" color="primary" onClick={handleUpdateClick}>
-                            ✏️ Update
-                        </Button>
-                        <IconButton aria-label="delete" color="error" onClick={handleDeleteClick}>
-                            <DeleteIcon />
-                        </IconButton>
+                        {isLoggedInUser ? (
+                            <Typography variant="body2" sx={{ mt: 1 }}>Logged in user</Typography>
+                        ) : (
+                            <>
+                                <Button variant="outlined" size="small" color="primary" onClick={handleUpdateClick}>
+                                    ✏️ Update
+                                </Button>
+                                <IconButton aria-label="delete" color="error" onClick={handleDeleteClick}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </>
+                        )}
                     </Box>
                 </TableCell>
             </TableRow>
@@ -119,7 +135,6 @@ const EmployeeRow = ({ employee, onDelete }) => {
                                         <TableCell><b>Permissions:</b></TableCell>
                                         <TableCell>{employee.permissions.join(", ")}</TableCell>
                                     </TableRow>
-									
                                 </TableBody>
                             </Table>
                         </Box>
@@ -133,24 +148,26 @@ const EmployeeRow = ({ employee, onDelete }) => {
 EmployeeRow.propTypes = {
     employee: PropTypes.object.isRequired,
     onDelete: PropTypes.func.isRequired,
+    loggedInEmployeeId: PropTypes.string
 };
 
 const EmployeeTable = () => {
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-	const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const loggedInEmployeeId = getCurrentEmployeeId();
 
     const filteredEmployees = employees.filter((employee) => {
-		const nameMatch = employee.name.toLowerCase().includes(searchTerm.toLowerCase());
-		const idMatch = employee.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
-		return nameMatch || idMatch;
-	});
-	
-	const fetchEmployees = async () => {
+        const nameMatch = employee.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const idMatch = employee.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
+        return nameMatch || idMatch;
+    });
+
+    const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem("token");
-            console.log("Using token:", token);
             const response = await fetch("http://localhost:5001/api/employees", {
                 method: "GET",
                 headers: {
@@ -159,9 +176,7 @@ const EmployeeTable = () => {
                 },
             });
             const data = await response.json();
-            if (!Array.isArray(data)) {
-                throw new Error("Invalid response from server");
-            }
+            if (!Array.isArray(data)) throw new Error("Invalid response from server");
             setEmployees(data);
         } catch (error) {
             console.error("Error fetching employees:", error);
@@ -202,9 +217,8 @@ const EmployeeTable = () => {
     if (error) return <p style={{ color: "red" }}>{error}</p>;
 
     return (
-		<>
-		
-		<div style={{ marginBottom: "1rem" }}>
+        <>
+            <div style={{ marginBottom: "1rem" }}>
                 <input
                     type="text"
                     placeholder="Search by Name or Employee ID..."
@@ -220,26 +234,31 @@ const EmployeeTable = () => {
                 />
             </div>
 
-        <TableContainer component={Paper}>
-            <Table aria-label="employee table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell>Employee Name</TableCell>
-                        <TableCell>Position</TableCell>
-                        <TableCell align="right">Salary (LKR)</TableCell>
-                        <TableCell align="right">Employment Status</TableCell>
-                        <TableCell align="right">Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {filteredEmployees.map((employee) => (
-                        <EmployeeRow key={employee._id} employee={employee} onDelete={handleDelete} />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-		</>
+            <TableContainer component={Paper}>
+                <Table aria-label="employee table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell />
+                            <TableCell>Employee Name</TableCell>
+                            <TableCell>Position</TableCell>
+                            <TableCell align="right">Salary (LKR)</TableCell>
+                            <TableCell align="right">Employment Status</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {filteredEmployees.map((employee) => (
+                            <EmployeeRow
+                                key={employee._id}
+                                employee={employee}
+                                onDelete={handleDelete}
+                                loggedInEmployeeId={loggedInEmployeeId}
+                            />
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 };
 
