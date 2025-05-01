@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "../pages/pageCss/BlastForm.css";
 
 const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
@@ -110,17 +112,17 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
     const selected = new Date(formData.expDate);
 
     if (selected <= today.setHours(0, 0, 0, 0)) {
-      window.alert('The date must be in the future.');
+      toast.error('The date must be in the future.');
       return;
     }
 
     if (!formData.expDate || !formData.expStartTime || !formData.expEndTime || !formData.zone.trim() || !formData.explosives.trim()) {
-      window.alert('Please fill all required fields.');
+      toast.error('Please fill all required fields.');
       return;
     }
 
     if (formData.expStartTime >= formData.expEndTime) {
-      window.alert('Start time must be before end time.');
+      toast.error('Start time must be before end time.');
       return;
     }
 
@@ -148,15 +150,21 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Save failed:', errorData);
-        window.alert('Failed to save blast. Please try again.');
+        toast.error('Failed to save blast. Please try again.');
         return;
       }
 
       const savedBlast = await response.json();
       onSave(savedBlast);
+
+      if (blast) {
+        toast.success('Blast updated successfully!');
+      } else {
+        toast.success('Blast created successfully!');
+      }
     } catch (err) {
       console.error('Error saving blast:', err);
-      window.alert('An unexpected error occurred while saving.');
+      toast.error('An unexpected error occurred while saving.');
     }
   };
 
@@ -166,12 +174,20 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
     if (!confirmed) return;
 
     try {
-      await fetch(`http://localhost:5001/api/blasts/${blast._id}`, {
+      const response = await fetch(`http://localhost:5001/api/blasts/${blast._id}`, {
         method: 'DELETE',
       });
+
+      if (!response.ok) {
+        toast.error('Failed to delete blast. Please try again.');
+        return;
+      }
+
       onSave();
+      toast.success('Blast deleted successfully!');
     } catch (err) {
       console.error('Error deleting blast:', err);
+      toast.error('An unexpected error occurred while deleting.');
     }
   };
 
@@ -268,20 +284,20 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
                 ></iframe>
               )}
               <button
-        type="button"
-        onClick={() => document.getElementById('documentationInput').click()}
-        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 w-fit"
-      >
-        Change File
-      </button>
-      <input
-        type="file"
-        id="documentationInput"
-        name="documentation"
-        onChange={handleChange}
-        accept=".pdf,.doc,.docx,.txt"
-        style={{ display: 'none' }}
-      />
+                type="button"
+                onClick={() => document.getElementById('documentationInput').click()}
+                className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 w-fit"
+              >
+                Change File
+              </button>
+              <input
+                type="file"
+                id="documentationInput"
+                name="documentation"
+                onChange={handleChange}
+                accept=".pdf,.doc,.docx,.txt"
+                style={{ display: 'none' }}
+              />
             </div>
           ) : (
             <input

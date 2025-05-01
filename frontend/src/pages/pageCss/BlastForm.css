@@ -2,7 +2,7 @@
 
 /* Container */
 .blast-form {
-  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+  background-color:#C6C6D0; /* Semi-transparent white */
   backdrop-filter: blur(10px); /* Adds blur to the background */
   padding: 2rem;
   border-radius: 1rem;
@@ -25,14 +25,16 @@
   .weather-forecast {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: #ebf8ff;
+    background-color: #847b73;
     border: 1px solid #90cdf4;
     border-radius: 0.75rem;
   }
   
   .weather-forecast p {
     margin: 0.3rem 0;
-    color: #334155;
+    color: #0d0d0e;
+    font-style:normal;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
   
   /* Form */
@@ -45,7 +47,7 @@
   /* Label Styles */
   form label {
     font-weight: 600;
-    color: #475569;
+    color: #ce761f;
     display: flex;
     flex-direction: column;
   }
@@ -57,7 +59,7 @@
   form input[type="file"],
   form select,
   form textarea {
-    background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white */
+    background-color: rgba(246, 166, 92, 0.3); /* Semi-transparent white */
     margin-top: 0.5rem;
     padding: 0.75rem;
     border: 1px solid #cbd5e1;
@@ -83,7 +85,7 @@
   }
   
   form button[type="submit"] {
-    background-color: #3b82f6;
+    background-color: #0D1D25;
     color: #ffffff;
     border: none;
   }
@@ -93,19 +95,19 @@
   }
   
   form button[type="button"] {
-    background-color: #ef4444;
+    background-color: #0D1D25;
     color: #ffffff;
     border: none;
   }
   
   form button[type="button"]:hover {
-    background-color: #dc2626;
+    background-color:#4a4e55;
   }
   
   /* Cancel Button */
   form .cancel-button {
     background-color: transparent;
-    color: #64748b;
+    color:#4a4e55;
     border: none;
   }
   
@@ -121,6 +123,6 @@
   }
   
   .planned-by span {
-    color: #1e293b;
+    color: #4a4e55;
   }
   
