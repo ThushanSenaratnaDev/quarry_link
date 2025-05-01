@@ -1,0 +1,255 @@
+/* DetonationPlanning.css */
+
+/* Container */
+.detonation-planning-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    position: relative;
+    background-color: #dbe1eb;
+  }
+  
+/* Container */
+.search-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  overflow: hidden; /* 🛑 Important: prevent jumping outside */
+  border: 1px solid #d1d5db; /* optional: match the board */
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background: #ebf1f4; /* optional: light gray */
+}
+
+/* Search bar with icon and input */
+.search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 10px solid #104C64; /* light gray */
+  border-radius: 100px;
+  background: #104C64;
+  box-shadow: 0 2px 8px rgba(169, 96, 96, 0.1);
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+  max-width: 400px; /* ensure it doesn’t break */
+  margin-bottom: 1rem;
+}
+
+/* Search icon button */
+.search-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 48px;
+  color: #27ce18; /* gray-600 */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Search input field */
+.search-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.search-input.opacity-100 {
+  opacity: 1;
+}
+
+/* Filters dropdown section */
+.filters-dropdown {
+  width: 97.5%;
+  max-width: 100%; /* 🛑 Stay inside parent */
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+/* Grid layout for filters */
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .filters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Individual filter item */
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label inside filter */
+.filter-label {
+  color: #6b7280; /* gray-500 */
+  font-size: 0.875rem; /* text-sm */
+  margin-bottom: 0.25rem;
+}
+
+/* Input and select inside filter */
+.filter-input {
+  width: 98%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Button at bottom */
+.filters-action {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+}
+
+/* Search button inside filters */
+.search-button {
+  background-color: #eb8825; /* blue-600 */
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 48px;
+  color: #4b5563; /* Tailwind's gray-600 */
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}
+
+  
+  /* Main Calendar */
+  .main-calendar {
+    flex-grow: 1;
+    min-width: 350px;
+  }
+  
+  .main-calendar h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+  
+  /* Sidebar Calendar */
+  .sidebar-calendar {
+    width: 20rem;
+    min-width: 280px;
+  }
+  
+  .sidebar-calendar h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1f2937;
+  }
+
+  /* Mini Calendar Highlight */
+.highlighted-date {
+    background-color: #facc15 !important; /* 🌟 Yellow highlight */
+    border-radius: 50%;
+    color: #1f2937;
+    font-weight: 600;
+  }
+  
+  /* PDF Button */
+  .pdf-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: #16a34a;
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+  }
+  
+  .pdf-button:hover {
+    background-color: #15803d;
+  }
+  
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .modal-content {
+    background-image: url('/frontend/src/assets/images/blastForm.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    max-width: 30rem;
+    min-height: 400px; /* Adjust as needed */
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    background-color: #C5630C;
+  }
+  
+  
+  .modal-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .modal-close-button:hover {
+    color: #ef4444;
+  }
+  
+  .react-tooltip {
+    background-color: #1f2937; /* Dark background */
+    color: #ffffff; /* White text */
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    text-align: left;
+    white-space: pre-line;
+    max-width: 220px;
+}
+  
+  
