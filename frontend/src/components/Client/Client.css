@@ -1,0 +1,55 @@
+.client-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .client-header {
+    color: #e6890f;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .client-info {
+    font-size: 1.2em;
+    margin: 10px 0;
+  }
+  
+  .client-info h1 {
+    font-size:small;
+    color: #333;
+    word-wrap: break-word; /* Breaks long words */
+  overflow-wrap: break-word; /* Ensures long words wrap */
+  white-space: normal; /* Allows text to wrap within the container */
+  max-width: 100%; /* Prevents the text from exceeding container width */
+
+  }
+  
+  .client-link {
+    text-decoration: none;
+    color: #e6890f;
+    font-weight: bold;
+    margin-right: 15px;
+  }
+  
+  .client-button {
+    background-color: #e6890f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .client-button:hover {
+    background-color: #d77d0e;
+  }
+  
+  .client-spacing {
+    margin-top: 40px;
+  }
+  
