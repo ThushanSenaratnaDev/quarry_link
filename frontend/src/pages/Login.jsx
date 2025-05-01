@@ -23,7 +23,7 @@ const Login = () => {
                 localStorage.setItem("token", data.token); // Store token in localStorage
                 setMessage("Login successful! Redirecting...");
                 setTimeout(() => {
-                    navigate("/EmployeeManagement"); //Redirect after storing token
+                    navigate("/clientdetails"); //Redirect after storing token
                 }, 1000);
             } else {
                 setMessage(data.message);

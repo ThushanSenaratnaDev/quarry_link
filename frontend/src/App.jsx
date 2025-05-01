@@ -18,7 +18,7 @@ function App() {
                 <Route path="/add-employee" element={<AddEmployee />} />
                 <Route path="/addclient" element={<AddClient />} />
                 <Route path="/mainhome" element={<Home />} />
-                <Route path="/clientdetails" element={<clientDetails />} />
+                <Route path="/clientdetails" element={<ClientDetails />} />
                 <Route path="/clientdetails/:id" element={<UpdateClient />} />
             </Routes>
         </Router>
