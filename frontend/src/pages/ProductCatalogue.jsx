@@ -113,12 +113,8 @@ const ProductCatalogue = () => {
 
   return (
     <div className="product-catalogue">
-      {/* <ChatBox /> */}
       <h2>Product Catalogue</h2>
       <button onClick={() => setShowForm(true)}>Add Product</button>
-      <Link to="/inventory_control" className="link-button">
-        Go to Inventory Control
-      </Link>
 
       <div className="catalogue-header">
         <select
