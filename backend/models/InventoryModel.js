@@ -12,7 +12,6 @@ const InventorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Virtual field for total stock (ordered + available)
 InventorySchema.virtual("totalStock").get(function () {
   return this.orderedStock + this.availableStock;
 });
