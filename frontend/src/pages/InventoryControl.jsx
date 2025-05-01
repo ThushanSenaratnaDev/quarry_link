@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./pageCss/InventoryControl.css";
-import ChatBox from "../components/ChatBox";
+import ChatWidget from "../components/ChatWidget";
 
 const getCurrentUser = () => {
   const token = localStorage.getItem("token");
@@ -75,7 +75,7 @@ const InventoryControl = () => {
   return (
     <div className="inventory-control">
       <h2>Inventory Control</h2>
-      <ChatBox currentUser={getCurrentUser()} />
+      <ChatWidget currentUser={getCurrentUser()} />
       <button>
         <Link to="/">Go to Product Catalogue</Link>
       </button>
