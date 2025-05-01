@@ -14,7 +14,8 @@ app.use("/Clients", router1);
 app.use("/Orders", router2);
 app.use("/api/auth", authRoutes);
 
-mongoose.connect("mongodb+srv://it23205260:HelloThushan1012@cluster0.5gzzg.mongodb.net/quarry_link?retryWrites=true&w=majority&appName=Cluster0")
+const URL = process.env.MONGODB_URL;
+mongoose.connect(URL)
 .then(()=> console.log("Connected to MongoDB"))
 .then(() => {
     app.listen(5001);
