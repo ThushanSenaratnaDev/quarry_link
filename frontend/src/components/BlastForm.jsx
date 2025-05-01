@@ -105,16 +105,20 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
     }
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const today = new Date();
     const selected = new Date(formData.expDate);
 
-    if (selected <= today.setHours(0, 0, 0, 0)) {
-      toast.error('The date must be in the future.');
-      return;
-    }
+    const isPastDate = selected < new Date().setHours(0, 0, 0, 0);
+
+  if (!blast && isPastDate) {
+    toast.error('You cannot create a blast in the past.');
+    return;
+  }
 
     if (!formData.expDate || !formData.expStartTime || !formData.expEndTime || !formData.zone.trim() || !formData.explosives.trim()) {
       toast.error('Please fill all required fields.');
@@ -155,7 +159,7 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
       }
 
       const savedBlast = await response.json();
-      onSave(savedBlast);
+      onSave('create');
 
       if (blast) {
         toast.success('Blast updated successfully!');
@@ -183,7 +187,7 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
         return;
       }
 
-      onSave();
+      onSave('delete');
       toast.success('Blast deleted successfully!');
     } catch (err) {
       console.error('Error deleting blast:', err);
@@ -216,16 +220,40 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
   return (
     <div className="blast-form">
       <h3 className="text-xl font-semibold mb-4">
-        {blast ? 'Edit Blast' : 'Create New Blast'}
+        {blast ? 'Update Blast' : 'Schedule New Blast'}
       </h3>
 
       {weather && (
-        <div className="weather-forecast">
-          <p className="font-medium">Weather Forecast:</p>
-          <p>{weather.condition.text}, {weather.avgtemp_c}°C</p>
-          <p>Humidity: {weather.avghumidity}% | Max Wind: {weather.maxwind_kph} kph</p>
-        </div>
-      )}
+  <div
+    className={`weather-forecast ${
+      weather.condition.text.includes("Clear")
+        ? "weather-clear"
+        : weather.condition.text.includes("Cloudy")
+        ? "weather-cloudy"
+        : weather.condition.text.includes("Rain")
+        ? "weather-rain"
+        : weather.condition.text.includes("Snow")
+        ? "weather-snow"
+        : ""
+    }`}
+  >
+    <h3 className="weather-heading">Weather Forecast</h3>
+    <div className="weather-info">
+      <img
+        src={`https:${weather.condition.icon}`}
+        alt="weather icon"
+        className="weather-icon"
+      />
+      <div className="weather-details">
+        <p>{weather.condition.text}, {weather.avgtemp_c}°C</p>
+        <p>Humidity: {weather.avghumidity}%</p>
+        <p>Max Wind: {weather.maxwind_kph} kph</p>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         {(plannedBy || blast?.plannedBy) && (
@@ -286,9 +314,10 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
               <button
                 type="button"
                 onClick={() => document.getElementById('documentationInput').click()}
-                className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 w-fit"
+                className="change-file-button"
               >
-                Change File
+                ⬆️ Change File
+
               </button>
               <input
                 type="file"
@@ -323,25 +352,34 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
           </select>
         </label>
 
-        <div className="flex justify-between mt-4">
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded" disabled={!isFormValid}>
-            {blast ? 'Save Changes' : 'Create Blast'}
-          </button>
+        <div className="button-group">
+  <button
+    type="submit"
+    className="submit-button"
+    disabled={!isFormValid}
+  >
+    {blast ? 'Save Changes' : 'Create Blast'}
+  </button>
 
-          {blast && (
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="bg-red-600 text-white px-4 py-2 rounded"
-            >
-              Delete
-            </button>
-          )}
+  {blast && (
+    <button
+      type="button"
+      onClick={handleDelete}
+      className="delete-button"
+    >
+      Delete
+    </button>
+  )}
 
-          <button type="button" onClick={handleClose} className="cancel-button">
-            Cancel
-          </button>
-        </div>
+  <button
+    type="button"
+    onClick={handleClose}
+    className="cancel-button"
+  >
+    Cancel
+  </button>
+</div>
+
       </form>
     </div>
   );
