@@ -8,6 +8,7 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import Modal from 'react-modal';
+import Nav from '../Nav/Nav';
 
 Modal.setAppElement('#root'); // Required for accessibility
 
@@ -21,7 +22,7 @@ function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5050/events');
+        const response = await axios.get('http://localhost:5001/api/event');
         setEvents(response.data.events || []);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -101,6 +102,7 @@ function Home() {
 
   return (
     <div className="home-container">
+      <Nav />
       <h2 style={{ color: '#ffff', fontSize: '70px', fontWeight: 'bold' }}>Event Planning</h2>
 
       <div className="calendar-container">

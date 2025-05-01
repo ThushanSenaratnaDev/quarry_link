@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './AddEvent.css';
 
-const URL = 'http://localhost:5050/events';
+const URL = 'http://localhost:5001/api/event';
 
 function AddEvent() {
   const [inputs, setInputs] = useState({

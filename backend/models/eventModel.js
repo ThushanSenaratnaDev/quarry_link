@@ -17,7 +17,7 @@ const eventSchema = new Schema({
     required: true,
   },
   eventId: {
-    type: Number,
+    type: String,
     required: true,//validation
     unique: true,
   },

@@ -23,7 +23,7 @@ function UpdateEvent() {
   useEffect(() => {
     const fetchHandler = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/events/${id}`);
+        const response = await axios.get(`http://localhost:5001/api/event/${id}`);
         setInputs(response.data.event);
       } catch (error) {
         console.error('Error fetching event data:', error);
@@ -34,7 +34,7 @@ function UpdateEvent() {
 
   const sendRequest = async () => {
     try {
-      const response = await axios.put(`http://localhost:5050/events/${id}`, {
+      const response = await axios.put(`http://localhost:5001/api/event/${id}`, {
         ...inputs,
         eventId: Number(inputs.eventId),
       });

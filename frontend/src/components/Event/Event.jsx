@@ -21,7 +21,7 @@ function Event(props) {
   const deleteHandler = async () => {
     try {
       // Send the DELETE request
-      await axios.delete(`http://localhost:5050/events/${_id}`);
+      await axios.delete(`http://localhost:5001/api/event/${_id}`);
       
       // On successful deletion, set the success message
       setMessage('Event deleted successfully!');

@@ -9,7 +9,7 @@ import { sendWhatsAppMessage } from '../../utils/notification'; // 👈 Updated 
 
 import './EventList.css';
 
-const URL = 'http://localhost:5050/events';
+const URL = 'http://localhost:5001/api/event';
 
 function EventList() {
   const [events, setEvents] = useState([]);
