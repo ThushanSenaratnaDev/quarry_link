@@ -1,5 +1,11 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Home from "./Components/Home/Home.jsx";
+import AddClient from "./Components/AddClient/AddClient.jsx";
+import ClientDetails from "./components/ClientDetails/ClientDetails.jsx";
+import UpdateClient from "./components/UpdateClient/UpdateClient.jsx";
+import './App.css';
 
 // Employee Management
 import EmployeeManagement from "./pages/EmployeeManagement";
@@ -36,6 +42,10 @@ function App() {
         <Route path="/update-employee/:id" element={<UpdateEmployee />} />
         <Route path="/product-catalogue" element={<ProductCatalogue />} />
         <Route path="/inventory-control" element={<InventoryControl />} />
+        <Route path="/addclient" element={<AddClient />} />
+        <Route path="/mainhome" element={<Home />} />
+        <Route path="/clientdetails" element={<ClientDetails />} />
+        <Route path="/clientdetails/:id" element={<UpdateClient />} />
 
         {/* Detonation Planning */}
         <Route path="/detonation-planning" element={<CalendarPage />} />
