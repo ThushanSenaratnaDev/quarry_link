@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./pageCss/InventoryControl.css";
-// import ChatBox from "../components/ChatBox";
+import ChatBox from "../components/ChatBox";
+
+const getCurrentUser = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return {
+      id: payload.userId || payload.id,
+      name: payload.name || payload.username || "Unknown",
+    };
+  } catch (err) {
+    console.error("Token decode failed", err);
+    return null;
+  }
+};
 
 const InventoryControl = () => {
+  const currentUserId = getCurrentUser();
+
   const [products, setProducts] = useState([]);
   const [editingRow, setEditingRow] = useState(null); // Track which row is being edited
   const [editedValues, setEditedValues] = useState({}); // Store edited values
@@ -49,7 +67,7 @@ const InventoryControl = () => {
             product._id === id ? { ...product, ...editedValues } : product
           )
         );
-        setEditingRow(null); // Exit edit mode
+        setEditingRow(null);
       })
       .catch((error) => console.error("Error updating stock:", error));
   };
@@ -57,7 +75,7 @@ const InventoryControl = () => {
   return (
     <div className="inventory-control">
       <h2>Inventory Control</h2>
-      {/* <ChatBox /> */}
+      <ChatBox currentUser={getCurrentUser()} />
       <button>
         <Link to="/">Go to Product Catalogue</Link>
       </button>
