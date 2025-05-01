@@ -1,22 +1,49 @@
-.header {
-    background-color: #004080;
-    padding: 10px 20px;
-    color: white;
-  }
-  
-  .nav {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  
-  .nav a {
-    color: white;
-    text-decoration: none;
-    margin: 8px;
-    font-weight: 500;
-  }
-  
-  .nav a:hover {
-    text-decoration: underline;
-  }
+.header-unique {
+  background-color: #9c4401;
+  color: white;
+  padding: 10px 20px;
+}
+
+.header-unique-top {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.header-unique-user-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-unique-user-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.header-unique-logout-btn {
+  padding: 6px 12px;
+  background-color: #052762;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header-unique-nav {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.header-unique-nav a {
+  color: white;
+  text-decoration: none;
+  margin: 8px;
+  font-weight: 500;
+}
+
+.header-unique-nav a:hover {
+  text-decoration: underline;
+}
