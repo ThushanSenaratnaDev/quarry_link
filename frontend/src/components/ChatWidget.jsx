@@ -44,7 +44,7 @@ const ChatWidget = ({ currentUser }) => {
     <div
       style={{
         position: "fixed",
-        bottom: "20px",
+        bottom: "1px",
         right: "40px",
         zIndex: 1000,
         width: "25%",
