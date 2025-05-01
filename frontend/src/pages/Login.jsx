@@ -21,6 +21,7 @@ const Login = () => {
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem("token", data.token); // Store token in localStorage
+                console.log("Token:", data.token); // For debugging
                 setMessage("Login successful! Redirecting...");
                 setTimeout(() => {
                     navigate("/home"); //Redirect after storing token

@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken";
-
+import dotenv from "dotenv";
+dotenv.config();
 // Always get secret from env
 const SECRET_KEY = process.env.JWT_SECRET || "your_jwt_secret";
-console.log("JWT_SECRET:", process.env.JWT_SECRET);//remove this line in production
+//const SECRET_KEY = "your_jwt_secret";
+console.log("JWT_SECRET from middleare:", SECRET_KEY);//remove this line in production
 // Middleware to verify JWT token
 export const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;

@@ -168,6 +168,7 @@ const EmployeeTable = () => {
     const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem("token");
+            console.log("Token from TableComponent:", token); // For debugging
             const response = await fetch("http://localhost:5001/api/employees", {
                 method: "GET",
                 headers: {

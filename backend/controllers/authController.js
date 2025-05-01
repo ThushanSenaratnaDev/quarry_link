@@ -1,9 +1,12 @@
 import Employee from "../models/EmployeeModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_jwt_secret";
-console.log("JWT_SECRET:", process.env.JWT_SECRET); //remove this line in production
+//const SECRET_KEY =  "your_jwt_secret";
+console.log("JWT_SECRET from controller:",SECRET_KEY); //remove this line in production
 // Employee Login Function
 export const loginEmployee = async (req, res) => {
     try {
@@ -34,6 +37,7 @@ export const loginEmployee = async (req, res) => {
             SECRET_KEY,
             { expiresIn: "1h" }
         );
+        console.log("JWT Token:", token); //remove this line in production
 
         res.status(200).json({ message: "Login Successful - authController.", token });
     } catch (error) {

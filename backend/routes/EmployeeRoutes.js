@@ -17,6 +17,7 @@ const router = express.Router();
 // Get all employees (Protected)
 router.get("/", verifyToken, checkPermission("View Employees"), getAllEmployees);
 
+
 // Get an employee by ID (Protected)
 router.get("/:id", verifyToken, checkPermission("Edit Employees"), getEmployeeById);
 
