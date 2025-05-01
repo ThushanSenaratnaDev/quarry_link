@@ -58,6 +58,11 @@
     "globals": "^15.15.0",
     "vite": "^6.2.0"
   },
+  "condition": {
+  "text": "Partly cloudy",
+  "icon": "//cdn.weatherapi.com/weather/64x64/day/116.png"
+},
+
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",
   "repository": {

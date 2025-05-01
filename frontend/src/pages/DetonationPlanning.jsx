@@ -187,10 +187,22 @@ const CalendarPage = () => {
     setShowForm(true);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (actionType) => {
     await setupCalendar();  // Refresh calendar events
     setShowForm(false);
-    toast.success('Blast saved successfully! 🚀');  // 🎉 Show success toast
+    switch (actionType) {
+      case 'create':
+        toast.success('Blast created successfully! 🚀');
+        break;
+      case 'update':
+        toast.success('Blast updated successfully! ✏️');
+        break;
+      case 'delete':
+        toast.success('Blast deleted successfully! 🗑️');
+        break;
+      default:
+        toast.success('Blast saved successfully! 🚀');
+    }
   };
   
 
@@ -217,7 +229,7 @@ const CalendarPage = () => {
   return (
     <div className="detonation-planning-container">
       {/* 🔥 New Animated Search Bar */}
-<div className="search-form">
+      <div className="search-form">
   <motion.div
     initial={{ width: 48 }}
     animate={{ width: isSearchExpanded ? 400 : 48 }}
@@ -229,7 +241,7 @@ const CalendarPage = () => {
       onClick={() => setIsSearchExpanded(true)}
       className="search-icon-button"
     >
-      <Search size={24} />
+      <Search size={20} />
     </button>
 
     <input
@@ -239,11 +251,10 @@ const CalendarPage = () => {
       value={searchParams.zone}
       onChange={handleSearchChange}
       onFocus={() => setIsSearchExpanded(true)}
-      className={`search-input ${isSearchExpanded ? "opacity-100" : "opacity-0"}`}
+      className={`search-input ${isSearchExpanded ? "visible" : "hidden"}`}
     />
   </motion.div>
 
-  {/* Dropdown Filters */}
   {isSearchExpanded && (
     <motion.div
       initial={{ opacity: 0, height: 0 }}
@@ -253,36 +264,23 @@ const CalendarPage = () => {
       className="filters-dropdown"
     >
       <div className="filters-grid">
-        <div className="filter-item">
-          <label className="filter-label">Date</label>
-          <input
-            type="date"
-            name="date"
-            value={searchParams.date}
-            onChange={handleSearchChange}
-            className="filter-input"
-          />
-        </div>
-        <div className="filter-item">
-          <label className="filter-label">Start Time</label>
-          <input
-            type="time"
-            name="startTime"
-            value={searchParams.startTime}
-            onChange={handleSearchChange}
-            className="filter-input"
-          />
-        </div>
-        <div className="filter-item">
-          <label className="filter-label">End Time</label>
-          <input
-            type="time"
-            name="endTime"
-            value={searchParams.endTime}
-            onChange={handleSearchChange}
-            className="filter-input"
-          />
-        </div>
+        {[
+          { label: "Date", name: "date", type: "date" },
+          { label: "Start Time", name: "startTime", type: "time" },
+          { label: "End Time", name: "endTime", type: "time" },
+        ].map(({ label, name, type }) => (
+          <div className="filter-item" key={name}>
+            <label className="filter-label">{label}</label>
+            <input
+              type={type}
+              name={name}
+              value={searchParams[name]}
+              onChange={handleSearchChange}
+              className="filter-input"
+            />
+          </div>
+        ))}
+
         <div className="filter-item">
           <label className="filter-label">Status</label>
           <select
@@ -300,17 +298,14 @@ const CalendarPage = () => {
       </div>
 
       <div className="filters-action">
-        <button
-          type="button"
-          onClick={handleSearchClick}
-          className="search-button"
-        >
+        <button type="button" onClick={handleSearchClick} className="search-button">
           Search
         </button>
       </div>
     </motion.div>
   )}
 </div>
+
 
       {/* Main Calendar */}
       <div className="main-calendar">
