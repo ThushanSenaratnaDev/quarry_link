@@ -1,0 +1,118 @@
+.inventory-control {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 50px;
+  border-radius: 10px;
+}
+
+.inventory-control div {
+  width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.inventory-control h2 {
+  text-align: center;
+}
+
+.inventory-control button {
+  background-color: #e6890f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.inventory-header {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Table Styling */
+.im-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Table Header */
+.im-table thead {
+  background-color: #e6890f;
+  color: white;
+}
+
+.im-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Table Rows */
+.im-table tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+.im-table tbody tr:hover {
+  background-color: #f4f4f9;
+}
+
+/* Table Cells */
+.im-table td {
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Input Fields Inside Table */
+.im-table input {
+  width: 80px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Edit & Save Buttons */
+.im-table button {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.im-table button:hover {
+  background-color: #995c0c;
+  color: white;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .im-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .im-table th,
+  .im-table td {
+    padding: 8px;
+  }
+
+  .im-table input {
+    width: 60px;
+  }
+}

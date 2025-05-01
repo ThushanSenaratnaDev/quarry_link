@@ -47,7 +47,8 @@ const Header = () => {// Header component to display the navigation bar and user
         {permissions.includes("Edit Detonation") && (
           <Link to="/detonation-planning">Detonation Planning</Link>
         )}
-        <Link to="/inventory">Inventory & Product Catalog</Link>
+        <Link to="/product-catalogue">Product Catalog</Link>
+        <Link to="/inventory-control">Inventory Control</Link>
         <Link to="/event-planning">Event Planning</Link>
         <Link to="/order-management">Order Management</Link>
         <Link to="/client-management">Client Management</Link>

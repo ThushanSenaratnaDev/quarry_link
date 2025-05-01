@@ -7,9 +7,15 @@ import AddEmployee from "./pages/AddEmployee";
 import UpdateEmployee from "./pages/UpdateEmployees";
 import HomePage from "./pages/HomePage";
 import { Toaster } from 'sonner';
+//Inventory Management
+import ProductCatalogue from './pages/ProductCatalogue';
+import InventoryControl from './pages/InventoryControl';
 
 // Detonation Planning
 import CalendarPage from "./pages/DetonationPlanning"; 
+
+
+
 
 function App() {
   return (
@@ -28,6 +34,8 @@ function App() {
         <Route path="/employee-management" element={<EmployeeManagement />} />
         <Route path="/add-employee" element={<AddEmployee />} />
         <Route path="/update-employee/:id" element={<UpdateEmployee />} />
+        <Route path="/product-catalogue" element={<ProductCatalogue />} />
+        <Route path="/inventory-control" element={<InventoryControl />} />
 
         {/* Detonation Planning */}
         <Route path="/detonation-planning" element={<CalendarPage />} />
