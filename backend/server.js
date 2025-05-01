@@ -11,6 +11,7 @@ import inventoryRoutes from "./routes/inventoryRoutes.js";
 
 // Import all route handlers
 import employeeRoutes from "./routes/employeeRoutes.js";
+import eventRoute from './routes/eventRoute.js';
 import authRoutes from "./routes/authRoutes.js";
 import blastRoute from "./routes/blastRoute.js";
 import router1 from "./routes/ClientRoutes.js";
@@ -36,8 +37,7 @@ app.use("/api/blasts", blastRoute);
 app.use("/api/inventory", inventoryRoutes);//Inventory Routes
 app.use("/Clients", router1);
 app.use("/Orders", router2);
-
-
+app.use("/api/event", eventRoute);
 
 // MongoDB Connection
 const URL = process.env.MONGODB_URL;
@@ -102,3 +102,4 @@ app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 // const PORT = process.env.PORT || 5000;
 // server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//export { app };
