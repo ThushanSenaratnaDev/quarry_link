@@ -1,4 +1,4 @@
-import Message from "../models/Message.js";
+import Message from "../models/MessageModel.js";
 
 // Get all chat messages
 export const getAllMessages = async (req, res) => {
