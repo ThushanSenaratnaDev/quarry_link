@@ -188,7 +188,7 @@ const ChatWidget = ({ currentUser }) => {
             cursor: "pointer",
           }}
         >
-          💬 Chat with Manager
+          💬 Chat with Order Manager
         </button>
       )}
     </div>
