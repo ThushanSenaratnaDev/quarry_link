@@ -8,7 +8,7 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import Modal from 'react-modal';
-import Nav from '../Nav/Nav';
+import Nav from '../Nav/NavEvent';
 
 Modal.setAppElement('#root'); // Required for accessibility
 

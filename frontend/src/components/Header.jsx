@@ -49,7 +49,7 @@ const Header = () => {// Header component to display the navigation bar and user
         )}
         <Link to="/product-catalogue">Product Catalog</Link>
         <Link to="/inventory-control">Inventory Control</Link>
-        <Link to="/event-planning">Event Planning</Link>
+        <Link to="/eventHome">Event Planning</Link>
         <Link to="/order-management">Order Management</Link>
         <Link to="/clientdetails">Client Management</Link>
       </nav>
