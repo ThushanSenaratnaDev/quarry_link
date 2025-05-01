@@ -1,0 +1,144 @@
+/* General Home container styles */
+.home-container {
+  padding: 20px;
+  background-color: #C6C6D0; /* Background color */
+  color: #fbfbfb; /* Text color */
+  
+  background-size: cover; /* Ensure the image covers the whole area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  animation: rotateBackground 15s infinite; /* Run the animation every 15 seconds */
+}
+
+/* Keyframes to rotate between multiple images */
+@keyframes rotateBackground {
+  0% {
+    background-image: url('/public/images/h1.jpeg');
+  }
+  33% {
+    background-image: url('/public/images/h2.jpeg');
+  }
+  66% {
+    background-image: url('/public/images/h3.jpeg');
+  }
+  100% {
+    background-image: url('/public/images/h4.jpeg');
+  }
+}
+
+/* Calendar container styles */
+.calendar-container {
+  
+  margin: 20px auto;
+  max-width: 600px;
+  background-color: #f0eeeb; /* Background color */
+  color: #0D1D25; /* Text color */
+}
+
+/* Styles for the react-calendar component */
+.react-calendar {
+  background-color: #fff; /* White background for calendar */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #ddd; /* Light gray border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Styling for the calendar header */
+.react-calendar__navigation {
+  background-color: #ef8308; /* Orange background for the header */
+  color: white; /* White text */
+  border-radius: 8px 8px 0 0; /* Rounded top corners */
+}
+
+.react-calendar__navigation button {
+  background-color: #f4973f; /* Orange background */
+  color: white; /* White text */
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.react-calendar__navigation button:hover {
+  background-color: #edccb0; /* Darker orange on hover */
+}
+
+/* Day names and cells */
+.react-calendar__month-view__weekdays {
+  background-color: #f4973f; /* Orange background for weekdays row */
+  color: white; /* White text for day names */
+  font-weight: bold;
+}
+
+/*calander each tile*/
+.react-calendar__month-view__days__day {
+  color: #eaf2f5; /* Dark text color for the days */
+  background-color: #ef8308;
+}
+
+.react-calendar__month-view__days__day:hover {
+  background-color: #f8af8d; /* Darker orange on hover */
+  color: white;
+  cursor: pointer;
+}
+
+/* Style for the current day */
+.react-calendar__tile--now {
+  background-color: #c50c0c; /* Orange background for the current day */
+  color: white; /* White text */
+  font-weight: bold;
+  border-radius: 10%;
+}
+
+/* Hover effect for tiles */
+.react-calendar__tile--now:hover {
+  background-color: #e95858; /* Darker orange on hover */
+  color: white;
+  cursor: pointer;
+}
+
+/* Monthly report section styles */
+.monthly-report-section {
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #0D1D25; /* Text color */
+}
+
+
+/* Home.css */
+.monthly-report-section ul li {
+  cursor: pointer; /* Changes the cursor to a pointer when hovering over the list item */
+  transition: background-color 0.3s ease; /* Optional: Smooth transition effect */
+}
+
+.monthly-report-section ul li:hover {
+  background-color: #f0f0f0; /* Change the background color on hover */
+}
+
+
+/* Button styles */
+button {
+  background-color: #C5630C; /* Orange button color */
+  color: white; /* Text color on the button */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #A84F08; /* Darker orange on hover */
+}
+
+/* Print media styles */
+@media print {
+  .calendar-container,
+  button {
+    display: none !important;
+  }
+}
