@@ -22,7 +22,7 @@ const { id } = useParams();
     useEffect(() => {
         const fetchHandler = async () =>{
             await axios
-            .get(`http://localhost:5000/ClientDetails/${id}`)
+            .get(`http://localhost:5001/ClientDetails/${id}`)
             .then((res) => res.data)
             .then((data) => setInputs(data.user));
         };
@@ -31,7 +31,7 @@ const { id } = useParams();
 
     const sendReqest =async ()=> {
         await axios
-        .put(`http://localhost:5000/ClientDetails/${id}`,{
+        .put(`http://localhost:5001/ClientDetails/${id}`,{
             name: String (inputs.name),
             address: String (inputs.address),
             email: String (inputs.email),

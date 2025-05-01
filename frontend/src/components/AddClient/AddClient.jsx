@@ -27,7 +27,7 @@ function AddClient() {
     };
 
     const sendReqest = async()=> {
-        await axios.post("http://Localhost:5000/Clients",{
+        await axios.post("http://Localhost:5001/Clients",{
             name: String (inputs.name),
             address: String (inputs.address),
             email: String (inputs.email),
