@@ -16,12 +16,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
-  overflow: hidden; /* 🛑 Important: prevent jumping outside */
-  border: 1px solid #d1d5db; /* optional: match the board */
-  border-radius: 0.75rem;
-  padding: 1rem;
-  background: #ebf1f4; /* optional: light gray */
+  margin-bottom: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: #f9fafb;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Search bar with icon and input */
@@ -29,122 +30,133 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  border: 10px solid #104C64; /* light gray */
-  border-radius: 100px;
-  background: #104C64;
-  box-shadow: 0 2px 8px rgba(169, 96, 96, 0.1);
-  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  background: #1f2937;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0.75rem;
   width: 100%;
-  max-width: 400px; /* ensure it doesn’t break */
+  max-width: 400px;
   margin-bottom: 1rem;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
-/* Search icon button */
 .search-icon-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 48px;
-  color: #27ce18; /* gray-600 */
+  width: 44px;
+  height: 44px;
+  color: #38bdf8;
   background: none;
   border: none;
   cursor: pointer;
 }
 
-/* Search input field */
 .search-input {
   flex-grow: 1;
   border: none;
   outline: none;
   font-size: 1rem;
-  padding: 0 0.5rem;
-  transition: opacity 0.3s ease-in-out;
+  padding-left: 0.75rem;
+  color: #f9fafb;
+  background: transparent;
+  transition: opacity 0.3s ease;
 }
 
-.search-input.opacity-100 {
+.search-input.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.search-input.visible {
   opacity: 1;
 }
 
-/* Filters dropdown section */
+/* Filters Dropdown */
 .filters-dropdown {
-  width: 97.5%;
-  max-width: 100%; /* 🛑 Stay inside parent */
+  width: 100%;
+  max-width: 100%;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 0.75rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  padding: 1rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+  padding: 1.25rem;
   margin-top: 1rem;
+  animation: fadeIn 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
-/* Grid layout for filters */
+/* Grid layout */
 .filters-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 760px) {
   .filters-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Individual filter item */
 .filter-item {
   display: flex;
   flex-direction: column;
 }
 
-/* Label inside filter */
 .filter-label {
-  color: #6b7280; /* gray-500 */
-  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
   margin-bottom: 0.25rem;
 }
 
-/* Input and select inside filter */
 .filter-input {
-  width: 98%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db; /* gray-300 */
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 1rem;
+  font-family: inherit;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: border-color 0.2s ease;
 }
 
-/* Button at bottom */
+.filter-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+/* Action button */
 .filters-action {
   display: flex;
   justify-content: flex-end;
-  padding-top: 1rem;
+  margin-top: 1.25rem;
 }
 
-/* Search button inside filters */
 .search-button {
-  background-color: #eb8825; /* blue-600 */
+  background-color: #2563eb;
   color: white;
   padding: 0.5rem 1.25rem;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 48px;
-  color: #4b5563; /* Tailwind's gray-600 */
-  transition: transform 0.2s ease, background-color 0.3s ease;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .search-button:hover {
-  background-color: #1d4ed8; /* blue-700 */
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
 }
+
 
   
   /* Main Calendar */
   .main-calendar {
+    font-family: sans-serif;
     flex-grow: 1;
     min-width: 350px;
   }
@@ -153,16 +165,18 @@
     font-size: 1.75rem;
     font-weight: 800;
     margin-bottom: 1rem;
-    color: #111827;
+    color: #181918;
   }
   
   /* Sidebar Calendar */
   .sidebar-calendar {
+    font-family: sans-serif;
     width: 20rem;
     min-width: 280px;
   }
   
   .sidebar-calendar h3 {
+    font-family: sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -171,30 +185,31 @@
 
   /* Mini Calendar Highlight */
 .highlighted-date {
-    background-color: #facc15 !important; /* 🌟 Yellow highlight */
-    border-radius: 50%;
+    background-color: #eb9436 !important; /* 🌟 Yellow highlight */
+    border-radius: 10%;
     color: #1f2937;
     font-weight: 600;
   }
   
   /* PDF Button */
   .pdf-button {
+    font-family: sans-serif;
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    background-color: #16a34a;
-    color: #ffffff;
+    background-color: #18266d;
+    color: #fcfcfc;
     padding: 0.75rem 1.25rem;
     border-radius: 0.5rem;
     border: none;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.2s;
   }
   
   .pdf-button:hover {
-    background-color: #15803d;
+    background-color: #5951cb;
   }
   
   /* Modal */
@@ -220,7 +235,7 @@
     min-height: 400px; /* Adjust as needed */
     position: relative;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    background-color: #C5630C;
+    background-color: #c7ac95;
   }
   
   
@@ -229,7 +244,7 @@
     top: 1rem;
     right: 1rem;
     font-size: 2rem;
-    color: #6b7280;
+    color: #101011;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -237,7 +252,7 @@
   }
   
   .modal-close-button:hover {
-    color: #ef4444;
+    color: #df0d0d;
   }
   
   .react-tooltip {

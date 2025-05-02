@@ -18,6 +18,8 @@ import authRoutes from "./routes/authRoutes.js";
 import blastRoute from "./routes/blastRoute.js";
 import router1 from "./routes/ClientRoutes.js";
 import router2 from "./routes/OrderRoutes.js";
+import conflictRoutes from "./routes/conflictRoutes.js";
+
 
 import messageRoutes from "./routes/messageRoutes.js";
 
@@ -58,6 +60,8 @@ app.use("/api/inventory", inventoryRoutes);//Inventory Routes
 app.use("/Clients", router1);
 app.use("/Orders", router2);
 app.use("/api/event", eventRoute);
+app.use("/api/conflicts", conflictRoutes);
+
 
 app.use("/api/messages", messageRoutes);
 
