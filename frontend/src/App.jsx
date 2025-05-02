@@ -37,7 +37,7 @@ import EventList from "./components/EventList/EventList";
 import Search from './components/Search/Search';
 import Event from './components/Event/Event';
 import UpdateEvent from './components/UpdateEvent/UpdateEvent';
-import NavEvent from './components/Nav/NavEvent';
+//import NavEvent from './components/Nav/NavEvent';
 
 // Layout wrapper to conditionally show NavEvent
 function LayoutWrapper({ children }) {
@@ -57,7 +57,7 @@ function LayoutWrapper({ children }) {
 
   return (
     <>
-      {isEventPage && <NavEvent />}
+    
       {children}
     </>
   );
@@ -65,6 +65,7 @@ function LayoutWrapper({ children }) {
 
 function App() {
   return (
+    
     <Router>
       <Toaster richColors position="top-center" />
       <LayoutWrapper>

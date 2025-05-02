@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Header from "../Header";
+import Footer from "../Footer";
 //import { sendWhatsAppMessage } from '../../utils/notification';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -84,9 +86,11 @@ function AddEvent() {
   };
 
   return (
+    <>
+    <Header />
     <div className="add-event-container">
       <div className="page-buttons">
-        <button onClick={() => navigate('/home')}>Home</button>
+        
         <button onClick={() => navigate('/eventHome')}>Event</button>
         <button onClick={() => navigate('/eventlist')}>Event List</button>
       </div>
@@ -195,6 +199,8 @@ function AddEvent() {
         </form>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

@@ -1,8 +1,10 @@
 import React from 'react';
-//import './Client.css';
+import './Client.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Header from "../Header";
+import Footer from "../Footer";
 
 
 function Client(props) {
@@ -18,6 +20,7 @@ function Client(props) {
   }
 
   return (
+    
     <div className="client-container">
       <h1 className="client-header">{name}</h1>
       <div className="client-info">

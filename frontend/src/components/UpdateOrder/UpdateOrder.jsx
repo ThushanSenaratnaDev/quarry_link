@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './UpdateOrder.css';
+import Header from "../Header";
+import Footer from "../Footer";
 
 function UpdateOrder() {
     const { id } = useParams();
@@ -147,6 +149,8 @@ function UpdateOrder() {
     };
 
     return (
+        <>
+        <Header />
         <div className="form-wrapper">
             <h1 className="form-title">Update Order</h1>
             <form className="order-form" onSubmit={handleSubmit}>
@@ -248,6 +252,8 @@ function UpdateOrder() {
                 </div>
             </form>
         </div>
+        <Footer />
+        </>
     );
 }
 

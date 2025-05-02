@@ -7,6 +7,9 @@ import { SpinnerCircular } from "spinners-react";
 import "./pageCss/InventoryControl.css";
 import ChatWidget from "../components/ChatWidget";
 import ChatButton from "../components/ChatButton";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 
 const getCurrentUser = () => {
   const token = localStorage.getItem("token");
@@ -252,6 +255,8 @@ const InventoryControl = () => {
   };
 
   return (
+    <>
+      <Header />
     <div className="inventory-control">
       <h2>Inventory Control</h2>
       <button onClick={generateInventoryReport} style={{ margin: "1rem 0" }}>
@@ -362,6 +367,8 @@ const InventoryControl = () => {
       ))}
       {isGenerating && <LoadingOverlay />}
     </div>
+      <Footer />
+    </>
   );
 };
 

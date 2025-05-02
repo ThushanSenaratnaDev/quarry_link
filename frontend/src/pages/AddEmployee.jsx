@@ -36,6 +36,7 @@ const rolePermissionMap = {
 };
 
 const containerStyle = {
+  background: "linear-gradient(to right, #f9fafb, #e2e8f0)",
   maxWidth: "900px",
   margin: "20px auto",
   padding: "30px",

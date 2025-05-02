@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Header from "../Header";
+import Footer from "../Footer";
 
 //import './UpdateEvent.css';
 
@@ -77,6 +79,9 @@ function UpdateEvent() {
   };
 
   return (
+    <>
+      <Header />
+    
     <div className="update-event-container">
       <div className="page-buttons">
         <button onClick={() => navigate('/home')}>Home</button>
@@ -186,6 +191,8 @@ function UpdateEvent() {
 
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
+    <Footer />
+    </>
   );
 }
 

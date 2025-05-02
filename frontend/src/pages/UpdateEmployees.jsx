@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const mockPermissions = [
   "View Employees", "Edit Employees",
@@ -28,12 +30,14 @@ const rolePermissionMap = {
 };
 
 const pageStyle = {
+  background: "linear-gradient(to right, #f9fafb, #e2e8f0)",
   padding: "2rem",
   backgroundColor: "#f9f9f9",
   minHeight: "100vh",
 };
 
 const containerStyle = {
+  
   backgroundColor: "white",
   padding: "2rem",
   borderRadius: "8px",
@@ -299,6 +303,8 @@ const UpdateEmployee = () => {
   if (!employeeData) return <p>Loading...</p>;
 
   return (
+    <>
+    <Header />
     <div style={pageStyle}>
       <div style={containerStyle}>
         <h2 style={headingStyle}>Update Employee</h2>
@@ -424,6 +430,8 @@ const UpdateEmployee = () => {
         )}
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

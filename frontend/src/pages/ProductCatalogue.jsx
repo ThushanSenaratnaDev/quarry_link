@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./pageCss/ProductCatalogue.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 // import ChatBox from "../components/ChatBox";
 
 const ProductCatalogue = () => {
@@ -112,6 +114,8 @@ const ProductCatalogue = () => {
   );
 
   return (
+    <>
+      <Header />
     <div className="product-catalogue">
       <h2>Product Catalogue</h2>
       <button onClick={() => setShowForm(true)}>Add Product</button>
@@ -230,7 +234,7 @@ const ProductCatalogue = () => {
                       <h4>{product.name}</h4>
                       <p>{product.description}</p>
                       <p>
-                        <strong>${product.price}</strong>
+                        <strong>LKR {product.price}</strong>
                       </p>
                       <button onClick={() => startEditing(product)}>
                         Edit
@@ -246,6 +250,9 @@ const ProductCatalogue = () => {
         </div>
       ))}
     </div>
+      <Footer />
+     
+    </>
   );
 };
 

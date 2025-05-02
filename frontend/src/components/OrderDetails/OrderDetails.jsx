@@ -4,6 +4,8 @@ import axios from 'axios';
 import Order from '../Order/Order.jsx';
 import { Link } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
+import Header from "../Header";
+import Footer from "../Footer";
 
 const URL = "http://localhost:5001/Orders"; 
 
@@ -46,6 +48,9 @@ function Orders() {
   }, [searchTerm, orders]);
 
   return (
+    <>
+    
+    <Header />
     <div className="order-details-container">
       <div className="page-header">
       <Link to="/dashboard" className="quick-link">Sales Analytics</Link>
@@ -81,6 +86,8 @@ function Orders() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

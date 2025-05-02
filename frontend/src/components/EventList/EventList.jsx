@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import './EventList.css';
+import Header from "../Header";
+import Footer from "../Footer";
 
 const URL = 'http://localhost:5001/api/event';
 
@@ -142,9 +144,11 @@ function EventList() {
   
 
   return (
+    <>
+      <Header />
     <div className="eventlist-container">
       <div className="page-buttons">
-        <button onClick={() => navigate('/home')}>Home</button>
+        
         <button onClick={() => navigate('/eventHome')}>Event</button>
         <button onClick={() => navigate('/addevent')}>Add Event</button>
       </div>
@@ -237,6 +241,8 @@ function EventList() {
 
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
+    <Footer />
+    </>
   );
 }
 

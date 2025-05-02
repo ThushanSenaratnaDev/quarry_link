@@ -200,7 +200,7 @@ function Dashboard() {
 
       <div className="dashboard-grid">
         <div className="dashboard-card">
-          <h2>Weekly Sales Trend</h2>
+          <h2>Daily Sales Trend</h2>
           <div className="chart-container">
             <Line data={lineChartData} options={chartOptions} />
           </div>

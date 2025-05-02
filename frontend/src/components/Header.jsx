@@ -31,6 +31,16 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
+      <h1 style={{ 
+  textAlign: "center", 
+  margin: "10px 0", 
+  fontSize: "28px", 
+  fontWeight: "bold", 
+  color: "FFFF", 
+  letterSpacing: "1px" 
+}}>
+  Quarry Link
+</h1>
       <div className={styles.headerTop}>
         <div className={styles.userSection}>
           <span className={styles.userName}>{userName}</span>
@@ -38,20 +48,36 @@ const Header = () => {
         </div>
       </div>
       <nav className={styles.nav}>
+      
+        
+        {permissions.includes("View Detonation") && (
+          <Link to="/home">Home</Link>
+        )}
+
         {permissions.includes("View Employees") && (
           <Link to="/employee-management">Employee Management</Link>
         )}
         {permissions.includes("Edit Detonation") && (
           <Link to="/detonation-planning">Detonation Planning</Link>
         )}
-        <Link to="/product-catalogue">Product Catalog</Link>
-        <Link to="/inventory-control">Inventory Control</Link>
-        <Link to="/eventHome">Event Planning</Link>
-        <Link to="/order-management">Order Management</Link>
-        <Link to="/event-planning">Event Planning</Link>
-        <Link to="/orderdetails">Order Management</Link>
-        <Link to="/clientdetails">Client Management</Link>
-      
+
+        {permissions.includes("View Inventory") && (
+          <Link to="/product-catalogue">Product Catalogue</Link>
+        )}
+        {permissions.includes("View Inventory") && (
+          <Link to="/inventory-control">Inventory Control</Link>
+        )}
+        {permissions.includes("View Event") && (
+          <Link to="/eventHome">Event Planning</Link>
+        )}
+        {permissions.includes("View Orders") && (
+          <Link to="/orderdetails">Order Management</Link>
+        )}
+        {permissions.includes("View Clients") && (
+          <Link to="/clientdetails">Client Management</Link>
+        )}
+
+        
       </nav>
     </header>
   );

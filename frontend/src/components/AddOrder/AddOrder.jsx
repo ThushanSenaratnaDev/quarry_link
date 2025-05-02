@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import React, { useState, useEffect } from 'react';
 import './AddOrder.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Header from "../Header";
+import Footer from "../Footer";
 
 function AddOrder() {
     const history = useNavigate();
@@ -145,6 +146,8 @@ function AddOrder() {
     };
 
     return (
+        <>
+        <Header />
         <div className="form-wrapper">
             <h1 className="form-title">Add New Order</h1>
             <form className="order-form" onSubmit={handleSubmit}>
@@ -220,6 +223,9 @@ function AddOrder() {
                 </div>
             </form>
         </div>
+
+        <Footer />
+        </>
     );
 }
 

@@ -25,8 +25,8 @@
 }
 
 .addButton {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: rgb(228, 124, 14);
+    color: rgb(235, 235, 235);
     padding: 12px 20px;
     border: none;
     border-radius: var(--border-radius);

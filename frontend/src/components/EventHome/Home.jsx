@@ -13,6 +13,8 @@ import holidays from "../Holidays"; // Import holidays
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Header from "../Header";
+import Footer from "../Footer";
 
 Modal.setAppElement('#root');
 
@@ -265,9 +267,11 @@ function Home() {
   };
 
   return (
+    <>
+    
+      <Header />
     <div className="home-container">
       <div className="page-buttons">
-        <button onClick={() => navigate('/home')}>Home</button>
         <button onClick={() => navigate('/addevent')}>Add Event</button>
         <button onClick={() => navigate('/eventlist')}>Event List</button>
       </div>
@@ -538,6 +542,8 @@ function Home() {
 
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
+      <Footer />
+    </>
   );
 }
 

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
 import React, { useEffect, useState, useRef } from 'react';
 import './ClientDetails.css';
 import axios from 'axios';
 import Client from '../Client/Client.jsx';
 import { Link } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
+import Header from "../Header";
+import Footer from "../Footer";
 
 const URL = "http://localhost:5001/Clients";
 
@@ -48,6 +49,8 @@ const handlePrint = useReactToPrint({
   }, [searchTerm, clients]);
 
   return (
+    <>
+      <Header />
     <div className="client-details-container">
       <div className="page-header">
         <h1 className="page-title">Client Details</h1>
@@ -80,6 +83,8 @@ const handlePrint = useReactToPrint({
   </div>
 </div>
     </div>
+      <Footer />
+    </>
   );
 }
 

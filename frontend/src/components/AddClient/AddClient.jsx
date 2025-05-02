@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './AddClient.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Header from "../Header";
+import Footer from "../Footer";
 
 function AddClient() {
     const history = useNavigate();
@@ -82,6 +84,8 @@ function AddClient() {
     };
 
     return (
+        <>
+        <Header />
         <div className="form-container">
             <div className="form-wrapper">
                 <h1 className="form-title">Add New Client</h1>
@@ -158,6 +162,8 @@ function AddClient() {
                 </form>
             </div>
         </div>
+        <Footer />
+        </>
     );
 }
 

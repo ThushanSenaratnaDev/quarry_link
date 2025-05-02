@@ -1,46 +1,35 @@
-// Import dependencies
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Button from "@mui/material/Button";
+import {
+    Box, Collapse, IconButton, Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow, Typography, Paper, Button
+} from "@mui/material";
+import {
+    KeyboardArrowDown, KeyboardArrowUp, Delete as DeleteIcon
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
+// Decode JWT token
 const getCurrentEmployeeId = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
-
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        return payload.employeeId || null; 
+        return payload.employeeId || null;
     } catch (err) {
         console.error("Failed to decode token", err);
         return null;
     }
 };
 
-const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
+const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId, index }) => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
     const isLoggedInUser = employee.employeeId === loggedInEmployeeId;
 
     const handleDeleteClick = () => {
         const confirmDelete = window.confirm(`Are you sure you want to delete ${employee.name}?`);
-        if (confirmDelete) {
-            onDelete(employee._id);
-        }
+        if (confirmDelete) onDelete(employee._id);
     };
 
     const handleUpdateClick = () => {
@@ -52,9 +41,7 @@ const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
             const token = localStorage.getItem("token");
             const response = await fetch(`http://localhost:5001/api/employees/salary-slip/${employee._id}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
+                headers: { Authorization: `Bearer ${token}` }
             });
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
@@ -72,14 +59,17 @@ const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
 
     return (
         <>
-            <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+            <TableRow
+                sx={{
+                    "& > *": { borderBottom: "unset" },
+                    backgroundColor: index % 2 === 0 ? "#ffffff" : "#f9fafb",
+                    ":hover": { backgroundColor: "#f1f5f9" },
+                    transition: "background 0.3s ease"
+                }}
+            >
                 <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    <IconButton onClick={() => setOpen(!open)} size="small">
+                        {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                     </IconButton>
                 </TableCell>
                 <TableCell>{employee.name}</TableCell>
@@ -88,17 +78,31 @@ const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
                 <TableCell align="right">{employee.employmentStatus}</TableCell>
                 <TableCell align="right">
                     <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end", alignItems: "center" }}>
-                        <Button variant="outlined" size="small" onClick={downloadPayslip}>
+                        <Button
+                            variant="contained"
+                            size="small"
+                            sx={{
+                                backgroundColor: "#f97316",
+                                textTransform: "none",
+                                "&:hover": { backgroundColor: "#fb923c" }
+                            }}
+                            onClick={downloadPayslip}
+                        >
                             🧾 Payslip
                         </Button>
                         {isLoggedInUser ? (
                             <Typography variant="body2" sx={{ mt: 1 }}>Logged in user</Typography>
                         ) : (
                             <>
-                                <Button variant="outlined" size="small" color="primary" onClick={handleUpdateClick}>
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    onClick={handleUpdateClick}
+                                    sx={{ textTransform: "none" }}
+                                >
                                     ✏️ Update
                                 </Button>
-                                <IconButton aria-label="delete" color="error" onClick={handleDeleteClick}>
+                                <IconButton color="error" onClick={handleDeleteClick}>
                                     <DeleteIcon />
                                 </IconButton>
                             </>
@@ -106,11 +110,12 @@ const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
                     </Box>
                 </TableCell>
             </TableRow>
+
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <TableCell colSpan={6} style={{ padding: 0 }}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
+                        <Box sx={{ margin: 2 }}>
+                            <Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: 600 }}>
                                 Employee Details
                             </Typography>
                             <Table size="small" aria-label="details">
@@ -148,7 +153,8 @@ const EmployeeRow = ({ employee, onDelete, loggedInEmployeeId }) => {
 EmployeeRow.propTypes = {
     employee: PropTypes.object.isRequired,
     onDelete: PropTypes.func.isRequired,
-    loggedInEmployeeId: PropTypes.string
+    loggedInEmployeeId: PropTypes.string,
+    index: PropTypes.number.isRequired
 };
 
 const EmployeeTable = () => {
@@ -159,16 +165,14 @@ const EmployeeTable = () => {
 
     const loggedInEmployeeId = getCurrentEmployeeId();
 
-    const filteredEmployees = employees.filter((employee) => {
-        const nameMatch = employee.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const idMatch = employee.employeeId.toLowerCase().includes(searchTerm.toLowerCase());
-        return nameMatch || idMatch;
-    });
+    const filteredEmployees = employees.filter((employee) =>
+        employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee.employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const fetchEmployees = async () => {
         try {
             const token = localStorage.getItem("token");
-            console.log("Token from TableComponent:", token); // For debugging
             const response = await fetch("http://localhost:5001/api/employees", {
                 method: "GET",
                 headers: {
@@ -219,41 +223,47 @@ const EmployeeTable = () => {
 
     return (
         <>
-            <div style={{ marginBottom: "1rem" }}>
+            <div style={{ marginBottom: "1.5rem" }}>
                 <input
                     type="text"
-                    placeholder="Search by Name or Employee ID..."
+                    placeholder="🔎 Search by name or employee ID..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
                         width: "100%",
-                        padding: "10px",
+                        padding: "14px 16px",
                         fontSize: "16px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc"
+                        borderRadius: "12px",
+                        border: "1px solid #d1d5db",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                        outline: "none",
+                        transition: "border 0.2s ease",
                     }}
+                    onFocus={(e) => (e.target.style.border = "1px solid #3b82f6")}
+                    onBlur={(e) => (e.target.style.border = "1px solid #d1d5db")}
                 />
             </div>
 
-            <TableContainer component={Paper}>
-                <Table aria-label="employee table">
+            <TableContainer component={Paper} sx={{ borderRadius: "16px", overflow: "hidden" }}>
+                <Table sx={{ minWidth: 700 }} aria-label="employee table">
                     <TableHead>
-                        <TableRow>
+                        <TableRow sx={{ backgroundColor: "#f1f5f9" }}>
                             <TableCell />
-                            <TableCell>Employee Name</TableCell>
-                            <TableCell>Position</TableCell>
-                            <TableCell align="right">Salary (LKR)</TableCell>
-                            <TableCell align="right">Employment Status</TableCell>
-                            <TableCell align="right">Actions</TableCell>
+                            <TableCell sx={{ fontWeight: 600 }}>Employee Name</TableCell>
+                            <TableCell sx={{ fontWeight: 600 }}>Position</TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 600 }}>Salary (LKR)</TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 600 }}>Status</TableCell>
+                            <TableCell align="right" sx={{ fontWeight: 600 }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredEmployees.map((employee) => (
+                        {filteredEmployees.map((employee, index) => (
                             <EmployeeRow
                                 key={employee._id}
                                 employee={employee}
                                 onDelete={handleDelete}
                                 loggedInEmployeeId={loggedInEmployeeId}
+                                index={index}
                             />
                         ))}
                     </TableBody>

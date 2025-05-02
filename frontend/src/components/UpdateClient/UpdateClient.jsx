@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Header from "../Header";
+import Footer from "../Footer";
 
 function UpdateClient() {
     const [inputs, setInputs] = useState({
@@ -48,6 +50,8 @@ function UpdateClient() {
     };
 
     return (
+        <>
+        <Header />
         <div className="form-container">
             <div className="form-wrapper">
                 <h1 className="form-title">Update Client</h1>
@@ -122,6 +126,9 @@ function UpdateClient() {
                 </form>
             </div>
         </div>
+
+        <Footer />
+        </>
     );
 }
 
