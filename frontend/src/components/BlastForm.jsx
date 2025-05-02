@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../pages/pageCss/BlastForm.css";
+import axios from 'axios';
+import Popup from 'reactjs-popup';
 
 const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -17,6 +19,9 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
 
   const [weather, setWeather] = useState(null);
   const [textFileContent, setTextFileContent] = useState('');
+
+  const [conflicts, setConflicts] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const dateToUse = blast ? new Date(blast.expDate) : selectedDate;
@@ -217,6 +222,22 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
     formData.zone &&
     formData.explosives;
 
+    const checkForConflicts = async () => {
+      const start = new Date(`${formData.expDate}T${formData.expStartTime}`);
+      const end = new Date(`${formData.expDate}T${formData.expEndTime}`);
+      try {
+        const response = await axios.post('/api/check-conflicts', { start, end });
+        if (response.data.conflicts.length > 0) {
+          setConflicts(response.data.conflicts);
+          setShowPopup(true);
+        } else {
+          // Proceed with scheduling
+        }
+      } catch (error) {
+        console.error('Error checking conflicts:', error);
+      }
+    };
+
   return (
     <div className="blast-form">
       <h3 className="text-xl font-semibold mb-4">
@@ -353,34 +374,34 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
         </label>
 
         <div className="button-group">
-  <button
-    type="submit"
-    className="submit-button"
-    disabled={!isFormValid}
-  >
-    {blast ? 'Save Changes' : 'Create Blast'}
-  </button>
+        <button
+          type="submit"
+          className="submit-button"
+          disabled={!isFormValid}
+       >
+          {blast ? 'Save Changes' : 'Create Blast'}
+          </button>
 
-  {blast && (
-    <button
-      type="button"
-      onClick={handleDelete}
-      className="delete-button"
-    >
-      Delete
-    </button>
-  )}
+          {blast && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="delete-button"
+            >
+              Delete
+            </button>
+          )}
 
-  <button
-    type="button"
-    onClick={handleClose}
-    className="cancel-button"
-  >
-    Cancel
-  </button>
-</div>
+          <button
+            type="button"
+            onClick={handleClose}
+            className="cancel-button"
+          >
+            Cancel
+          </button>
+        </div>
 
-      </form>
+              </form>
     </div>
   );
 };

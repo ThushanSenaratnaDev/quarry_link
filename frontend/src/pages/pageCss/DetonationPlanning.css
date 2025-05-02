@@ -38,6 +38,7 @@
   max-width: 400px;
   margin-bottom: 1rem;
   transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
 .search-icon-button {
@@ -75,6 +76,7 @@
 /* Filters Dropdown */
 .filters-dropdown {
   width: 100%;
+  max-width: 100%;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 0.75rem;
@@ -82,6 +84,7 @@
   padding: 1.25rem;
   margin-top: 1rem;
   animation: fadeIn 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
 /* Grid layout */
@@ -91,7 +94,7 @@
   gap: 1.25rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 760px) {
   .filters-grid {
     grid-template-columns: repeat(2, 1fr);
   }
