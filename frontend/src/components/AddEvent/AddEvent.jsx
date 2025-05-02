@@ -11,6 +11,7 @@ import './AddEvent.css';
 const URL = 'http://localhost:5001/api/event';
 
 function AddEvent() {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     name: '',
     date: '',
@@ -21,100 +22,146 @@ function AddEvent() {
     clientMail: ''
   });
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post(URL, inputs)
-      .then((res) => {
-        // Toast for event added
-        toast.success('Event Added Successfully!');
-
-        // Toast if email sent
-        if (res.data.message.includes('email sent')) {
-          toast.success('Email Sent Successfully!');
-        }
-
-        // 📲 Send WhatsApp message
-       // sendWhatsAppMessage(
-        //  inputs.clientPhoneNumber,
-        //  inputs.name,
-        //  inputs.date,
-        // inputs.time,
-        //inputs.eventId
-       // );
-
-        // Delay navigation to let user see toasts
-        setTimeout(() => {
-          navigate('/eventlist');
-        }, 2000);
-      })
-      .catch((err) => {
-        console.error('Error adding event:', err);
+    console.log('Form submitted with data:', inputs);
+    
+    try {
+      const response = await axios.post(URL, inputs);
+      console.log('Server response:', response.data);
+      
+      toast.success('Event Added Successfully!');
+      if (response.data.message.includes('email sent')) {
+        toast.success('Email Sent Successfully!');
+      }
+      setTimeout(() => {
+        navigate('/eventlist');
+      }, 2000);
+    } catch (err) {
+      console.error('Error details:', err.response || err);
+      
+      // Handle duplicate event ID error
+      if (err.response?.data?.message === "Event ID already exists") {
+        toast.error(`❌ Event ID "${inputs.eventId}" already exists. Please use a different ID.`);
+      } else {
         toast.error('❌ Failed to add event or send email.');
-      });
+      }
+    }
   };
 
   return (
     <div className="add-event-container">
-      
+      <div className="page-buttons">
+        <button onClick={() => navigate('/home')}>Home</button>
+        <button onClick={() => navigate('/eventHome')}>Event</button>
+        <button onClick={() => navigate('/eventlist')}>Event List</button>
+      </div>
+
       <ToastContainer position="top-right" autoClose={2000} />
-      <h1>Add New Event</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={inputs.name}
-          onChange={handleChange}
-          placeholder="Event Name"
-        /><br /><br />
-        <input
-          type="date"
-          name="date"
-          value={inputs.date}
-          onChange={handleChange}
-        /><br /><br />
-        <input
-          type="time"
-          name="time"
-          value={inputs.time}
-          onChange={handleChange}
-        /><br /><br />
-        <input
-          type="text"
-          name="eventId"
-          value={inputs.eventId}
-          onChange={handleChange}
-          placeholder="Event ID"
-        /><br /><br />
-        <input
-          type="text"
-          name="clientName"
-          value={inputs.clientName}
-          onChange={handleChange}
-          placeholder="Client Name"
-        /><br /><br />
-        <input
-          type="text"
-          name="clientPhoneNumber"
-          value={inputs.clientPhoneNumber}
-          onChange={handleChange}
-          placeholder="Client Phone Number"
-        /><br /><br />
-        <input
-          type="text"
-          name="clientMail"
-          value={inputs.clientMail}
-          onChange={handleChange}
-          placeholder="Client Email"
-        /><br /><br />
-        <button type="submit">Add Event</button>
-      </form>
+      
+      <div className="form-wrapper">
+        <h1>Add New Event</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Event Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={inputs.name}
+              onChange={handleChange}
+              placeholder="Enter event name"
+              required
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="date">Date</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={inputs.date}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="time">Time</label>
+              <input
+                type="time"
+                id="time"
+                name="time"
+                value={inputs.time}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="eventId">Event ID</label>
+            <input
+              type="text"
+              id="eventId"
+              name="eventId"
+              value={inputs.eventId}
+              onChange={handleChange}
+              placeholder="Enter event ID"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="clientName">Client Name</label>
+            <input
+              type="text"
+              id="clientName"
+              name="clientName"
+              value={inputs.clientName}
+              onChange={handleChange}
+              placeholder="Enter client name"
+              required
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="clientPhoneNumber">Phone Number</label>
+              <input
+                type="tel"
+                id="clientPhoneNumber"
+                name="clientPhoneNumber"
+                value={inputs.clientPhoneNumber}
+                onChange={handleChange}
+                placeholder="Enter phone number"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="clientMail">Email</label>
+              <input
+                type="email"
+                id="clientMail"
+                name="clientMail"
+                value={inputs.clientMail}
+                onChange={handleChange}
+                placeholder="Enter email address"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="submit-button">Add Event</button>
+        </form>
+      </div>
     </div>
   );
 }

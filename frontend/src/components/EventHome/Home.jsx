@@ -10,10 +10,12 @@ import { saveAs } from 'file-saver';
 import Modal from 'react-modal';
 import 'react-calendar/dist/Calendar.css';
 import holidays from "../Holidays"; // Import holidays
+import { useNavigate } from 'react-router-dom';
 
 Modal.setAppElement('#root');
 
 function Home() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -156,38 +158,50 @@ function Home() {
 
   return (
     <div className="home-container">
-      <h2>Welcome, Event Planning</h2>
-
-      <div className="calendar-container">
-        <Calendar
-          onChange={handleDateChange}
-          value={selectedDate}
-          tileClassName={({ date, view }) =>
-            view === 'month' && isHoliday(date) ? 'holiday-tile' : null
-          }
-          tileContent={({ date, view }) =>
-            view === 'month' && events.some(e =>
-              new Date(e.date).toDateString() === date.toDateString()
-            ) ? (
-              <div className="event-bar"></div>
-            ) : null
-          }
-        />
+      <div className="page-buttons">
+        <button onClick={() => navigate('/home')}>Home</button>
+        <button onClick={() => navigate('/addevent')}>Add Event</button>
+        <button onClick={() => navigate('/eventlist')}>Event List</button>
       </div>
 
-      <div className="events-for-selected-day">
-        <h3>Events for {selectedDate.toLocaleDateString()}</h3>
-        {getEventsForSelectedDay().length === 0 ? (
-          <p>No events for this day.</p>
-        ) : (
-          <ul>
-            {getEventsForSelectedDay().map((event, index) => (
-              <li key={index} onClick={() => handleEventClick(event._id)}>
-                <strong>{new Date(event.date).toLocaleTimeString()}</strong> - {event.name} - {event.clientName}
-              </li>
-            ))}
-          </ul>
-        )}
+      <h2>Welcome, Event Planning</h2>
+
+      <div className="main-content">
+        <div className="left-section">
+          <div className="calendar-container">
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+              tileClassName={({ date, view }) =>
+                view === 'month' && isHoliday(date) ? 'holiday-tile' : null
+              }
+              tileContent={({ date, view }) =>
+                view === 'month' && events.some(e =>
+                  new Date(e.date).toDateString() === date.toDateString()
+                ) ? (
+                  <div className="event-bar"></div>
+                ) : null
+              }
+            />
+          </div>
+        </div>
+
+        <div className="right-section">
+          <div className="events-for-selected-day">
+            <h3>Events for {selectedDate.toLocaleDateString()}</h3>
+            {getEventsForSelectedDay().length === 0 ? (
+              <p>No events for this day.</p>
+            ) : (
+              <ul>
+                {getEventsForSelectedDay().map((event, index) => (
+                  <li key={index} onClick={() => handleEventClick(event._id)}>
+                    <strong>{new Date(event.date).toLocaleTimeString()}</strong> - {event.name} - {event.clientName}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="monthly-report-section">
@@ -204,7 +218,6 @@ function Home() {
           </ul>
         )}
         <div>
-          
           <button onClick={handleDownloadExcel} className="report-button">Download Monthly Report</button>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import Search from '../Search/Search';
 import { sendWhatsAppMessage } from '../../utils/notification';
@@ -10,8 +10,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-
-
 import './EventList.css';
 
 const URL = 'http://localhost:5001/api/event';
@@ -25,10 +23,20 @@ function EventList() {
   const [eventToUpdate, setEventToUpdate] = useState(null);
   const ComponentsRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    // Handle search query from URL
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get('search');
+    if (searchQuery) {
+      handleSearch(searchQuery);
+    }
+  }, [location.search]);
 
   const fetchEvents = () => {
     axios
@@ -37,6 +45,32 @@ function EventList() {
         setEvents(res.data?.events || []);
       })
       .catch((err) => console.error(err));
+  };
+
+  const handleSearch = (query) => {
+    axios
+      .get(URL)
+      .then((res) => {
+        const allEvents = res.data?.events || [];
+        const filteredEvents = allEvents.filter((event) => {
+          const searchFields = [
+            event.name,
+            event.clientName,
+            event.eventId,
+            event.clientPhoneNumber,
+            event.clientMail
+          ];
+          return searchFields.some(field => 
+            field && field.toString().toLowerCase().includes(query.toLowerCase())
+          );
+        });
+        setEvents(filteredEvents);
+        setNoResults(filteredEvents.length === 0);
+      })
+      .catch((err) => {
+        console.error(err);
+        setNoResults(true);
+      });
   };
 
   const handlePrint = useReactToPrint({
@@ -50,20 +84,17 @@ function EventList() {
 
     axios
       .delete(`${URL}/${eventToDelete}`)
-      .then(() => {
-        toast.success('✅ Event deleted successfully');
+      .then((response) => {
+        // Check if the response includes email information
+        if (response.data.message.includes('email sent')) {
+          toast.success('✅ Event deleted successfully and email sent');
+        } else if (response.data.message.includes('email sending failed')) {
+          toast.success('✅ Event deleted successfully');
+          toast.warning('⚠️ Email notification could not be sent');
+        } else {
+          toast.success('✅ Event deleted successfully');
+        }
         fetchEvents();
-
-        // Send email notification after event is deleted
-        axios
-          .post(`${URL}/send-deletion-email`, { eventId: eventToDelete })
-          .then(() => {
-            toast.info('📧 Email notification sent to client');
-          })
-          .catch((err) => {
-            console.error(err);
-            toast.error('❌ Failed to send email notification');
-          });
       })
       .catch((err) => {
         console.error(err);
@@ -111,13 +142,16 @@ function EventList() {
   
 
   return (
-
-
     <div className="eventlist-container">
+      <div className="page-buttons">
+        <button onClick={() => navigate('/home')}>Home</button>
+        <button onClick={() => navigate('/eventHome')}>Event</button>
+        <button onClick={() => navigate('/addevent')}>Add Event</button>
+      </div>
+
       <h2>Event List</h2>
 
       <Search
-        fetchHandler={() => axios.get("https://api.example.com/events")}
         setEvents={setEvents}
         setNoResults={setNoResults}
       />

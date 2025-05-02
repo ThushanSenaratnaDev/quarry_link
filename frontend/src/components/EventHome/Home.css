@@ -1,4 +1,3 @@
-
 /* Background image rotation */
 @keyframes rotateBackground {
   0% {
@@ -15,38 +14,221 @@
   }
 }
 
-
-
-/* Main container holding calendar and events */
+/* Main container */
 .home-container {
-  margin: 0;
-  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
   background-size: cover;
   background-position: center;
   animation: rotateBackground 10s infinite;
-  width: 100%;
-  max-width: 1200px;
+  padding: 20px;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 20px 40px;
-  gap: 40px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.home-container h2{
-  font-size: 24px;
-  font-weight: bold;
-  color:#9f6f07;
+/* Navigation buttons */
+.page-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
 }
 
+.page-buttons button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-/* Calendar styles */
+.page-buttons button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.page-buttons button:active {
+  background-color: #004085;
+  transform: translateY(0);
+}
+
+/* Main content area */
+.main-content {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left section with calendar */
+.left-section {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+}
+
 .calendar-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Right section with events */
+.right-section {
+  flex: 2;
+  min-width: 300px;
+}
+
+.events-for-selected-day {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+/* Monthly report section */
+.monthly-report-section {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Headings */
+.home-container h2 {
+  font-size: 2em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
+}
+
+.events-for-selected-day h3,
+.monthly-report-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.5em;
+}
+
+/* Event lists */
+.events-for-selected-day ul,
+.monthly-report-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.events-for-selected-day li,
+.monthly-report-section li {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.events-for-selected-day li:hover,
+.monthly-report-section li:hover {
+  background-color: #007bff;
+  color: white;
+  transform: translateX(5px);
+}
+
+/* Calendar customization */
+.react-calendar {
   width: 100%;
-  background-color: #de8333;
-  
+  border: none;
+  background: transparent;
+}
+
+.react-calendar__tile {
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  margin: 2px;
+}
+
+.react-calendar__tile:hover {
+  background: #007bff;
+  color: white;
+}
+
+.react-calendar__tile--active {
+  background: #0056b3;
+  color: white;
+}
+
+/* Report button */
+.report-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.report-button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal styles */
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.ReactModal__Content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.model-report-details h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.model-report-details p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.model-report-details button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.model-report-details button:hover {
+  background-color: #0056b3;
 }
 
 /* bar bottom the date  */
@@ -58,29 +240,12 @@
   border-radius: 2px;
 }
 
-
 /* Style for holiday dates in the calendar */
 .holiday-tile {
   background-color: #da0909 !important; /* Light red background for holidays */
   border-radius: 50%; /* Make the tile rounded */
   color: rgb(5, 0, 14); /* Change text color to red */
 }
-
-
-/* Events list styles each selected day*/
-.events-for-selected-day {
-  background-color: #e09936;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 18px rgba(231, 219, 219, 0.1);
-}
-
-.events-for-selected-day h3{
-  font-size: 20px;
-  font-weight: bold;
-  color:#9f6f07;
-}
-
 
 .events-for-selected-day p{
   cursor: pointer;
@@ -89,7 +254,6 @@
   border-radius: 6px;
   background-color: #f0f0f0;
   transition: background-color 0.3s ease;
-
 }
 
 .events-for-selected-day li {
@@ -106,39 +270,7 @@
   color: white;
 }
 
-
-
-/* Monthly Report section at bottom */
-.monthly-report-section {
-  width: 90%;
-  margin-top: auto;
-  margin-bottom: 30px;
-  text-align: center;
-  padding: 20px;
-  background-color: #ef8c13;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.monthly-report-section h3{
-
-  font-size: 20px;
-  font-weight: bold;
-  color:#9f6f07;
-}
-
 .monthly-report-section p{
-
-  cursor: pointer;
-  margin-bottom: 12px;
-  padding: 8px;
-  border-radius: 6px;
-  background-color: #f0f0f0;
-  transition: background-color 0.3s ease;
-
-}
-
-.monthly-report-section li{
   cursor: pointer;
   margin-bottom: 12px;
   padding: 8px;
@@ -149,141 +281,6 @@
 
 .monthly-report-section  li:hover {
   background-color: #b96f29;
-  color: white;
-}
-
-/* Report button */
-.report-button {
-  background-color: #f4a759;
-  color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-right: 15px;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-
-.report-button:hover {
-  background-color: #d35400;
-}
-
-
-/* Override default react-modal styles */
-.ReactModal__Overlay {
-  background-color: rgba(0, 0, 0, 0.5) !important; /* dim background */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-/* Modal content */
-.ReactModal__Content {
-  position: relative;
-  background-color: #120701;
-  color: rgb(4, 0, 0);
-  padding: 30px;
-  border-radius: 15px;
-  max-width: 500px;
-  width: 90%;
-  outline: none;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  inset: auto !important; /* to override default inline positioning */
-}
-
-/* Modal title */
-.model-report-details h2 {
-  margin-top: 0;
-  font-size: 24px;
-  color: #000;
-}
-
-/* Modal text */
-.model-report-details p {
-  margin: 10px 0;
-  font-size: 16px;
-  color: #000;
-}
-
-/* Buttons */
-.model-report-details button {
-  background-color: #e67e22;
-  color: rgb(17, 14, 14);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.model-report-details button:hover {
-  background-color: #cf711c;
-}
-
-
-
-/* Calendar and events column (left corner) */
-.calendar-events-wrapper {
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 200px;
-  
-}
-
-
-/* calander tiles   */
-.react-calendar {
-  width: 100%;
-  border-radius: 15px;
-  background-color: #edba5b;
-  padding: 20px;
-  border: #f0f0f0;
-  grid-template-columns: auto;
-  box-shadow: 0 10px 20px rgba(227, 16, 16, 0.2);
-  
-}
-
-/* Calendar container */
-.react-calendar {
-  width: 100%;
-  border-radius: 15px;
-  background-color: #edba5b;
-  padding: 20px;
-  border: #f0f0f0;
-  grid-template-columns: auto;
-  box-shadow: 0 10px 20px rgba(227, 16, 16, 0.2);
-}
-
-/* Style for individual date tiles */
-.react-calendar__tile {
-  margin: 5px; /* Adds space between the tiles */
-  padding: 10px; /* Padding inside each tile */
-  border-radius: 8px; /* Rounded corners */
-  transition: all 0.3s ease;
-}
-
-/* Border for each date tile */
-.react-calendar__tile {
-  border: 1px solid #ccc; /* Light border between the tiles */
-}
-
-/* Hover effect for tiles */
-.react-calendar__tile:hover {
-  background-color: #e09936; /* Light hover color */
-  color: #fff; /* Change text color when hovered */
-  cursor: pointer; /* Show pointer cursor */
-}
-
-/* Style for selected tile */
-.react-calendar__tile--active {
-  background-color: #e67e22;
   color: white;
 }
 

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import './Search.css';
 import axios from 'axios';
 
-function Search({ fetchHandler, setEvents, setNoResults }) {
+function Search({ setEvents, setNoResults }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchStatus, setSearchStatus] = useState(''); // 'success', 'error', or ''
 
   // Debounced search effect
   useEffect(() => {
@@ -12,55 +14,78 @@ function Search({ fetchHandler, setEvents, setNoResults }) {
       setDebouncedQuery(searchQuery);
     }, 500);
 
-    return () => clearTimeout(timer); // Cleanup timeout on change
+    return () => clearTimeout(timer);
   }, [searchQuery]);
 
   // When the debounced query changes, we trigger the search
   useEffect(() => {
     if (debouncedQuery.trim() !== "") {
       handleSearch(debouncedQuery);
+    } else {
+      // If search query is empty, fetch all events
+      fetchAllEvents();
     }
   }, [debouncedQuery]);
 
-  const handleSearch = (query) => {
-    if (!fetchHandler) {
-      console.error("fetchHandler is not provided.");
-      return;
+  const fetchAllEvents = async () => {
+    setIsLoading(true);
+    setSearchStatus('');
+    try {
+      const response = await axios.get('http://localhost:5001/api/event');
+      setEvents(response.data.events || []);
+      setNoResults(false);
+      setSearchStatus('success');
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setNoResults(true);
+      setSearchStatus('error');
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    fetchHandler()  // Fetch data using axios
-      .then((response) => {
-        console.log("Fetched events:", response); // Debugging log
+  const handleSearch = async (query) => {
+    setIsLoading(true);
+    setSearchStatus('');
+    try {
+      const response = await axios.get('http://localhost:5001/api/event');
+      const allEvents = response.data.events || [];
 
-        // Assuming response.data contains events
-        const events = response.data.events || []; // Ensure it defaults to an empty array
+      // Filter events based on multiple fields
+      const filteredEvents = allEvents.filter((event) => {
+        const searchFields = [
+          event.name,
+          event.clientName,
+          event.eventId,
+          event.clientPhoneNumber,
+          event.clientMail
+        ];
 
-        // Filter the events by name or id
-        const filteredEvents = events.filter((event) => {
-          const eventName = event.name ? event.name.toLowerCase() : "";
-          const eventId = event.id ? event.id.toString() : "";
-
-          return eventName.includes(query.toLowerCase()) || eventId.includes(query);
-        });
-
-        console.log("Filtered events:", filteredEvents); // Debugging log
-        setEvents(filteredEvents);
-        setNoResults(filteredEvents.length === 0);
-      })
-      .catch((error) => {
-        console.error("Error fetching events:", error);
-        setNoResults(true);
+        return searchFields.some(field => 
+          field && field.toString().toLowerCase().includes(query.toLowerCase())
+        );
       });
+
+      setEvents(filteredEvents);
+      setNoResults(filteredEvents.length === 0);
+      setSearchStatus('success');
+    } catch (error) {
+      console.error("Error searching events:", error);
+      setNoResults(true);
+      setSearchStatus('error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      setDebouncedQuery(searchQuery); // Force trigger on Enter key
+      setDebouncedQuery(searchQuery);
     }
   };
 
   return (
-    <div className="search-container">
+    <div className={`search-container ${isLoading ? 'loading' : ''} ${searchStatus}`}>
       <label htmlFor="search-input" className="visually-hidden">Search Events</label>
       <input
         id="search-input"
@@ -68,9 +93,15 @@ function Search({ fetchHandler, setEvents, setNoResults }) {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Search Events"
+        placeholder="Search by event name, client, ID, phone or email"
+        disabled={isLoading}
       />
-      <button onClick={() => handleSearch(searchQuery)}>Search</button>
+      <button 
+        onClick={() => handleSearch(searchQuery)}
+        disabled={isLoading}
+      >
+        {isLoading ? 'Searching...' : 'Search'}
+      </button>
     </div>
   );
 }

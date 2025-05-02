@@ -52,7 +52,7 @@ function LayoutWrapper() {
 
   return (
     <>
-      {isEventPage && <NavEvent />}
+      
       <Routes>
         {/* Auth */}
         <Route path="/" element={<Login />} />

@@ -8,13 +8,27 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.GMAIL_USER,      // From .env
-    pass: process.env.GMAIL_PASS       // From .env
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
+  },
+  debug: true // Enable debug logging
+});
+
+// Verify email configuration
+transporter.verify(function(error, success) {
+  if (error) {
+    console.error("❌ Email configuration error:", error);
+  } else {
+    console.log("✅ Email server is ready to send messages");
   }
 });
 
 // ✅ Helper function to send email
 const sendEmailToClient = async (to, subject, message) => {
+  if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+    throw new Error("Email configuration is missing. Please check your .env file.");
+  }
+
   try {
     const info = await transporter.sendMail({
       from: process.env.GMAIL_USER,
@@ -23,8 +37,10 @@ const sendEmailToClient = async (to, subject, message) => {
       text: message,
     });
     console.log(`✅ Email sent to ${to}: ${info.response}`);
+    return true;
   } catch (error) {
     console.error("❌ Error sending email:", error);
+    throw error;
   }
 };
 
@@ -32,12 +48,32 @@ const sendEmailToClient = async (to, subject, message) => {
 const addEvent = async (req, res) => {
   const { name, date, time, eventId, clientName, clientPhoneNumber, clientMail } = req.body;
 
+  // Validate required fields
+  if (!name || !date || !time || !eventId || !clientName || !clientPhoneNumber || !clientMail) {
+    return res.status(400).json({ 
+      message: "All fields are required",
+      missing: Object.entries({ name, date, time, eventId, clientName, clientPhoneNumber, clientMail })
+        .filter(([_, value]) => !value)
+        .map(([key]) => key)
+    });
+  }
+
   const eventDate = new Date(date);
   if (isNaN(eventDate)) {
     return res.status(400).json({ message: "Invalid date format" });
   }
 
   try {
+    // Check if event ID already exists
+    const existingEvent = await Event.findOne({ eventId });
+    if (existingEvent) {
+      return res.status(400).json({ 
+        message: "Event ID already exists",
+        existingEventId: eventId,
+        suggestion: "Please use a different Event ID"
+      });
+    }
+
     const newEvent = new Event({
       name,
       date: eventDate,
@@ -50,30 +86,58 @@ const addEvent = async (req, res) => {
 
     await newEvent.save();
 
-    // 📧 Send confirmation email
-    await sendEmailToClient(
-      clientMail,
-      "📅 Your Event Has Been Registered Successfully!",
-      `Hello ${clientName},
+    try {
+      // Format date for display
+      const formattedDate = eventDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
 
-Your event "${name}" has been successfully registered.
+      // Format time for display
+      const formattedTime = time.includes(':') ? time : `${time.slice(0, 2)}:${time.slice(2)}`;
 
-📌 Event ID: ${eventId}
-📅 Date: ${eventDate.toLocaleDateString()}
-🕒 Time: ${time}
-📞 Contact Number: ${clientPhoneNumber}
+      // 📧 Send confirmation email
+      await sendEmailToClient(
+        clientMail,
+        "📅 Your Event Has Been Registered Successfully!",
+        `Hello ${clientName},
+
+Your event has been successfully registered.
+
+📌 Event Details:
+Event Name: ${name}
+Event Date: ${formattedDate}
+Event Time: ${formattedTime}
+Event ID: ${eventId}
+Contact Number: ${clientPhoneNumber}
 
 Thank you for choosing us!
 
 Best regards,
 Event Planning Team
-Any Issue Contact:+94714756746`
-    );
+Any Issue Contact: +94714756746`
+      );
 
-    res.status(201).json({ message: "Event added and email sent to client", event: newEvent });
+      res.status(201).json({ 
+        message: "Event added and email sent to client", 
+        event: newEvent 
+      });
+    } catch (emailError) {
+      // If email fails, still save the event but notify about email failure
+      console.error("Email sending failed:", emailError);
+      res.status(201).json({ 
+        message: "Event added but email sending failed. Please check email configuration.", 
+        event: newEvent,
+        emailError: emailError.message
+      });
+    }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error while adding event" });
+    console.error("Error adding event:", err);
+    res.status(500).json({ 
+      message: "Server Error while adding event",
+      error: err.message 
+    });
   }
 };
 
@@ -129,23 +193,35 @@ const updateEvent = async (req, res) => {
     // If event not found, return an error
     if (!event) return res.status(404).json({ message: "Unable to Update Event" });
 
+    // Format date for display
+    const formattedDate = eventDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Format time for display
+    const formattedTime = time.includes(':') ? time : `${time.slice(0, 2)}:${time.slice(2)}`;
+
     // 📧 Send email after updating the event
     await sendEmailToClient(
       clientMail,
       "📅 Your Event Has Been Updated Successfully!",
       `Hello ${clientName},
 
-Your event "${name}" has been successfully updated.
+Your event has been successfully updated.
 
-📌 Event ID: ${eventId}
-📅 Date: ${eventDate.toLocaleDateString()}
-🕒 Time: ${time}
+📌 Event Details:
+Event Name: ${name}
+Event Date: ${formattedDate}
+Event Time: ${formattedTime}
+Event ID: ${eventId}
 
 Thank you for choosing us!
 
 Best regards,
 Event Planning Team
-Any Issue Contact:+94714756746`
+Any Issue Contact: +94714756746`
     );
 
     // Respond with the updated event and success message
@@ -165,35 +241,81 @@ const deleteEvent = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const event = await Event.findByIdAndDelete(id);
+    // First, get the event details before deleting
+    const eventToDelete = await Event.findById(id);
+    
+    if (!eventToDelete) {
+      return res.status(404).json({ message: "Event not found" });
+    }
 
-    if (!event) return res.status(404).json({ message: "Unable to Delete Event" });
+    // Store event details for email
+    const eventDetails = {
+      name: eventToDelete.name,
+      clientName: eventToDelete.clientName,
+      clientMail: eventToDelete.clientMail,
+      date: eventToDelete.date,
+      time: eventToDelete.time,
+      eventId: eventToDelete.eventId
+    };
 
-    // Send email to client after deleting the event
-    await sendEmailToClient(
-      event.clientMail,  // Assuming clientEmail is stored in the event
-      "📅 Your Event Has Been Deleted",
-      `Hello ${event.clientName},
+    // Delete the event
+    await Event.findByIdAndDelete(id);
 
-Your event "${event.name}" has been successfully deleted.
+    try {
+      // Format date for display
+      const formattedDate = eventDetails.date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Format time for display
+      const formattedTime = eventDetails.time.includes(':') 
+        ? eventDetails.time 
+        : `${eventDetails.time.slice(0, 2)}:${eventDetails.time.slice(2)}`;
+
+      // Send email to client after deleting the event
+      await sendEmailToClient(
+        eventDetails.clientMail,
+        "📅 Your Event Has Been Deleted",
+        `Hello ${eventDetails.clientName},
+
+Your event "${eventDetails.name}" has been successfully deleted.
 
 We are sorry for any inconvenience caused.
 
-📌 Event ID: ${event._id}
-📅 Date: ${event.date.toLocaleDateString()}
-🕒 Time: ${event.time}
+📌 Event Details:
+Event Name: ${eventDetails.name}
+Event Date: ${formattedDate}
+Event Time: ${formattedTime}
+Event ID: ${eventDetails.eventId}
 
 Thank you for choosing us!
 
 Best regards,
 Event Planning Team
 Any Issue Contact: +94714756746`
-    );
+      );
 
-    res.status(200).json({ message: "Event deleted successfully", event });
+      res.status(200).json({ 
+        message: "Event deleted successfully and email sent", 
+        event: eventDetails 
+      });
+    } catch (emailError) {
+      // If email fails, still return success but notify about email failure
+      console.error("Email sending failed:", emailError);
+      res.status(200).json({ 
+        message: "Event deleted but email sending failed. Please check email configuration.", 
+        event: eventDetails,
+        emailError: emailError.message
+      });
+    }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Error deleting event:", err);
+    res.status(500).json({ 
+      message: "Server Error while deleting event",
+      error: err.message 
+    });
   }
 };
 

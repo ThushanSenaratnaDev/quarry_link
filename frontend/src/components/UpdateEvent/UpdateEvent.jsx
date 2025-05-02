@@ -24,10 +24,18 @@ function UpdateEvent() {
     const fetchHandler = async () => {
       try {
         const response = await axios.get(`http://localhost:5001/api/event/${id}`);
-        console.log('Fetched event:', response.data.event);
-        setInputs(response.data.event);
+        const eventData = response.data.event;
+        
+        // Format the date to YYYY-MM-DD for the input field
+        const formattedDate = new Date(eventData.date).toISOString().split('T')[0];
+        
+        setInputs({
+          ...eventData,
+          date: formattedDate
+        });
       } catch (error) {
         console.error('Error fetching event data:', error);
+        toast.error('Failed to fetch event data');
       }
     };
     fetchHandler();
@@ -35,84 +43,148 @@ function UpdateEvent() {
 
   const sendRequest = async () => {
     try {
-      const response = await axios.put(`http://localhost:5001/api/event/${id}`, {
-        ...inputs,
-        eventId: Number(inputs.eventId),
-      });
+      const response = await axios.put(`http://localhost:5001/api/event/${id}`, inputs);
       console.log('Update response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error updating event:', error);
-      setMessage({ type: 'error', text: 'Failed to update event. Please try again.' });
+      throw error;
     }
   };
 
-  const sendEmail = async () => {
-    try {
-      const response = await axios.post('http://localhost:5001/api/send-email', {
-        email: inputs.clientMail,
-        subject: 'Event Updated',
-        body: `Your event ${inputs.name} has been updated!`,
-      });
-      console.log('Email sent:', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Error sending email:', error);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting data:', inputs);  // Check what data is being submitted
-    sendRequest().then((data) => {
-      if (data) {
-        console.log('Event update successful, showing toast');  // Check this log
-        setMessage({ type: 'success', text: 'Event updated successfully!' });
-        toast.success('Event updated successfully!');  // Toast for successful event update
-
-        // Sending email success toast
-        sendEmail().then(() => {
-          console.log('Email sent, showing email success toast');
-          toast.success('Email sent successfully!');
-        });
-
-        navigate("/eventlist");
+    try {
+      const data = await sendRequest();
+      toast.success('Event updated successfully!');
+      if (data.message.includes('email sent')) {
+        toast.success('Email sent successfully!');
       }
-    });
+      setTimeout(() => {
+        navigate("/eventlist");
+      }, 2000);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to update event');
+    }
   };
 
   const handleChange = (e) => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInputs(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
     <div className="update-event-container">
-      <h1>Update Event</h1>
-      {message && (
-        <div
-          style={{
-            padding: '10px',
-            marginBottom: '20px',
-            backgroundColor: message.type === 'success' ? 'green' : 'red',
-            color: 'white',
-          }}
-        >
-          {message.text}
-        </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="name" value={inputs.name || ''} onChange={handleChange} placeholder="Event Name" /><br /><br />
-        <input type="date" name="date" value={inputs.date || ''} onChange={handleChange} /><br /><br />
-        <input type="time" name="time" value={inputs.time || ''} onChange={handleChange} /><br /><br />
-        <input type="text" name="eventId" value={inputs.eventId || ''} onChange={handleChange} placeholder="Event ID" /><br /><br />
-        <input type="text" name="clientName" value={inputs.clientName || ''} onChange={handleChange} placeholder="Client Name" /><br /><br />
-        <input type="text" name="clientPhoneNumber" value={inputs.clientPhoneNumber || ''} onChange={handleChange} placeholder="Client Phone Number" /><br /><br />
-        <input type="text" name="clientMail" value={inputs.clientMail || ''} onChange={handleChange} placeholder="Client Email" /><br /><br />
-        <button type="submit">Update Event</button>
-      </form>
+      <div className="page-buttons">
+        <button onClick={() => navigate('/home')}>Home</button>
+        <button onClick={() => navigate('/eventHome')}>Event</button>
+        <button onClick={() => navigate('/eventlist')}>Event List</button>
+      </div>
 
-      {/* ToastContainer to display toast messages */}
-      <ToastContainer />
+      <div className="form-wrapper">
+        <h1>Update Event</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Event Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={inputs.name}
+              onChange={handleChange}
+              placeholder="Enter event name"
+              required
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="date">Date</label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={inputs.date}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="time">Time</label>
+              <input
+                type="time"
+                id="time"
+                name="time"
+                value={inputs.time}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="eventId">Event ID</label>
+            <input
+              type="text"
+              id="eventId"
+              name="eventId"
+              value={inputs.eventId}
+              onChange={handleChange}
+              placeholder="Enter event ID"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="clientName">Client Name</label>
+            <input
+              type="text"
+              id="clientName"
+              name="clientName"
+              value={inputs.clientName}
+              onChange={handleChange}
+              placeholder="Enter client name"
+              required
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="clientPhoneNumber">Phone Number</label>
+              <input
+                type="tel"
+                id="clientPhoneNumber"
+                name="clientPhoneNumber"
+                value={inputs.clientPhoneNumber}
+                onChange={handleChange}
+                placeholder="Enter phone number"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="clientMail">Email</label>
+              <input
+                type="email"
+                id="clientMail"
+                name="clientMail"
+                value={inputs.clientMail}
+                onChange={handleChange}
+                placeholder="Enter email address"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="submit-button">Update Event</button>
+        </form>
+      </div>
+
+      <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
 }
