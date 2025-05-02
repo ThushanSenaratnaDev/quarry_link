@@ -13,7 +13,7 @@ import { handleChatSocket } from "./sockets/messageSocket.js";
 
 // Import all route handlers
 import employeeRoutes from "./routes/employeeRoutes.js";
-import eventRoute from './routes/eventRoute.js';
+import eventRoutes from './routes/eventRoutes.js';
 import authRoutes from "./routes/authRoutes.js";
 import blastRoute from "./routes/blastRoute.js";
 import router1 from "./routes/ClientRoutes.js";

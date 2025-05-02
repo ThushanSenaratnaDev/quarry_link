@@ -1,154 +1,287 @@
 /* Container for the Event List */
-.container {
+.eventlist-container {
+    min-height: 100vh;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff; 
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #C5630C;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Title */
-h2 {
+.eventlist-container h2 {
     text-align: center;
-    color: #e67e22; 
-    font-size: 2em;
-    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    font-weight: bold;
 }
 
-/* Search section */
+/* Printable Content Area */
+.printable-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
+.printable-content h2 {
+    text-align: center;
+    color: #C5630C;
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+/* Search Section */
 .search-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+/* Event Card */
+.event-card {
+    background-color: #fff3e0;
+    padding: 20px;
+    border-left: 5px solid #C5630C;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
     margin-bottom: 20px;
 }
 
-/* Input field styling in the search */
-input[type="text"] {
-    padding: 12px 15px;
-    font-size: 1em;
-    border: 1px solid #b48484;
-    border-radius: 5px;
-    width: 300px;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-    align-items: center;
+.event-card:hover {
+    transform: scale(1.01);
 }
 
-/* Focused input field */
-input[type="text"]:focus {
-    border-color: #e67e22; 
-    box-shadow: 0 0 5px rgba(230, 126, 34, 0.6); 
-}
-
-/* Button styling for search */
-button {
-    padding: 12px 20px;
-    background-color: #e67e22; 
-    color: white;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    align-items: center;
-}
-
-/* Button hover effect */
-button:hover {
-    background-color: #d35400; 
-}
-
-/* Button active state */
-button:active {
-    background-color: #c0392b; 
-}
-
-/* Styling for the event items */
-.event-item {
-    padding: 15px;
-    background-color: #eb0d0d; 
+.event-card h3 {
+    color: #C5630C;
     margin-bottom: 10px;
-    border: 1px solid #1b0101;
-    border-radius: 5px;
+}
+
+.event-card p {
+    margin: 4px 0;
+    color: #5a3e1b;
+}
+
+/* Event Actions */
+.event-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.event-actions button {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: white;
+}
+
+/* Buttons */
+.whatsapp-btn {
+    background-color: #25d366;
+}
+
+.whatsapp-btn:hover {
+    background-color: #1ebe5d;
+}
+
+.update-btn {
+    background-color: #C5630C;
+}
+
+.update-btn:hover {
+    background-color: #a55209;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.report-button {
+    margin-top: 25px;
+    background-color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #C5630C;
+    font-weight: bold;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     transition: all 0.3s ease;
 }
 
-/* Event item hover effect */
-.event-item:hover {
-    background-color: #f1f1f1; 
+.report-button:hover {
+    background-color: #a55209;
+    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling for the print button */
-button.print-btn {
-    padding: 12px 20px;
-    background-color: #e6890f; 
-    color: white;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
-
-/* Print button hover effect */
-button.print-btn:hover {
-    background-color: #e6890f;
-}
-
-/* Styling for the Update Link */
-.update-link {
-    padding: 12px 20px;
-    background-color: #FF0000; 
-    color: white;
-    font-size: 1em;
-    text-decoration: none; 
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block; 
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    align-items: center;
-    text-align: center;
-    width: 100px; 
-    align-items: center;
-}
-
-/* Hover effect for the Update link */
-.update-link:hover {
-    background-color: #d35400; 
-}
-
-/* Active state for the Update link */
-.update-link:active {
-    background-color: #c0392b; 
-}
-
-form {
-    display: grid;
-    grid-template-columns: 1fr; 
-    gap: 20px; 
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto; 
-    padding: 20px;
-    background-color: #ffffff;
+/* Navigation buttons */
+.page-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+}
 
-  .no-events-msg {
+.page-buttons button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #C5630C;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.page-buttons button:hover {
+    background-color: #a55209;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.page-buttons button:active {
+    background-color: #8a4507;
+    transform: translateY(0);
+}
+
+/* No Events Message */
+.no-events-msg {
     text-align: center;
-    color: #333;
-    font-size: 2.2em;
-    margin-bottom: 20px;
-    background-color: #dc3545;
-    color: rgb(255, 255, 255);
-  }
+    color: #7f8c8d;
+    font-size: 1.1em;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .eventlist-container {
+        padding: 20px;
+    }
+
+    .printable-content {
+        padding: 1rem;
+    }
+
+    .event-actions {
+        flex-direction: column;
+    }
+
+    .event-actions button {
+        width: 100%;
+    }
+
+    .page-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .page-buttons button {
+        width: 100%;
+    }
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(44, 62, 80, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* Confirmation Modal */
+.confirm-modal {
+  background: #fff8e1;
+  border: 2px solid #C5630C;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+  padding: 36px 48px;
+  min-width: 320px;
+  text-align: center;
+}
+
+.confirm-modal p {
+  font-size: 1.25rem;
+  color: #b26a00;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.confirm-btn {
+  background: #C5630C;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirm-btn:hover {
+  background: #a55209;
+}
+
+.cancel-btn {
+  background: #bdbdbd;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #888;
+}
   

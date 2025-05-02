@@ -1,20 +1,44 @@
-// src/Components/Nav/Nav.js
 import React from 'react';
-import { Link } from 'react-router-dom';
-//import './NavEvent.css';
+import { useNavigate } from 'react-router-dom';
+import './NavEvent.css';
 
-function Nav() {
+function NavEvent() {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
-    <div className="nav-container">
-      <ul className='home-ul'>
-        <li className='home-ll'><Link to="/">Home</Link></li>
-        <li className='home-ll'><Link to="/addevent">Add Event</Link></li>
-        <li className='home-ll'><Link to="/eventlist">Event List</Link></li>
-        
-        <li className='home-ll'><Link to="/search">Search</Link></li>
-      </ul>
+    <div className="navEvent-container">
+      <div className='nav-buttons'>
+        <button 
+          className="nav-button" 
+          onClick={() => handleNavigation('/home')}
+        >
+          Home
+        </button>
+        <button 
+          className="nav-button" 
+          onClick={() => handleNavigation('/eventHome')}
+        >
+          Event
+        </button>
+        <button 
+          className="nav-button" 
+          onClick={() => handleNavigation('/addevent')}
+        >
+          Add Event
+        </button>
+        <button 
+          className="nav-button" 
+          onClick={() => handleNavigation('/eventlist')}
+        >
+          Event List
+        </button>
+      </div>
     </div>
   );
 }
 
-export default Nav;
+export default NavEvent;

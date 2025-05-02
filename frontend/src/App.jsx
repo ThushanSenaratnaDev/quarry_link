@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./Components/Home/Home.jsx";
 import AddClient from "./Components/AddClient/AddClient.jsx";
@@ -22,21 +22,37 @@ import CalendarPage from "./pages/DetonationPlanning";
 
 // Event Management
 import EventHome from './components/EventHome/Home';
-import Nav from './components/Nav/Nav';
 import AddEvent from './components/AddEvent/AddEvent';
 import EventList from "./components/EventList/EventList";
 import Search from './components/Search/Search';
 import Event from './components/Event/Event';
 import UpdateEvent from './components/UpdateEvent/UpdateEvent';
+import NavEvent from './components/Nav/NavEvent';
 
 // Notifications
 import { Toaster } from 'sonner';
 
-function App() {
-  return (
-    <Router>
-      <Toaster richColors position="top-center" />
+// Layout wrapper to conditionally show NavEvent
+function LayoutWrapper() {
+  const location = useLocation();
 
+  // Define paths where NavEvent should be visible
+  const showNavOn = [
+    '/eventHome',
+    '/addevent',
+    '/eventlist',
+    '/search',
+    '/event',
+  ];
+
+  // Check if current path matches any event page or starts with /update/
+  const isEventPage =
+    showNavOn.includes(location.pathname) ||
+    location.pathname.startsWith('/update/');
+
+  return (
+    <>
+      
       <Routes>
         {/* Auth */}
         <Route path="/" element={<Login />} />
@@ -69,8 +85,17 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/event" element={<Event />} />
         <Route path="/update/:id" element={<UpdateEvent />} />
-
       </Routes>
+    </>
+  );
+}
+
+// App component with router and notifications
+function App() {
+  return (
+    <Router>
+      <Toaster richColors position="top-center" />
+      <LayoutWrapper />
     </Router>
   );
 }
