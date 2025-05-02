@@ -7,213 +7,207 @@
     gap: 1.5rem;
     padding: 1.5rem;
     position: relative;
-    background-color: #dbe1eb;
-  }
-  
+    background-color: var(--background-color);
+}
+
 /* Container */
 .search-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  background: #f9fafb;
-  font-family: 'Inter', sans-serif;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    background: white;
+    box-shadow: var(--box-shadow);
 }
 
 /* Search bar with icon and input */
 .search-bar-wrapper {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 9999px;
-  background: #1f2937;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem 0.75rem;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease-in-out;
-  position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    background: var(--button-color);
+    box-shadow: var(--box-shadow);
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease-in-out;
+    position: relative;
 }
 
 .search-icon-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  color: #38bdf8;
-  background: none;
-  border: none;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--primary-color);
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .search-input {
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-  padding-left: 0.75rem;
-  color: #f9fafb;
-  background: transparent;
-  transition: opacity 0.3s ease;
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    padding-left: 0.75rem;
+    color: white;
+    background: transparent;
+    transition: opacity 0.3s ease;
 }
 
 .search-input.hidden {
-  opacity: 0;
-  pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .search-input.visible {
-  opacity: 1;
+    opacity: 1;
 }
 
 /* Filters Dropdown */
 .filters-dropdown {
-  width: 100%;
-  max-width: 100%;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.75rem;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
-  padding: 1.25rem;
-  margin-top: 1rem;
-  animation: fadeIn 0.3s ease-in-out;
-  box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    background: white;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1.25rem;
+    margin-top: 1rem;
+    animation: fadeIn 0.3s ease-in-out;
+    box-sizing: border-box;
 }
 
 /* Grid layout */
 .filters-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
 }
 
 @media (min-width: 760px) {
-  .filters-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .filters-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .filter-item {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .filter-label {
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: #374151;
-  margin-bottom: 0.25rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
 }
 
 .filter-input {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-family: inherit;
-  background-color: #f3f4f6;
-  color: #111827;
-  transition: border-color 0.2s ease;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: white;
+    color: var(--text-color);
+    transition: border-color 0.2s ease;
 }
 
 .filter-input:focus {
-  border-color: #3b82f6;
-  outline: none;
+    border-color: var(--primary-color);
+    outline: none;
 }
 
 /* Action button */
 .filters-action {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
 }
 
 .search-button {
-  background-color: #2563eb;
-  color: white;
-  padding: 0.5rem 1.25rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
 }
 
 .search-button:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
+    opacity: 0.9;
 }
 
-
-  
-  /* Main Calendar */
-  .main-calendar {
-    font-family: sans-serif;
+/* Main Calendar */
+.main-calendar {
+    font-family: inherit;
     flex-grow: 1;
     min-width: 350px;
-  }
-  
-  .main-calendar h2 {
+}
+
+.main-calendar h2 {
     font-size: 1.75rem;
     font-weight: 800;
     margin-bottom: 1rem;
-    color: #181918;
-  }
-  
-  /* Sidebar Calendar */
-  .sidebar-calendar {
-    font-family: sans-serif;
+    color: var(--text-color);
+}
+
+/* Sidebar Calendar */
+.sidebar-calendar {
+    font-family: inherit;
     width: 20rem;
     min-width: 280px;
-  }
-  
-  .sidebar-calendar h3 {
-    font-family: sans-serif;
+}
+
+.sidebar-calendar h3 {
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: #1f2937;
-  }
+    color: var(--text-color);
+}
 
-  /* Mini Calendar Highlight */
+/* Mini Calendar Highlight */
 .highlighted-date {
-    background-color: #eb9436 !important; /* 🌟 Yellow highlight */
+    background-color: var(--primary-color) !important;
     border-radius: 10%;
-    color: #1f2937;
+    color: white;
     font-weight: 600;
-  }
-  
-  /* PDF Button */
-  .pdf-button {
-    font-family: sans-serif;
+}
+
+/* PDF Button */
+.pdf-button {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    background-color: #18266d;
-    color: #fcfcfc;
+    background-color: var(--button-color);
+    color: white;
     padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
     border: none;
     font-weight: 400;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.2s;
-  }
-  
-  .pdf-button:hover {
-    background-color: #5951cb;
-  }
-  
-  /* Modal */
-  .modal-overlay {
+    transition: opacity 0.2s ease;
+}
+
+.pdf-button:hover {
+    opacity: 0.9;
+}
+
+/* Modal */
+.modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 50;
@@ -222,46 +216,42 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
-  }
-  
-  .modal-content {
-    background-image: url('/frontend/src/assets/images/blastForm.jpg'); /* Replace with your image path */
-    background-size: cover;
-    background-position: center;
+}
+
+.modal-content {
+    background-color: white;
     padding: 2rem;
-    border-radius: 0.75rem;
+    border-radius: var(--border-radius);
     width: 100%;
     max-width: 30rem;
-    min-height: 400px; /* Adjust as needed */
+    min-height: 400px;
     position: relative;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    background-color: #c7ac95;
-  }
-  
-  
-  .modal-close-button {
+    box-shadow: var(--box-shadow);
+}
+
+.modal-close-button {
     position: absolute;
     top: 1rem;
     right: 1rem;
     font-size: 2rem;
-    color: #101011;
+    color: var(--text-color);
     background: transparent;
     border: none;
     cursor: pointer;
     transition: color 0.2s;
-  }
-  
-  .modal-close-button:hover {
-    color: #df0d0d;
-  }
-  
-  .react-tooltip {
-    background-color: #1f2937; /* Dark background */
-    color: #ffffff; /* White text */
+}
+
+.modal-close-button:hover {
+    color: var(--error-color);
+}
+
+.react-tooltip {
+    background-color: var(--button-color);
+    color: white;
     font-size: 0.85rem;
     padding: 0.6rem 0.8rem;
-    border-radius: 0.5rem;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     text-align: left;
     white-space: pre-line;
     max-width: 220px;
