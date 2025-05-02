@@ -11,7 +11,7 @@
   }
   
 /* Container */
-.search-form {
+.detonation-planning-container .search-form {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@
 }
 
 /* Search bar with icon and input */
-.search-bar-wrapper {
+.detonation-planning-container .search-bar-wrapper {
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -41,7 +41,7 @@
   position: relative;
 }
 
-.search-icon-button {
+.detonation-planning-container .search-icon-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,6 +51,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  padding: 8px;
 }
 
 .search-input {
@@ -181,32 +182,48 @@
     font-weight: 700;
     margin-bottom: 1rem;
     color: #1f2937;
+    text-align: center;
   }
 
-  /* Mini Calendar Highlight */
+  
 .highlighted-date {
-    background-color: #eb9436 !important; /* 🌟 Yellow highlight */
+    background-color: #f09737 !important; 
     border-radius: 10%;
     color: #1f2937;
     font-weight: 600;
   }
   
-  /* PDF Button */
-  .pdf-button {
-    font-family: sans-serif;
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background-color: #18266d;
-    color: #fcfcfc;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
-    border: none;
-    font-weight: 400;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
+  .sidebar-calendar .react-calendar__tile{
+    background-color: #eae7e7;
+    color: #1e1d1d;
   }
+
+  .sidebar-calendar .react-calendar__navigation button {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #1f2937;
+    background-color: #eae7e7;
+  }
+
+  /* PDF Button */
+.pdf-button {
+  font-family: sans-serif;
+  background-color: #18266d;
+  color: #fcfcfc;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 400;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+  margin-top: 1.5rem; /* Pushes the button down from the calendar */
+  display: block;
+}
+
   
   .pdf-button:hover {
     background-color: #5951cb;
@@ -239,7 +256,7 @@
   }
   
   
-  .modal-close-button {
+  .modal-content .modal-close-button {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -251,11 +268,11 @@
     transition: color 0.2s;
   }
   
-  .modal-close-button:hover {
+  .modal-content .modal-close-button:hover {
     color: #df0d0d;
   }
   
-  .react-tooltip {
+  .sidebar-calendar .react-tooltip {
     background-color: #1f2937; /* Dark background */
     color: #ffffff; /* White text */
     font-size: 0.85rem;
