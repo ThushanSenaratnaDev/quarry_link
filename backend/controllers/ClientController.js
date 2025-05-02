@@ -19,86 +19,80 @@ const getAllClients = async (req, res, next) => {
 
 //Data Insert
 const addClients = async (req, res, next) => {
-
-    const {name,address,email,contact} = req.body;
+    const { name, address, email, contact } = req.body;
 
     let Clients;
 
-    try{
-        Clients = new Client({name,address,email,contact});
+    try {
+        Clients = new ClientModel({ name, address, email, contact });
         await Clients.save();
-    }catch (err) {
+    } catch (err) {
         console.log(err);
     }
-    //If not insert clients
-    if(!Clients){
-        return res.status(404).send({message:"Unable to add clients"});
-    }
-    return res.status(200).json({ Clients
-    });
 
-}
+    //If not insert clients
+    if (!Clients) {
+        return res.status(404).send({ message: "Unable to add clients" });
+    }
+    return res.status(200).json({ Clients });
+};
 
 //Get by Id
 const getById = async (req, res, next) => {
-
     const id = req.params.id;
-
     let Clients;
 
-    try{
-        Clients = await Client.findById(id);
-    }catch (err){
+    try {
+        Clients = await ClientModel.findById(id);
+    } catch (err) {
         console.log(err);
     }
+
     //Not available clients
-    if(!Clients){
-        return res.status(404).send({message:"Client not found!"});
+    if (!Clients) {
+        return res.status(404).send({ message: "Client not found!" });
     }
-    return res.status(200).json({ Clients
-    });
-}
+    return res.status(200).json({ Clients });
+};
 
 //Update Client Details
-const updateClient = async(req, res, next) => {
-
+const updateClient = async (req, res, next) => {
     const id = req.params.id;
-    const {name,address,email,contact} = req.body;
+    const { name, address, email, contact } = req.body;
 
     let Clients;
 
-    try{
-        Clients = await Client.findByIdAndUpdate(id,
-            {name:name, address:address, email:email, contact:contact});
-            Clients = await Client.save();
-    }catch(err) {
+    try {
+        Clients = await ClientModel.findByIdAndUpdate(
+            id,
+            { name: name, address: address, email: email, contact: contact },
+            { new: true } // return updated doc
+        );
+    } catch (err) {
         console.log(err);
     }
-    if(!Clients){
-        return res.status(404).json({message:"Unable to Update Client Details!"});
-    }
-    return res.status(200).json({ Clients});
 
-}
+    if (!Clients) {
+        return res.status(404).json({ message: "Unable to Update Client Details!" });
+    }
+    return res.status(200).json({ Clients });
+};
 
 //Delete Client Details
-
-const deleteClient = async(req, res, next) => {
-
+const deleteClient = async (req, res, next) => {
     const id = req.params.id;
-
     let Clients;
 
-    try{
-        Clients = await Client.findByIdAndDelete(id)
-    }catch(err) {
+    try {
+        Clients = await ClientModel.findByIdAndDelete(id);
+    } catch (err) {
         console.log(err);
     }
-    if(!Clients){
-        return res.status(404).json({message:"Unable to Delete Client Details!"});
-    }
-    return res.status(200).json({Clients});
 
+    if (!Clients) {
+        return res.status(404).json({ message: "Unable to Delete Client Details!" });
+    }
+    return res.status(200).json({ Clients });
 };
 
 export default {
@@ -106,5 +100,5 @@ export default {
     addClients,
     getById,
     updateClient,
-    deleteClient
+    deleteClient,
 };

@@ -1,46 +1,149 @@
 .client-details-container {
-    font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  min-height: 100vh;
+  width: 100%;
+}
+
+
+/* Header Section */
+.page-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+  width: 100%;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  color: #e6890f;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+/* Add Client Button */
+.add-client-button {
+  position: absolute;
+  right: 0;
+  padding: 12px 24px;
+  background-color: #e6890f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-client-button:hover {
+  background-color: #d77d0e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 137, 15, 0.2);
+}
+
+/* Print Button */
+.print-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 24px;
+  background-color: #e6890f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.print-button:hover {
+  background-color: #d77d0e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 137, 15, 0.2);
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  border: 2px solid #e6890f;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(230, 137, 15, 0.2);
+}
+
+/* Client Cards Grid */
+.clients-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual Client Wrapper */
+.client-item {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.client-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Just in case the Client component needs specific spacing */
+.client-card {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  color: #333;
+}
+
+@media print {
+  .add-client-button,
+  .print-button,
+  .search-container {
+    display: none;
+  }
+
+  .client-details-container {
+    background: white;
     padding: 20px;
-    background-color: #f5f5f5;
   }
-  
-  .nav-bar {
-    background-color: #e6890f;
-    padding: 15px;
-    color: white;
-  }
-  
-  .page-title {
-    color: #e6890f;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .clients-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .client-item {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    width: 300px;
-    transition: transform 0.3s ease;
-  }
-  
-  .client-item:hover {
-    transform: scale(1.05);
-  }
-  
+
   .client-card {
+    border: 1px solid #aaa;
+    margin-bottom: 10px;
     padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    color: #333;
   }
-  
+}
+
+

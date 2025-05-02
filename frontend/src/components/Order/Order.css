@@ -1,0 +1,94 @@
+.order-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.order-header {
+  color: #e6890f;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.order-info h1 {
+  font-size: 1rem;
+  color: #333;
+  margin: 8px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.order-link {
+  flex: 1;
+  text-align: center;
+  background-color: #e6890f;
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.order-link:hover {
+  background-color: #d77d0e;
+}
+
+.order-button {
+  flex: 1;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.order-button:hover {
+  background-color: #c82333;
+}
+
+.product-section {
+  margin-top: 15px;
+  padding: 10px 0;
+  border-top: 1px dashed #ddd;
+  border-bottom: 1px dashed #ddd;
+}
+
+.product-section h1 {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.product-list {
+  margin-left: 20px;
+  padding-left: 10px;
+  list-style-type: disc;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}

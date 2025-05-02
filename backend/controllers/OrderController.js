@@ -1,104 +1,83 @@
 import OrderModel from "../models/OrderModel.js";
 
-// Data Display
-const getAllOrders = async (req, res, next) => {
-    let Orders;
-
+// Get all orders
+const getAllOrders = async (req, res) => {
     try {
-        Orders = await OrderModel.find();
+        const Orders = await OrderModel.find();
+        return res.status(200).json({ Orders });
     } catch (err) {
-        console.log(err);
+        console.error(err);
+        return res.status(500).json({ message: "Error retrieving orders" });
     }
-
-    if (!Orders) {
-        return res.status(404).json({ message: "Order Not Found!" });
-    }
-
-    return res.status(200).json({ Orders });
 };
 
-//Data Insert
-const addOrders = async (req, res, next) => {
+// Add a new order
+const addOrders = async (req, res) => {
+    const { orderNo, orderDate, deliveryAddress, deliveryDate, status, totalPrice, products } = req.body;
 
-    const {orderNo,orderDate,deliveryAddress,deliveryDate,status,totalPrice} = req.body;
-
-    let Orders;
-
-    try{
-        Orders = new Order({orderNo,orderDate,deliveryAddress,deliveryDate,status,totalPrice});
+    try {
+        const Orders = new OrderModel({ 
+            orderNo, 
+            orderDate, 
+            deliveryAddress, 
+            deliveryDate, 
+            status, 
+            totalPrice,
+            products 
+        });
         await Orders.save();
-    }catch (err) {
-        console.log(err);
+        return res.status(201).json({ Orders });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({ message: "Unable to add order" });
     }
-    //If not insert Orders
-    if(!Orders){
-        return res.status(404).send({message:"Unable to add Orders"});
-    }
-    return res.status(200).json({ Orders
-    });
+};
 
-}
-
-//Get by Id
-const getById = async (req, res, next) => {
-
+// Get order by ID
+const getById = async (req, res) => {
     const id = req.params.id;
 
-    let Orders;
-
-    try{
-        Orders = await Order.findById(id);
-    }catch (err){
-        console.log(err);
+    try {
+        const Orders = await OrderModel.findById(id);
+        if (!Orders) return res.status(404).json({ message: "Order not found" });
+        return res.status(200).json({ Orders });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Error fetching order" });
     }
-    //Not available Orders
-    if(!Orders){
-        return res.status(404).send({message:"Order not found!"});
-    }
-    return res.status(200).json({ Orders
-    });
-}
+};
 
-//Update Order Details
-const updateOrder = async(req, res, next) => {
-
+// Update order
+const updateOrder = async (req, res) => {
     const id = req.params.id;
-    const {orderNo,orderDate,deliveryAddress,deliveryDate,status,totalPrice} = req.body;
+    const { orderNo, orderDate, deliveryAddress, deliveryDate, status, totalPrice, products } = req.body;
 
-    let Orders;
-
-    try{
-        Orders = await Order.findByIdAndUpdate(id,
-            {orderNo:orderno, orderDate:orderdate, deliveryAddress:deliveryaddress, deliveryDate:deliverydate, status:status, totalPrice:totalprice});
-            Orders = await Order.save();
-    }catch(err) {
-        console.log(err);
+    try {
+        const Orders = await OrderModel.findByIdAndUpdate(
+            id,
+            { orderNo, orderDate, deliveryAddress, deliveryDate, status, totalPrice, products },
+            { new: true }
+        );
+        if (!Orders) return res.status(404).json({ message: "Unable to update order" });
+        return res.status(200).json({ Orders });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({ message: "Update failed" });
     }
-    if(!Orders){
-        return res.status(404).json({message:"Unable to Update Order Details!"});
-    }
-    return res.status(200).json({ Orders});
+};
 
-}
-
-//Delete Order Details
-
-const deleteOrder = async(req, res, next) => {
-
+// Delete order
+const deleteOrder = async (req, res) => {
     const id = req.params.id;
 
-    let Orders;
-
-    try{
-        Orders = await Order.findByIdAndDelete(id)
-    }catch(err) {
-        console.log(err);
+    try {
+        const Orders = await OrderModel.findByIdAndDelete(id);
+        if (!Orders) return res.status(404).json({ message: "Unable to delete order" });
+        return res.status(200).json({ Orders });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Error deleting order" });
     }
-    if(!Orders){
-        return res.status(404).json({message:"Unable to Delete Order Details!"});
-    }
-    return res.status(200).json({Orders});
-
 };
 
 export default {
@@ -106,5 +85,5 @@ export default {
     addOrders,
     getById,
     updateOrder,
-    deleteOrder
+    deleteOrder,
 };

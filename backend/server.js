@@ -13,8 +13,8 @@ import inventoryRoutes from "./routes/inventoryRoutes.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import blastRoute from "./routes/blastRoute.js";
-import router1 from "./routes/ClientRoutes.js";
-import router2 from "./routes/OrderRoutes.js";
+import clientRoutes from "./routes/ClientRoutes.js";
+import orderRoutes from "./routes/OrderRoutes.js";
 
 
 dotenv.config();
@@ -34,8 +34,8 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/blasts", blastRoute);
 app.use("/api/inventory", inventoryRoutes);//Inventory Routes
-app.use("/Clients", router1);
-app.use("/Orders", router2);
+app.use("/Clients", clientRoutes);
+app.use("/Orders", orderRoutes);
 
 
 

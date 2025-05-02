@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../pages/pageCss/HomeBody.css";
 
 const HomeBody = () => {
@@ -38,8 +39,6 @@ const HomeBody = () => {
       <section className="notice-board">
         <h2>Notice Board</h2>
         <ul>
-        
-
           <li className="blast-header">💣 Planned Detonations This Week:</li>
           {plannedBlasts.length > 0 ? (
             plannedBlasts.map((blast) => (
@@ -53,6 +52,17 @@ const HomeBody = () => {
             <li className="no-blast">✅ No detonations planned for next week.</li>
           )}
         </ul>
+      </section>
+      <section className="quick-links">
+        <h2>Quick Links</h2>
+        <div className="links-container">
+          <Link to="/clientdetails" className="quick-link">
+            Client Management
+          </Link>
+          <Link to="/dashboard" className="quick-link">
+            Sales Analytics
+          </Link>
+        </div>
       </section>
     </main>
   );

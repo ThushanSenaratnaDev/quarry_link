@@ -19,6 +19,7 @@
     "@mui/material": "^6.4.11",
     "@mui/styled-engine-sc": "^6.4.6",
     "axios": "^1.9.0",
+    "chart.js": "^4.4.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -33,13 +34,15 @@
     "react": "^19.0.0",
     "react-big-calendar": "^1.18.0",
     "react-calendar": "^5.1.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
+    "react-to-print": "^3.1.0",
     "react-toastify": "^11.0.5",
     "react-tooltip": "^5.28.1",
+    "socket.io-client": "^4.8.1",
     "sonner": "^2.0.3",
-    "styled-components": "^6.1.16",
-    "socket.io-client": "^4.8.1"
+    "styled-components": "^6.1.16"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

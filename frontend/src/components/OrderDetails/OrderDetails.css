@@ -1,0 +1,113 @@
+.order-details-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  min-height: 100vh;
+  width: 100%;
+}
+
+.page-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+  width: 100%;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  color: #e6890f;
+  font-weight: 600;
+  text-align: center;
+}
+
+.add-order-button {
+  position: absolute;
+  right: 0;
+  padding: 12px 24px;
+  background-color: #e6890f;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-order-button:hover {
+  background-color: #d77d0e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 137, 15, 0.2);
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  border: 2px solid #e6890f;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(230, 137, 15, 0.2);
+}
+
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.order-item {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.order-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media print {
+  .add-order-button,
+  .print-button,
+  .search-container {
+    display: none;
+  }
+
+  .order-details-container {
+    padding: 20px;
+    background: white;
+  }
+
+  .order-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .order-header {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+}
