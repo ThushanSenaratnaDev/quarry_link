@@ -9,7 +9,12 @@
     overflow: hidden;
     white-space: nowrap;
   }
-  
+  .search-container label{
+    color: #C5630C;
+  }
+  .visually-hidden{
+    color: #C5630C;
+  }
 .search-container {
   display: flex;
   justify-content: center;
@@ -41,7 +46,7 @@
 }
 
 .search-container input:focus {
-  border-color: #4a90e2;
+  border-color: #C5630C;
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
@@ -54,8 +59,9 @@
   margin-left: 10px;
   padding: 12px 25px;
   font-size: 16px;
-  color: white;
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  background-color: #C5630C;
+  color: rgb(255, 255, 255);
+  background: linear-gradient(135deg, #ce770d, #d68307);
   border: none;
   border-radius: 25px;
   cursor: pointer;
@@ -64,7 +70,7 @@
 }
 
 .search-container button:hover {
-  background: linear-gradient(135deg, #357abd, #2a5f94);
+  background: linear-gradient(135deg, #eccf9c, #daa676);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

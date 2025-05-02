@@ -22,12 +22,42 @@ function AddEvent() {
     clientMail: ''
   });
 
+  // Get current date and time for validation
+  const now = new Date();
+  const currentDate = now.toISOString().split('T')[0];
+  const currentTime = now.toTimeString().slice(0, 5);
+
   const handleChange = (e) => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    // Validate date and time
+    if (name === 'date') {
+      if (value < currentDate) {
+        toast.error('Cannot select a past date');
+        return;
+      }
+    }
+    
+    if (name === 'time') {
+      if (inputs.date === currentDate && value < currentTime) {
+        toast.error('Cannot select a past time for today');
+        return;
+      }
+    }
+
+    setInputs({ ...inputs, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Final validation before submission
+    const selectedDateTime = new Date(`${inputs.date}T${inputs.time}`);
+    if (selectedDateTime < now) {
+      toast.error('Cannot create an event in the past');
+      return;
+    }
+
     console.log('Form submitted with data:', inputs);
     
     try {
@@ -88,6 +118,7 @@ function AddEvent() {
                 name="date"
                 value={inputs.date}
                 onChange={handleChange}
+                min={currentDate}
                 required
               />
             </div>
@@ -100,6 +131,7 @@ function AddEvent() {
                 name="time"
                 value={inputs.time}
                 onChange={handleChange}
+                min={inputs.date === currentDate ? currentTime : '00:00'}
                 required
               />
             </div>
@@ -159,7 +191,7 @@ function AddEvent() {
             </div>
           </div>
 
-          <button type="submit" className="submit-button">Add Event</button>
+          <button type="submit" className="submit-button" style={{ backgroundColor: '#C5630C' }}>Add Event</button>
         </form>
       </div>
     </div>

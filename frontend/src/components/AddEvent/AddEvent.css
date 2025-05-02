@@ -2,7 +2,7 @@
 .add-event-container {
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #C5630C;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   background: white;
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 800px;
   margin: 2rem auto;
@@ -23,7 +23,7 @@
 
 .form-wrapper h1 {
   text-align: center;
-  color: #2c3e50;
+  color: #C5630C;
   font-size: 2.8em;
   margin-bottom: 2.5rem;
   font-weight: 600;
@@ -80,7 +80,7 @@ form {
 
 /* Submit button */
 .submit-button {
-  background-color: #3498db;
+  background-color: #C5630C;
   color: white;
   padding: 1.2rem 2.5rem;
   font-size: 1.2rem;
@@ -99,9 +99,9 @@ form {
 }
 
 .submit-button:hover {
-  background-color: #2980b9;
+  background-color: #a55209;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 5px 15px rgba(197, 99, 12, 0.3);
 }
 
 .submit-button:active {
@@ -127,7 +127,7 @@ form {
   padding: 1rem 2rem;
   border: none;
   border-radius: 6px;
-  background-color: #3498db;
+  background-color: #C5630C;
   color: white;
   cursor: pointer;
   font-size: 1.1rem;
@@ -138,13 +138,13 @@ form {
 }
 
 .page-buttons button:hover {
-  background-color: #2980b9;
+  background-color: #a55209;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .page-buttons button:active {
-  background-color: #2471a3;
+  background-color: #8a4507;
   transform: translateY(0);
 }
 

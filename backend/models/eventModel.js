@@ -34,7 +34,28 @@ const eventSchema = new Schema({
   clientMail: {
     type: String,
     required: true,//validation
-  }
+  },
+  status: {
+    type: String,
+    enum: ['Planned', 'In Progress', 'Completed', 'Cancelled'],
+    default: 'Planned'
+  },
+  statusHistory: [{
+    status: {
+      type: String,
+      enum: ['Planned', 'In Progress', 'Completed', 'Cancelled']
+    },
+    changedAt: {
+      type: Date,
+      default: Date.now
+    },
+    changedBy: {
+      type: String,
+      default: 'System'
+    }
+  }]
+}, {
+  timestamps: true
 });
 
 // Use export default to export the model

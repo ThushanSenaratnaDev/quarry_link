@@ -319,11 +319,165 @@ Any Issue Contact: +94714756746`
   }
 };
 
+// Update event status
+const updateEventStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    console.log('Status update request:', { id, status });
+
+    // Validate status
+    if (!status) {
+      console.log('Status is missing in request');
+      return res.status(400).json({
+        success: false,
+        message: 'Status is required'
+      });
+    }
+
+    if (!['Planned', 'In Progress', 'Completed', 'Cancelled'].includes(status)) {
+      console.log('Invalid status value:', status);
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status value. Must be one of: Planned, In Progress, Completed, Cancelled'
+      });
+    }
+
+    // Find the event
+    const event = await Event.findById(id);
+    if (!event) {
+      console.log('Event not found:', id);
+      return res.status(404).json({
+        success: false,
+        message: 'Event not found'
+      });
+    }
+
+    console.log('Current event status:', event.status);
+    console.log('Requested status:', status);
+
+    // Only update if status is different
+    if (event.status !== status) {
+      // Add to status history
+      const statusUpdate = {
+        status: status,
+        changedAt: new Date(),
+        changedBy: req.user ? req.user.name : 'System'
+      };
+
+      event.statusHistory.push(statusUpdate);
+      event.status = status;
+
+      console.log('Updating event with new status:', status);
+      await event.save();
+      console.log('Event updated successfully');
+
+      // Send notification if status is changed to Completed or Cancelled
+      if (status === 'Completed' || status === 'Cancelled') {
+        const message = status === 'Completed' 
+          ? `Your event "${event.name}" has been marked as completed. Thank you for choosing our services!`
+          : `Your event "${event.name}" has been cancelled. Please contact us if you have any questions.`;
+
+        try {
+          // Send email notification
+          await sendEmailToClient(
+            event.clientMail,
+            `Event ${status}: ${event.name}`,
+            message
+          );
+          console.log('Email notification sent');
+        } catch (notificationError) {
+          console.error('Error sending notifications:', notificationError);
+          // Continue with the response even if notifications fail
+        }
+      }
+
+      return res.json({
+        success: true,
+        message: `Event status updated to ${status}`,
+        event
+      });
+    } else {
+      console.log('Status is already set to:', status);
+      return res.json({
+        success: true,
+        message: 'Status is already set to the requested value',
+        event
+      });
+    }
+  } catch (error) {
+    console.error('Error updating event status:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating event status',
+      error: error.message
+    });
+  }
+};
+
+// Automatic status update based on date
+const updateEventStatuses = async () => {
+  try {
+    const now = new Date();
+    
+    // Update past events to Completed
+    await Event.updateMany(
+      {
+        date: { $lt: now },
+        status: { $in: ['Planned', 'In Progress'] }
+      },
+      {
+        $set: { status: 'Completed' },
+        $push: {
+          statusHistory: {
+            status: 'Completed',
+            changedAt: now,
+            changedBy: 'System'
+          }
+        }
+      }
+    );
+
+    // Update current events to In Progress
+    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+    const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+    
+    await Event.updateMany(
+      {
+        date: { $gte: oneHourAgo, $lte: oneHourFromNow },
+        status: 'Planned'
+      },
+      {
+        $set: { status: 'In Progress' },
+        $push: {
+          statusHistory: {
+            status: 'In Progress',
+            changedAt: now,
+            changedBy: 'System'
+          }
+        }
+      }
+    );
+
+    console.log('Status update completed at:', now);
+  } catch (error) {
+    console.error('Error in automatic status update:', error);
+  }
+};
+
+// Run status update every minute instead of every hour for testing
+setInterval(updateEventStatuses, 60 * 1000);
+
+// Run initial status update
+updateEventStatuses();
 
 export {
   addEvent,
   getAllEvents,
   getById,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  updateEventStatus,
+  updateEventStatuses
 };

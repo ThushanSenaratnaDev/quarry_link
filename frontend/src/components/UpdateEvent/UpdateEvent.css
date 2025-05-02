@@ -2,7 +2,7 @@
 .update-event-container {
   min-height: 100vh;
   width: 100%;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #C5630C;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -11,52 +11,52 @@
 }
 
 /* Form wrapper */
-.form-wrapper {
+.update-event-container form-wrapper {
   background: white;
   padding: 3rem;
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 800px;
   margin: 2rem auto;
 }
 
-.form-wrapper h1 {
+.update-event-container form-wrapper h1 {
   text-align: center;
-  color: #2c3e50;
+  color: #C5630C;
   font-size: 2.8em;
   margin-bottom: 2.5rem;
   font-weight: 600;
 }
 
 /* Form layout */
-form {
+.update-event-container form {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.form-row {
+.update-event-container form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
-.form-group {
+.update-event-container form-group {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
 }
 
 /* Labels */
-.form-group label {
+.update-event-container form-group label {
   color: #2c3e50;
   font-size: 1.1rem;
   font-weight: 500;
 }
 
 /* Input fields */
-.form-group input {
+.update-event-container form-group input {
   padding: 15px 20px;
   font-size: 1.1rem;
   border: 2px solid #e0e0e0;
@@ -66,21 +66,22 @@ form {
   transition: all 0.3s ease;
 }
 
-.form-group input:focus {
+.update-event-container form-group input:focus {
   border-color: #3498db;
   background-color: white;
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
   outline: none;
 }
 
-.form-group input::placeholder {
+.update-event-container form-group input::placeholder {
   color: #95a5a6;
   font-size: 1rem;
 }
 
 /* Submit button */
-.submit-button {
-  background-color: #3498db;
+
+.update-event-container submit-button {
+  background-color: #df6d09;
   color: white;
   padding: 1.2rem 2.5rem;
   font-size: 1.2rem;
@@ -99,9 +100,9 @@ form {
 }
 
 .submit-button:hover {
-  background-color: #2980b9;
+  background-color: #a55209;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 5px 15px rgba(197, 99, 12, 0.3);
 }
 
 .submit-button:active {
@@ -127,7 +128,7 @@ form {
   padding: 1rem 2rem;
   border: none;
   border-radius: 6px;
-  background-color: #3498db;
+  background-color: #C5630C;
   color: white;
   cursor: pointer;
   font-size: 1.1rem;
@@ -138,13 +139,13 @@ form {
 }
 
 .page-buttons button:hover {
-  background-color: #2980b9;
+  background-color: #a55209;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .page-buttons button:active {
-  background-color: #2471a3;
+  background-color: #8a4507;
   transform: translateY(0);
 }
 

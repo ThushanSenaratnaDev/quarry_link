@@ -1,69 +1,85 @@
 /* Container for the Event List */
 .eventlist-container {
+    min-height: 100vh;
     width: 100%;
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 30px;
-    background: linear-gradient(to bottom right, #ffe0b2, #f1a86b);
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .eventlist-container h2 {
+    background: #C5630C;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eventlist-container h2 {
     text-align: center;
-    color: #d35400;
+    color: #ffffff;
     font-size: 2.5em;
     margin-bottom: 25px;
     font-weight: bold;
-  }
-  
-  /* Search Section */
-  .search-container {
+}
+
+/* Printable Content Area */
+.printable-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+}
+
+.printable-content h2 {
+    text-align: center;
+    color: #C5630C;
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+/* Search Section */
+.search-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Printable Content Area */
-  .printable-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  /* Event Card */
-  .event-card {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+/* Event Card */
+.event-card {
     background-color: #fff3e0;
     padding: 20px;
-    border-left: 5px solid #e67e22;
+    border-left: 5px solid #C5630C;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s;
-  }
-  
-  .event-card:hover {
+    margin-bottom: 20px;
+}
+
+.event-card:hover {
     transform: scale(1.01);
-  }
-  
-  .event-card h3 {
-    color: #e67e22;
+}
+
+.event-card h3 {
+    color: #C5630C;
     margin-bottom: 10px;
-  }
-  
-  .event-card p {
+}
+
+.event-card p {
     margin: 4px 0;
     color: #5a3e1b;
-  }
-  
-  /* Event Actions */
-  .event-actions {
+}
+
+/* Event Actions */
+.event-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 15px;
-  }
-  
-  .event-actions button {
+}
+
+.event-actions button {
     flex: 1;
     min-width: 140px;
     padding: 10px 15px;
@@ -73,143 +89,199 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
     color: white;
-  }
-  
-  /* Buttons */
-  .whatsapp-btn {
+}
+
+/* Buttons */
+.whatsapp-btn {
     background-color: #25d366;
-  }
-  
-  .whatsapp-btn:hover {
+}
+
+.whatsapp-btn:hover {
     background-color: #1ebe5d;
-  }
-  
-  .update-btn {
-    background-color: #f39c12;
-  }
-  
-  .update-btn:hover {
-    background-color: #e67e22;
-  }
-  
-  .delete-btn {
+}
+
+.update-btn {
+    background-color: #C5630C;
+}
+
+.update-btn:hover {
+    background-color: #a55209;
+}
+
+.delete-btn {
     background-color: #e74c3c;
-  }
-  
-  .delete-btn:hover {
+}
+
+.delete-btn:hover {
     background-color: #c0392b;
-  }
-  
-  .report-button {
+}
+
+.report-button {
     margin-top: 25px;
-    background-color: #d35400;
+    background-color: #ffffff;
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
-    color: white;
+    color: #C5630C;
     font-weight: bold;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    transition: background-color 0.3s;
-  }
-  
-  .print-btn:hover {
-    background-color: #a84300;
-  }
-  
-  /* Modals */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-  
-  .confirm-modal {
-    background-color: #fff3e0;
-    padding: 25px 30px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-  
-  .confirm-modal p {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #5a3e1b;
-  }
-  
-  /* Modal Buttons */
-  .modal-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-  }
-  
-  .confirm-btn,
-  .cancel-btn {
-    padding: 10px 20px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  .confirm-btn {
-    background-color: #e67e22;
-    color: white;
-  }
-  
-  .confirm-btn:hover {
-    background-color: #d35400;
-  }
-  
-  .cancel-btn {
-    background-color: #b2bec3;
-    color: white;
-  }
-  
-  .cancel-btn:hover {
-    background-color: #95a5a6;
-  }
-  
-  /* No Events Message */
-  .no-events-msg {
-    text-align: center;
-    color: #7f8c8d;
-    font-size: 1.1em;
-  }
-  
-  .page-buttons {
+    transition: all 0.3s ease;
+}
+
+.report-button:hover {
+    background-color: #a55209;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation buttons */
+.page-buttons {
     display: flex;
     gap: 1rem;
     margin-bottom: 2rem;
     padding: 1rem;
-  }
-  
-  .page-buttons button {
-    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    position: sticky;
+    top: 1rem;
+    z-index: 100;
+}
+
+.page-buttons button {
+    padding: 0.8rem 1.5rem;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff;
+    border-radius: 6px;
+    background-color: #C5630C;
     color: white;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.2s;
-  }
-  
-  .page-buttons button:hover {
-    background-color: #0056b3;
-  }
-  
-  .page-buttons button:active {
-    background-color: #004085;
-  }
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.page-buttons button:hover {
+    background-color: #a55209;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.page-buttons button:active {
+    background-color: #8a4507;
+    transform: translateY(0);
+}
+
+/* No Events Message */
+.no-events-msg {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 1.1em;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .eventlist-container {
+        padding: 20px;
+    }
+
+    .printable-content {
+        padding: 1rem;
+    }
+
+    .event-actions {
+        flex-direction: column;
+    }
+
+    .event-actions button {
+        width: 100%;
+    }
+
+    .page-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .page-buttons button {
+        width: 100%;
+    }
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(44, 62, 80, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* Confirmation Modal */
+.confirm-modal {
+  background: #fff8e1;
+  border: 2px solid #C5630C;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+  padding: 36px 48px;
+  min-width: 320px;
+  text-align: center;
+}
+
+.confirm-modal p {
+  font-size: 1.25rem;
+  color: #b26a00;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.confirm-btn {
+  background: #C5630C;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirm-btn:hover {
+  background: #a55209;
+}
+
+.cancel-btn {
+  background: #bdbdbd;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #888;
+}
   

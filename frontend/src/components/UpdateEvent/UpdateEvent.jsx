@@ -85,7 +85,7 @@ function UpdateEvent() {
       </div>
 
       <div className="form-wrapper">
-        <h1>Update Event</h1>
+        <h1  style={{ color: '#C5630C' }} >Update Event</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Event Name</label>
@@ -180,7 +180,7 @@ function UpdateEvent() {
             </div>
           </div>
 
-          <button type="submit" className="submit-button">Update Event</button>
+          <button type="submit" className="submit-button" style={{ backgroundColor: '#C5630C' }}>Update Event</button>
         </form>
       </div>
 
