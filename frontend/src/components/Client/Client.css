@@ -1,55 +1,107 @@
-.client-container {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .client-header {
-    color: #e6890f;
-    text-align: center;
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-  
-  .client-info {
-    font-size: 1.2em;
-    margin: 10px 0;
-  }
-  
-  .client-info h1 {
-    font-size:small;
-    color: #333;
-    word-wrap: break-word; /* Breaks long words */
-  overflow-wrap: break-word; /* Ensures long words wrap */
-  white-space: normal; /* Allows text to wrap within the container */
-  max-width: 100%; /* Prevents the text from exceeding container width */
+/* Container that wraps all client cards */
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 40px;
+  justify-items: center;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
 
-  }
-  
-  .client-link {
-    text-decoration: none;
-    color: #e6890f;
-    font-weight: bold;
-    margin-right: 15px;
-  }
-  
-  .client-button {
-    background-color: #e6890f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .client-button:hover {
-    background-color: #d77d0e;
-  }
-  
-  .client-spacing {
-    margin-top: 40px;
-  }
-  
+/* Single Client Card */
+.client-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.client-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Client Header */
+.client-header {
+  color: #e6890f;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+/* Client Info Section */
+.client-info {
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.client-info h1 {
+  font-size: 1rem;
+  color: #333;
+  margin: 12px 0;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+
+.client-info h1::before {
+  content: "•";
+  color: #e6890f;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+/* Client Actions */
+.client-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: auto;
+}
+
+.client-link {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  background-color: #e6890f;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.client-link:hover {
+  background-color: #d77d0e;
+}
+
+.client-button {
+  flex: 1;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.client-button:hover {
+  background-color: #c82333;
+}
+
+/* Spacing */
+.client-spacing {
+  height: 10px;
+}

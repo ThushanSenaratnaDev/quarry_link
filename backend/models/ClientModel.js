@@ -18,9 +18,10 @@ const clientSchema = new Schema({
     contact: {
         type: Number,
         required: true,
-    }
+    },
 });
 
-const ClientModel = mongoose.model("ClientModel", clientSchema);
+// Renamed the model name to "Client" (standard)
+const ClientModel = mongoose.model("Client", clientSchema);
 
 export default ClientModel;

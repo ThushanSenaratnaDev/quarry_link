@@ -8,7 +8,7 @@ const orderSchema = new Schema({
         required: true,
     },
     orderDate: {
-        type: Number,
+        type: String,
         required: true,
     },
     deliveryAddress: {
@@ -16,7 +16,7 @@ const orderSchema = new Schema({
         required: true,
     },
     deliveryDate: {
-        type: Number,
+        type: String,
         required: true,
     },
     status: {
@@ -26,9 +26,13 @@ const orderSchema = new Schema({
     totalPrice: {
         type: Number,
         required: true,
-    }
+    },
+    products: [{
+        productType: String,
+        quantity: Number,
+        unitPrice: Number
+    }]
 });
 
-const OrderModel = mongoose.model("OrderModel", orderSchema);
-
+const OrderModel = mongoose.model("Order", orderSchema);
 export default OrderModel;

@@ -1,54 +1,121 @@
-/* General Styling */
-.update-client {
-    font-family: Arial, sans-serif;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
+/* Reset & Base Styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.title {
-    text-align: center;
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  min-height: 100vh;
 }
 
-.update-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* Form Container */
+.form-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.form-wrapper {
+  width: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+}
+
+/* Form Title */
+.form-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #e6890f;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+/* Form Styling */
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Label Styling */
 .form-label {
-    font-weight: bold;
-    color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
+.label-text {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+/* Input Styling */
 .form-input {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
 }
 
 .form-input:focus {
-    border-color: #e6890f;
-    outline: none;
+  border-color: #e6890f;
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(230, 137, 15, 0.1);
 }
 
+.form-input::placeholder {
+  color: #999;
+}
+
+/* Form Actions */
+.form-actions {
+  margin-top: 20px;
+}
+
+/* Submit Button */
 .submit-btn {
-    padding: 12px;
-    background-color: #e6890f;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  width: 100%;
+  padding: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: #e6890f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .submit-btn:hover {
-    background-color: #d77908;
+  background-color: #d77d0e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 137, 15, 0.2);
 }
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+  

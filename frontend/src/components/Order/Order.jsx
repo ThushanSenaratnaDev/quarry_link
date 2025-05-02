@@ -1,42 +1,49 @@
 import React from 'react';
-//import './Client.css';
 import { Link } from 'react-router-dom';
+import './Order.css';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
+function Order({ Order }) {
+    const { _id, orderNo, orderDate, deliveryAddress, deliveryDate, status, totalPrice, products } = Order || {};
+    const history = useNavigate();
 
-function Order(props) {
-  const {_id,orderNo,orderDate,deliveryAddress,deliveryDate,status,totalPrice} = props.Order || {};
+    const deleteHandler = async () => {
+        await axios.delete(`http://localhost:5001/Orders/${_id}`);
+        history('/');
+        history('/orderdetails');
+    };
 
-  const history = useNavigate();
+    return (
+        <div className="order-container">
+            <h1 className="order-header">{orderNo}</h1>
+            <div className="order-info">
+                <h1>Order Date: {orderDate}</h1>
+                <h1>Delivery Address: {deliveryAddress}</h1>
+                <h1>Delivery Date: {deliveryDate}</h1>
+                <h1>Status: {status}</h1>
 
-  const deleteHandler = async()=>{
-    await axios.delete(`http://Localhost:5000/Orders/${_id}`)
-    .then(res => res.data)
-    .then(() => history("/"))
-    .then(() => history("/orderdetails"))
-  }
+                {products && products.length > 0 && (
+                    <div className="product-section">
+                        <h1>Products:</h1>
+                        <ul className="product-list">
+                            {products.map((product, index) => (
+                                <li key={index}>
+                                    🧱 {product.productType} - {product.quantity} units at Rs. {Number(product.unitPrice).toLocaleString('en-LK', { minimumFractionDigits: 2 })} per unit
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
-  return (
-    <div class="client-container">
-  <h1 class="client-header">Order Display</h1>
-  <div class="client-info">
-    <h1>ID: {_id}</h1>
-    <h1>OrderNo: {orderNo}</h1>
-    <h1>OrderDate: {orderDate}</h1>
-    <h1>DeliveryAddress: {deliveryAddress}</h1>
-    <h1>DeliveryDate: {deliveryDate}</h1>
-    <h1>Status: {status}</h1>
-    <h1>TotalPrice: {totalPrice}</h1>
-  </div>
-  <div class="client-actions">
-    <Link class="client-link" to={`/orderdetails/${_id}`}>Update</Link>
-    <button class="client-button" onClick={deleteHandler}>Delete</button>
-  </div>
-  <div class="client-spacing"></div>
-</div>
-
-  );
-};
+                <h1>Total Price: Rs. {Number(totalPrice).toLocaleString('en-LK', { minimumFractionDigits: 2 })}</h1>
+            </div>
+            <div className="order-actions">
+                <Link className="order-link" to={`/orderdetails/${_id}`}>Update</Link>
+                <button className="order-button" onClick={deleteHandler}>Delete</button>
+            </div>
+        </div>
+    );
+}
 
 export default Order;

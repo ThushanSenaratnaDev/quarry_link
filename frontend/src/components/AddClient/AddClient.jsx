@@ -1,67 +1,164 @@
 import React, { useState } from 'react';
-//import './AddClient.css';
-import Nav from '../../components/Nav/Nav';
+import './AddClient.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function AddClient() {
     const history = useNavigate();
-    const [inputs,setInputs] = useState({
-        name:"",
-        address:"",
-        email:"",
-        contact:"",
+    const [inputs, setInputs] = useState({
+        name: "",
+        address: "",
+        email: "",
+        contact: "",
     });
-    const handleChange =(e) => {
-        setInputs((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
+    const [errors, setErrors] = useState({});
+
+    const validateContact = (contact) => {
+        // Remove any non-digit characters
+        const cleanedContact = contact.replace(/\D/g, '');
+        
+        // Check if it's exactly 10 digits
+        if (cleanedContact.length !== 10) {
+            return "Contact number must be exactly 10 digits";
+        }
+        
+        return "";
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        
+        // For contact number, only allow digits
+        if (name === 'contact') {
+            // Remove any non-digit characters
+            const cleanedValue = value.replace(/\D/g, '');
+            setInputs(prevState => ({
+                ...prevState,
+                [name]: cleanedValue
+            }));
+            
+            // Validate contact number
+            const error = validateContact(cleanedValue);
+            setErrors(prev => ({
+                ...prev,
+                contact: error
+            }));
+        } else {
+            setInputs(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(inputs);
+        
+        // Validate contact number before submission
+        const contactError = validateContact(inputs.contact);
+        if (contactError) {
+            setErrors(prev => ({
+                ...prev,
+                contact: contactError
+            }));
+            return;
+        }
+
         await sendReqest();
         history('/clientdetails');
     };
 
-    const sendReqest = async()=> {
-        await axios.post("http://Localhost:5001/Clients",{
-            name: String (inputs.name),
-            address: String (inputs.address),
-            email: String (inputs.email),
-            contact: Number (inputs.contact),
-        }).then(res => res.data);
-    }
+    const sendReqest = async () => {
+        try {
+            await axios.post("http://localhost:5001/Clients", {
+                name: String(inputs.name),
+                address: String(inputs.address),
+                email: String(inputs.email),
+                contact: Number(inputs.contact),
+            });
+        } catch (error) {
+            console.error("Error adding client:", error.message);
+        }
+    };
 
-  return (
-    <div class="form-container">
-  <Nav/>
-  <h1 class="form-title">Add Client</h1>
-  
-  <form class="client-form" onSubmit={handleSubmit}>
-    <label for="name" class="form-label">Name:</label>
-    <input type="text" id="name" name="name" class="form-input" onChange={handleChange} value={inputs.name} required />
-    <br /><br />
+    return (
+        <div className="form-container">
+            <div className="form-wrapper">
+                <h1 className="form-title">Add New Client</h1>
+                <form className="client-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="name" className="form-label">
+                            <span className="label-text">Client Name</span>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                className="form-input" 
+                                onChange={handleChange} 
+                                value={inputs.name} 
+                                placeholder="Enter client name"
+                                required 
+                            />
+                        </label>
+                    </div>
 
-    <label for="address" class="form-label">Address:</label>
-    <input type="text" id="address" name="address" class="form-input" onChange={handleChange} value={inputs.address} required />
-    <br /><br />
+                    <div className="form-group">
+                        <label htmlFor="address" className="form-label">
+                            <span className="label-text">Address</span>
+                            <input 
+                                type="text" 
+                                id="address" 
+                                name="address" 
+                                className="form-input" 
+                                onChange={handleChange} 
+                                value={inputs.address} 
+                                placeholder="Enter client address"
+                                required 
+                            />
+                        </label>
+                    </div>
 
-    <label for="email" class="form-label">Email:</label>
-    <input type="email" id="email" name="email" class="form-input" onChange={handleChange} value={inputs.email} required />
-    <br /><br />
+                    <div className="form-group">
+                        <label htmlFor="email" className="form-label">
+                            <span className="label-text">Email Address</span>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                className="form-input" 
+                                onChange={handleChange} 
+                                value={inputs.email} 
+                                placeholder="Enter client email"
+                                required 
+                            />
+                        </label>
+                    </div>
 
-    <label for="contact" class="form-label">Contact Number:</label>
-    <input type="number" id="contact" name="contact" class="form-input" onChange={handleChange} value={inputs.contact} required />
-    <br /><br />
+                    <div className="form-group">
+                        <label htmlFor="contact" className="form-label">
+                            <span className="label-text">Contact Number</span>
+                            <input 
+                                type="text" 
+                                id="contact" 
+                                name="contact" 
+                                className={`form-input ${errors.contact ? 'error-input' : ''}`} 
+                                onChange={handleChange} 
+                                value={inputs.contact} 
+                                placeholder="Enter contact number"
+                                maxLength={10}
+                                required 
+                            />
+                            {errors.contact && <span className="error-message">{errors.contact}</span>}
+                        </label>
+                    </div>
 
-    <button type="submit" class="submit-btn">Submit</button>
-  </form>
-</div>
-
-  )
+                    <div className="form-actions">
+                        <button type="submit" className="submit-btn">Add Client</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
 }
 
-export default AddClient
+export default AddClient;

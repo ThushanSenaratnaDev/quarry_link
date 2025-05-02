@@ -16,9 +16,9 @@ import employeeRoutes from "./routes/employeeRoutes.js";
 import eventRoutes from './routes/eventRoutes.js';
 import authRoutes from "./routes/authRoutes.js";
 import blastRoute from "./routes/blastRoute.js";
-import router1 from "./routes/ClientRoutes.js";
-import router2 from "./routes/OrderRoutes.js";
 import conflictRoutes from "./routes/conflictRoutes.js";
+import clientRoutes from "./routes/ClientRoutes.js";
+import orderRoutes from "./routes/OrderRoutes.js";
 
 
 import messageRoutes from "./routes/messageRoutes.js";
@@ -57,10 +57,10 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/blasts", blastRoute);
 app.use("/api/inventory", inventoryRoutes);//Inventory Routes
-app.use("/Clients", router1);
-app.use("/Orders", router2);
 app.use("/api/event", eventRoutes);
 app.use("/api/conflicts", conflictRoutes);
+app.use("/Clients", clientRoutes);
+app.use("/Orders", orderRoutes);
 
 
 app.use("/api/messages", messageRoutes);
