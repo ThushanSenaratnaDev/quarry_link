@@ -72,9 +72,15 @@ function Dashboard() {
           .filter(order => new Date(order.orderDate) >= oneWeekAgo)
           .reduce((sum, order) => sum + order.totalPrice, 0);
 
+        // ✅ FIXED: Aggregate by each product in order.products
         const productSales = orders.reduce((acc, order) => {
-          const productType = order.productType || 'Unknown';
-          acc[productType] = (acc[productType] || 0) + order.totalPrice;
+          if (Array.isArray(order.products)) {
+            order.products.forEach((product) => {
+              const productType = product.productType || 'Unknown';
+              const productTotal = product.unitPrice * product.quantity;
+              acc[productType] = (acc[productType] || 0) + productTotal;
+            });
+          }
           return acc;
         }, {});
 

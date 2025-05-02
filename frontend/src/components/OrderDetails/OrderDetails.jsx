@@ -48,9 +48,10 @@ function Orders() {
   return (
     <div className="order-details-container">
       <div className="page-header">
-        <h1 className="page-title">Order Details</h1>
-        <Link to="/addorder" className="add-order-button">Add New Order</Link>
-        <button onClick={handlePrint} className="print-button">Download Invoice Report</button>
+      <Link to="/dashboard" className="quick-link">Sales Analytics</Link>
+  <h1 className="page-title">Order Details</h1>
+  <Link to="/addorder" className="add-order-button">Add New Order</Link>
+  <button onClick={handlePrint} className="print-button">Download Invoice Report</button>
       </div>
 
       <div className="search-container">

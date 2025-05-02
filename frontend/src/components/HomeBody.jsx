@@ -53,17 +53,6 @@ const HomeBody = () => {
           )}
         </ul>
       </section>
-      <section className="quick-links">
-        <h2>Quick Links</h2>
-        <div className="links-container">
-          <Link to="/clientdetails" className="quick-link">
-            Client Management
-          </Link>
-          <Link to="/dashboard" className="quick-link">
-            Sales Analytics
-          </Link>
-        </div>
-      </section>
     </main>
   );
 };
