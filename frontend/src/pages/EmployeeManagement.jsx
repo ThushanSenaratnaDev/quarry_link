@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import TableComponent from "../components/TableComponent";
-import "./pageCss/EmployeeManagement.css";
+import styles from "../pages/pageCss/EmployeeManagement.module.css";
 import Header from "../components/Header";
 import Body from "../components/HomeBody";
 import Footer from "../components/Footer";
@@ -10,24 +10,20 @@ const EmployeeManagement = () => {
 
     return (
         <div>
-        <Header />
-        <div className="employee-management-wrapper">
-            
-            <div className="employee-management-container">
-               
-                <h1 className="employee-management-title">Employee Management Page</h1>
-                <button
-                    className="add-employee-button"
-                    onClick={() => navigate("/add-employee")}
-                >
-                    ➕ Add Employee
-                </button>
-                <TableComponent />
-                
+            <Header />
+            <div className={styles.wrapper}>
+                <div className={styles.container}>
+                    <h1 className={styles.title}>Employee Management Page</h1>
+                    <button
+                        className={styles.addButton}
+                        onClick={() => navigate("/add-employee")}
+                    >
+                        ➕ Add Employee
+                    </button>
+                    <TableComponent />
+                </div>
             </div>
-            
-        </div>
-        <Footer></Footer>
+            <Footer />
         </div>
     );
 };

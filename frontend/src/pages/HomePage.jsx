@@ -2,18 +2,17 @@ import React from "react";
 import Header from "../components/Header";
 import HomeBody from "../components/HomeBody";
 import Footer from "../components/Footer";
-import "../pages/pageCss/HomePage.css"; // Add a HomePage.css!
+import styles from "../pages/pageCss/HomePage.module.css";
 
 const HomePage = () => {
   return (
-    <div className="homepage">
-      <Header></Header>
-      <main className="main-content">
+    <div className={styles.homePage}>
+    <Header />
+    <main className={styles.mainContent}>
         <HomeBody />
-      </main>
-      <Footer></Footer>
-      
-    </div>
+    </main>
+    <Footer />
+</div>
   );
 };
 

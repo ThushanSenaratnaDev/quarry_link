@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Search.css';
+//import './Search.css';
 
 function Search({ fetchHandler, setEvents, setNoResults }) {
   const [searchQuery, setSearchQuery] = useState("");

@@ -1,4 +1,4 @@
-import './pageCss/Login.css';
+import styles from './pageCss/Login.module.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,11 +20,11 @@ const Login = () => {
 
             const data = await response.json();
             if (response.ok) {
-                localStorage.setItem("token", data.token); // Store token in localStorage
-                console.log("Token:", data.token); // For debugging
+                localStorage.setItem("token", data.token);
+                console.log("Token:", data.token);
                 setMessage("Login successful! Redirecting...");
                 setTimeout(() => {
-                    navigate("/home"); //Redirect after storing token
+                    navigate("/home");
                 }, 1000);
             } else {
                 setMessage(data.message);
@@ -36,26 +36,26 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
+        <div className={styles.loginContainer}>
             <h2>Login</h2>
-            <form onSubmit={handleLogin} className="login-form">
+            <form onSubmit={handleLogin} className={styles.loginForm}>
                 <input
                     type="email"
                     placeholder="Email"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="login-input"
+                    className={styles.loginInput}
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="login-input"
+                    className={styles.loginInput}
                 />
-                <button type="submit" className="login-button">Login</button>
+                <button type="submit" className={styles.loginButton}>Login</button>
             </form>
-            {message && <p className="login-message">{message}</p>}
+            {message && <p className={styles.loginMessage}>{message}</p>}
         </div>
     );
 };

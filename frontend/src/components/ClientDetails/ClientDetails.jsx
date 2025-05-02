@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './ClientDetails.css';
+//import './ClientDetails.css';
 import Nav from '../Nav/Nav.jsx';
 import axios from 'axios';
 import Client from '../Client/Client.jsx';

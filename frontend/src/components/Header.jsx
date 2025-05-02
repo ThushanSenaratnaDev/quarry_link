@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../pages/pageCss/Header.css";
+import styles from "../pages/pageCss/Header.module.css";
 
-const Header = () => {// Header component to display the navigation bar and user information
-  // State variables to manage user permissions and name
+const Header = () => {
   const [permissions, setPermissions] = useState([]);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
@@ -11,37 +10,34 @@ const Header = () => {// Header component to display the navigation bar and user
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/");// Redirect to login page if no token is found
+      navigate("/");
       return;
     }
-    
-    if (token) {// Decode the token to get user information
-      try {
-        const payloadBase64 = token.split('.')[1];
-        const decodedPayload = JSON.parse(atob(payloadBase64));
-        setPermissions(decodedPayload.permissions || []);
-        setUserName(decodedPayload.name || decodedPayload.username || "Unknown User");
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
+
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payloadBase64));
+      setPermissions(decodedPayload.permissions || []);
+      setUserName(decodedPayload.name || decodedPayload.username || "Unknown User");
+    } catch (error) {
+      console.error("Error decoding token:", error);
     }
   }, []);
 
-  const handleLogout = () => { // Handle logout logic
+  const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/"); // Redirect to login page
+    navigate("/");
   };
 
   return (
-    <header className="header-unique">
-      <div className="header-unique-top">
-        
-        <div className="header-unique-user-section">
-          <span className="header-unique-user-name">{userName}</span>
-          <button className="header-unique-logout-btn" onClick={handleLogout}>Logout</button>
+    <header className={styles.header}>
+      <div className={styles.headerTop}>
+        <div className={styles.userSection}>
+          <span className={styles.userName}>{userName}</span>
+          <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
         </div>
       </div>
-      <nav className="header-unique-nav">
+      <nav className={styles.nav}>
         {permissions.includes("View Employees") && (
           <Link to="/employee-management">Employee Management</Link>
         )}

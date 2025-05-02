@@ -1,5 +1,5 @@
 import React from 'react';
-import './Client.css';
+//import './Client.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

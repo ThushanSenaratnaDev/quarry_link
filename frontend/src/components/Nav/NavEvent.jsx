@@ -1,7 +1,7 @@
 // src/Components/Nav/Nav.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './NavEvent.css';
+//import './NavEvent.css';
 
 function Nav() {
   return (

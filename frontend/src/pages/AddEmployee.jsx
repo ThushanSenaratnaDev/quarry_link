@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../pages/pageCss/AddEmployee.css"; // Import the CSS file
+import styles from "../pages/pageCss/AddEmployee.module.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const mockPermissions = [
   "View Employees", "Edit Employees",
@@ -98,11 +100,11 @@ const AddEmployee = () => {
     const password = employeeData.password;
 
     if (!phoneRegex.test(employeeData.contactNumber)) {
-      alert("Contact number must be exactly 10 digits and contain only numbers.");
+      alert("Contact number must be exactly 10 digits.");
       return;
     }
     if (!phoneRegex.test(employeeData.emergencyContactPhone)) {
-      alert("Emergency contact number must be exactly 10 digits and contain only numbers.");
+      alert("Emergency contact number must be exactly 10 digits.");
       return;
     }
     if (age < 18) {
@@ -114,20 +116,19 @@ const AddEmployee = () => {
       return;
     }
     if (!emailRegex.test(employeeData.username)) {
-      alert("Please enter a valid email address for the username.");
+      alert("Please enter a valid email address.");
       return;
     }
 
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Unauthorized: Please log in again.");
+        alert("Unauthorized. Please login again.");
         navigate("/login");
         return;
       }
 
       const employeePayload = {
-        //employeeId: employeeData.employeeId,
         username: employeeData.username.trim(),
         password: employeeData.password,
         name: employeeData.name,
@@ -163,34 +164,33 @@ const AddEmployee = () => {
         alert("Employee added successfully!");
         navigate("/employee-management");
       } else {
-        console.error("Server Error:", data);
-        alert(`Error: ${data.message || "Unknown error occurred"}`);
+        alert(`Error: ${data.message || "Unknown error"}`);
       }
     } catch (error) {
-      console.error("Error adding employee:", error);
-      alert("Server error. Check the console for details.");
+      alert("Server error.");
+      console.error(error);
     }
   };
 
   return (
-    <div className="add-employee-page">
-      <div className="add-employee-container">
+    <>
+    <Header />
+    <div className={styles.page}>
+      <div className={styles.container}>
         <h2>Add Employee</h2>
-        <form className="add-employee-form" onSubmit={handleSubmit}>
-          
+        <form className={styles.form} onSubmit={handleSubmit}>
           <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
           <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
           <input type="text" name="name" placeholder="Full Name" required onChange={handleChange} />
 
           <label>Date of Birth:</label>
-          <br />
-          <input type="date" name="dateOfBirth" required onChange={handleChange} /><br />
+          <input type="date" name="dateOfBirth" required onChange={handleChange} />
           <input type="text" name="contactNumber" placeholder="Contact Number" required onChange={handleChange} />
 
-          <input type="text" name="address" placeholder="Address" required onChange={handleChange} className="full-width" />
-          <input type="text" name="qualification" placeholder="Qualifications (comma-separated)" required onChange={handleChange} className="full-width" />
+          <input type="text" name="address" placeholder="Address" required onChange={handleChange} className={styles.fullWidth} />
+          <input type="text" name="qualification" placeholder="Qualifications (comma-separated)" required onChange={handleChange} className={styles.fullWidth} />
 
-          <input type="text" name="bankAccount" placeholder="Bank Account Number" required onChange={handleChange} /><br />
+          <input type="text" name="bankAccount" placeholder="Bank Account Number" required onChange={handleChange} />
           <label>Hire Date:</label>
           <input type="date" name="hireDate" required onChange={handleChange} />
 
@@ -202,13 +202,13 @@ const AddEmployee = () => {
             <option value="Intern">Intern</option>
           </select>
 
-          <label>Emergency Contact:</label><br />
+          <label>Emergency Contact:</label>
           <input type="text" name="emergencyContactName" placeholder="Emergency Contact Name" required onChange={handleChange} />
           <input type="text" name="emergencyContactPhone" placeholder="Emergency Contact Phone" required onChange={handleChange} />
           <input type="text" name="emergencyContactRelationship" placeholder="Emergency Contact Relationship" required onChange={handleChange} />
-            <br />
+
           <label>Position:</label>
-          <select name="position" required onChange={handleChange} className="full-width">
+          <select name="position" required onChange={handleChange} className={styles.fullWidth}>
             <option value="">Select Position</option>
             {mockPositions.map((pos) => (
               <option key={pos} value={pos}>{pos}</option>
@@ -216,8 +216,8 @@ const AddEmployee = () => {
           </select>
 
           <label>Permissions:</label>
-          <button type="button" onClick={resetToRoleDefaults} style={{ marginBottom: "1rem" }}>Reset to Role Defaults</button>
-          <div className="permissions-container">
+          <button type="button" onClick={resetToRoleDefaults} className={styles.resetButton}>Reset to Role Defaults</button>
+          <div className={styles.permissionsContainer}>
             {mockPermissions.map((perm) => (
               <label key={perm}>
                 <input
@@ -231,11 +231,13 @@ const AddEmployee = () => {
             ))}
           </div>
 
-          <input type="number" name="salary" placeholder="Salary" required onChange={handleChange} className="full-width" />
-          <button type="submit">Add Employee</button>
+          <input type="number" name="salary" placeholder="Salary" required onChange={handleChange} className={styles.fullWidth} />
+          <button type="submit" className={styles.formButton}>Add Employee</button>
         </form>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

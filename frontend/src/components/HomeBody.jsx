@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../pages/pageCss/HomeBody.css";
+import styles from "../pages/pageCss/HomeBody.module.css";
 
 const HomeBody = () => {
   const [plannedBlasts, setPlannedBlasts] = useState([]);
@@ -34,28 +34,24 @@ const HomeBody = () => {
   }, []);
 
   return (
-    <div className="homeBody" >
-    <main className="body">
-      <section className="notice-board">
+    <div className={styles.body}>
+      <section className={styles.noticeBoard}>
         <h2>Notice Board</h2>
         <ul>
-        
-
-          <li className="blast-header">💣 Planned Detonations This Week:</li>
+          <li className={styles.blastHeader}>💣 Planned Detonations This Week:</li>
           {plannedBlasts.length > 0 ? (
             plannedBlasts.map((blast) => (
-              <li key={blast._id} className="blast-item">
+              <li key={blast._id} className={styles.blastItem}>
                 <strong>Zone:</strong> {blast.zone}, <strong>Date:</strong>{" "}
                 {new Date(blast.expDate).toLocaleDateString()},{" "}
                 <strong>Time:</strong> {blast.expStartTime} - {blast.expEndTime}
               </li>
             ))
           ) : (
-            <li className="no-blast">✅ No detonations planned for next week.</li>
+            <li className={styles.noBlast}>✅ No detonations planned for next week.</li>
           )}
         </ul>
       </section>
-    </main>
     </div>
   );
 };

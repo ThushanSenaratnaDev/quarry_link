@@ -1,0 +1,60 @@
+.body {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+}
+
+.noticeBoard {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.noticeBoard:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.noticeBoard h2 {
+  margin-bottom: 18px;
+  color: #2c3e50;
+  font-size: 24px;
+  border-bottom: 2px solid #2c3e50;
+  padding-bottom: 6px;
+}
+
+.noticeBoard ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.noticeBoard li {
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border-left: 4px solid #004080;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.noticeBoard li:hover {
+  background-color: #eaf4ff;
+}
+
+.blastHeader {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #d9534f;
+}
+
+.blastItem {
+  border-left-color: #d9534f;
+}
+
+.noBlast {
+  font-style: italic;
+  color: #28a745;
+  border-left-color: #28a745;
+}

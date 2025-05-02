@@ -1,0 +1,30 @@
+.footer {
+  background-color: #052962;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer p {
+  margin: 5px 0 15px 0;
+  font-size: 14px;
+}
+
+.quickLinks {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.quickLinks a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.quickLinks a:hover {
+  text-decoration: underline;
+  color: #ddd;
+}

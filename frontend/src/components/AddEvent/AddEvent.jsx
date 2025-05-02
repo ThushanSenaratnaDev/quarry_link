@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 //import { sendWhatsAppMessage } from '../../utils/notification';
 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+//import 'react-toastify/dist/ReactToastify.css';
 
-import './AddEvent.css';
+//import './AddEvent.css';
 
 const URL = 'http://localhost:5001/api/event';
 

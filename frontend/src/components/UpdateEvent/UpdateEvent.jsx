@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { sendWhatsAppMessage } from '../../utils/notification';  // Updated import
 
-import './UpdateEvent.css';
+//import './UpdateEvent.css';
 
 function UpdateEvent() {
   const [inputs, setInputs] = useState({

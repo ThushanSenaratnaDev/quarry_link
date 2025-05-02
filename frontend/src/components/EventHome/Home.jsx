@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Calendar from 'react-calendar';
-import './Home.css';
+//import './Home.css';
 import axios from 'axios';
 import { useReactToPrint } from 'react-to-print';
 import jsPDF from 'jspdf';
