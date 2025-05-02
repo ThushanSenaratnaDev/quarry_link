@@ -1,8 +1,8 @@
-// src/Components/UpdateEvent/UpdateEvent.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { sendWhatsAppMessage } from '../../utils/notification';  // Updated import
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './UpdateEvent.css';
 
@@ -24,6 +24,7 @@ function UpdateEvent() {
     const fetchHandler = async () => {
       try {
         const response = await axios.get(`http://localhost:5001/api/event/${id}`);
+        console.log('Fetched event:', response.data.event);
         setInputs(response.data.event);
       } catch (error) {
         console.error('Error fetching event data:', error);
@@ -38,6 +39,7 @@ function UpdateEvent() {
         ...inputs,
         eventId: Number(inputs.eventId),
       });
+      console.log('Update response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error updating event:', error);
@@ -45,13 +47,36 @@ function UpdateEvent() {
     }
   };
 
+  const sendEmail = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/api/send-email', {
+        email: inputs.clientMail,
+        subject: 'Event Updated',
+        body: `Your event ${inputs.name} has been updated!`,
+      });
+      console.log('Email sent:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Submitting data:', inputs);  // Check what data is being submitted
     sendRequest().then((data) => {
       if (data) {
+        console.log('Event update successful, showing toast');  // Check this log
         setMessage({ type: 'success', text: 'Event updated successfully!' });
-        sendWhatsAppMessage(inputs.clientPhoneNumber, inputs.name,inputs.date,inputs.eventId);  // Use the updated function
-        setTimeout(() => navigate("/eventlist"), 2000);
+        toast.success('Event updated successfully!');  // Toast for successful event update
+
+        // Sending email success toast
+        sendEmail().then(() => {
+          console.log('Email sent, showing email success toast');
+          toast.success('Email sent successfully!');
+        });
+
+        navigate("/eventlist");
       }
     });
   };
@@ -85,6 +110,9 @@ function UpdateEvent() {
         <input type="text" name="clientMail" value={inputs.clientMail || ''} onChange={handleChange} placeholder="Client Email" /><br /><br />
         <button type="submit">Update Event</button>
       </form>
+
+      {/* ToastContainer to display toast messages */}
+      <ToastContainer />
     </div>
   );
 }

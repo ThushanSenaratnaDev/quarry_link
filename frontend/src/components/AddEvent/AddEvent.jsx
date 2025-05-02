@@ -32,12 +32,12 @@ function AddEvent() {
     axios
       .post(URL, inputs)
       .then((res) => {
-        // 🎉 Toast for event added
-        toast.success('🎉 Event Added Successfully!');
+        // Toast for event added
+        toast.success('Event Added Successfully!');
 
-        // ✅ Toast if email sent
+        // Toast if email sent
         if (res.data.message.includes('email sent')) {
-          toast.success('✅ Email Sent Successfully!');
+          toast.success('Email Sent Successfully!');
         }
 
         // 📲 Send WhatsApp message
@@ -62,6 +62,7 @@ function AddEvent() {
 
   return (
     <div className="add-event-container">
+      
       <ToastContainer position="top-right" autoClose={2000} />
       <h1>Add New Event</h1>
       <form onSubmit={handleSubmit}>

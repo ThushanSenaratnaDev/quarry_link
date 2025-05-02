@@ -1,154 +1,189 @@
 /* Container for the Event List */
-.container {
+.eventlist-container {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff; 
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Title */
-h2 {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(to bottom right, #ffe0b2, #f1a86b);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .eventlist-container h2 {
     text-align: center;
-    color: #e67e22; 
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-/* Search section */
-.search-container {
+    color: #d35400;
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    font-weight: bold;
+  }
+  
+  /* Search Section */
+  .search-container {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-}
-
-/* Input field styling in the search */
-input[type="text"] {
-    padding: 12px 15px;
-    font-size: 1em;
-    border: 1px solid #b48484;
-    border-radius: 5px;
-    width: 300px;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-    align-items: center;
-}
-
-/* Focused input field */
-input[type="text"]:focus {
-    border-color: #e67e22; 
-    box-shadow: 0 0 5px rgba(230, 126, 34, 0.6); 
-}
-
-/* Button styling for search */
-button {
-    padding: 12px 20px;
-    background-color: #e67e22; 
-    color: white;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    align-items: center;
-}
-
-/* Button hover effect */
-button:hover {
-    background-color: #d35400; 
-}
-
-/* Button active state */
-button:active {
-    background-color: #c0392b; 
-}
-
-/* Styling for the event items */
-.event-item {
-    padding: 15px;
-    background-color: #eb0d0d; 
-    margin-bottom: 10px;
-    border: 1px solid #1b0101;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-/* Event item hover effect */
-.event-item:hover {
-    background-color: #f1f1f1; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Styling for the print button */
-button.print-btn {
-    padding: 12px 20px;
-    background-color: #e6890f; 
-    color: white;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
-
-/* Print button hover effect */
-button.print-btn:hover {
-    background-color: #e6890f;
-}
-
-/* Styling for the Update Link */
-.update-link {
-    padding: 12px 20px;
-    background-color: #FF0000; 
-    color: white;
-    font-size: 1em;
-    text-decoration: none; 
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block; 
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-    align-items: center;
-    text-align: center;
-    width: 100px; 
-    align-items: center;
-}
-
-/* Hover effect for the Update link */
-.update-link:hover {
-    background-color: #d35400; 
-}
-
-/* Active state for the Update link */
-.update-link:active {
-    background-color: #c0392b; 
-}
-
-form {
-    display: grid;
-    grid-template-columns: 1fr; 
-    gap: 20px; 
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto; 
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-
+  
+  /* Printable Content Area */
+  .printable-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Event Card */
+  .event-card {
+    background-color: #fff3e0;
+    padding: 20px;
+    border-left: 5px solid #e67e22;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+  }
+  
+  .event-card:hover {
+    transform: scale(1.01);
+  }
+  
+  .event-card h3 {
+    color: #e67e22;
+    margin-bottom: 10px;
+  }
+  
+  .event-card p {
+    margin: 4px 0;
+    color: #5a3e1b;
+  }
+  
+  /* Event Actions */
+  .event-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .event-actions button {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: white;
+  }
+  
+  /* Buttons */
+  .whatsapp-btn {
+    background-color: #25d366;
+  }
+  
+  .whatsapp-btn:hover {
+    background-color: #1ebe5d;
+  }
+  
+  .update-btn {
+    background-color: #f39c12;
+  }
+  
+  .update-btn:hover {
+    background-color: #e67e22;
+  }
+  
+  .delete-btn {
+    background-color: #e74c3c;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  .print-btn {
+    margin-top: 25px;
+    background-color: #d35400;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s;
+  }
+  
+  .print-btn:hover {
+    background-color: #a84300;
+  }
+  
+  /* Modals */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .confirm-modal {
+    background-color: #fff3e0;
+    padding: 25px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .confirm-modal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #5a3e1b;
+  }
+  
+  /* Modal Buttons */
+  .modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  .confirm-btn,
+  .cancel-btn {
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .confirm-btn {
+    background-color: #e67e22;
+    color: white;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #d35400;
+  }
+  
+  .cancel-btn {
+    background-color: #b2bec3;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #95a5a6;
+  }
+  
+  /* No Events Message */
   .no-events-msg {
     text-align: center;
-    color: #333;
-    font-size: 2.2em;
-    margin-bottom: 20px;
-    background-color: #dc3545;
-    color: rgb(255, 255, 255);
+    color: #7f8c8d;
+    font-size: 1.1em;
   }
   

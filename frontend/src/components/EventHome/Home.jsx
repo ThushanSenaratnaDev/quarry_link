@@ -8,15 +8,18 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import Modal from 'react-modal';
-import Nav from '../Nav/NavEvent';
+import 'react-calendar/dist/Calendar.css'; // If you're using the react-calendar package
 
-Modal.setAppElement('#root'); // Required for accessibility
+
+
+Modal.setAppElement('#root');
 
 function Home() {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [holidays, setHolidays] = useState([]);
   const componentRef = useRef();
 
   useEffect(() => {
@@ -29,20 +32,52 @@ function Home() {
         setEvents([]);
       }
     };
+
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    const fetchHolidays = async () => {
+      try {
+        const year = selectedDate.getFullYear();
+        const response = await axios.get('https://calendarific.com/api/v2/holidays', {
+          params: {
+            api_key: 'YS21nWjXoJzHs7O8yuYv0FwJ2YPfLtyRR',
+            country: 'LK',
+            year: year,
+            type: 'national',
+          },
+        });
+        setHolidays(response.data.response.holidays || []);
+      } catch (error) {
+        console.error('Error fetching holidays:', error);
+        setHolidays([]);
+      }
+    };
+
+    fetchHolidays();
+  }, [selectedDate]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   const getEventsForSelectedMonth = () => {
+    return events
+      .filter(event => {
+        const eventDate = new Date(event.date);
+        return (
+          eventDate.getMonth() === selectedDate.getMonth() &&
+          eventDate.getFullYear() === selectedDate.getFullYear()
+        );
+      })
+      .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort events by date
+  };
+
+  const getEventsForSelectedDay = () => {
     return events.filter(event => {
       const eventDate = new Date(event.date);
-      return (
-        eventDate.getMonth() === selectedDate.getMonth() &&
-        eventDate.getFullYear() === selectedDate.getFullYear()
-      );
+      return eventDate.toDateString() === selectedDate.toDateString();
     });
   };
 
@@ -100,115 +135,133 @@ function Home() {
     setSelectedEvent(null);
   };
 
+  const handleSingleEventPDF = () => {
+    const doc = new jsPDF();
+    doc.text(`Event Report - ${selectedEvent.name}`, 14, 16);
+
+    const rows = [[
+      new Date(selectedEvent.date).toLocaleDateString(),
+      selectedEvent.name,
+      selectedEvent.clientName,
+      selectedEvent.eventId,
+    ]];
+
+    doc.autoTable({
+      head: [['Date', 'Event Name', 'Client Name', 'Event ID']],
+      body: rows,
+      startY: 20,
+    });
+
+    doc.save(`${selectedEvent.name}_event_report.pdf`);
+  };
+
+  const handleSingleEventExcel = () => {
+    const row = [{
+      Date: new Date(selectedEvent.date).toLocaleDateString(),
+      'Event Name': selectedEvent.name,
+      'Client Name': selectedEvent.clientName,
+      'Event ID': selectedEvent.eventId,
+      'Phone': selectedEvent.clientPhoneNumber,
+      'Email': selectedEvent.clientMail,
+    }];
+
+    const worksheet = XLSX.utils.json_to_sheet(row);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Event Report');
+
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(data, `${selectedEvent.name}_event_report.xlsx`);
+  };
+
+  const isHoliday = (date) =>
+    holidays.some(h => new Date(h.date.iso).toDateString() === date.toDateString());
+
+  //UI part
   return (
+  
     <div className="home-container">
-      <Nav />
-      <h2 style={{ color: '#ffff', fontSize: '70px', fontWeight: 'bold' }}>Event Planning</h2>
+      
+      <h2> Welcome  ,  Event  Planning </h2>
 
       <div className="calendar-container">
-        <Calendar onChange={handleDateChange} value={selectedDate} />
+        <Calendar
+          onChange={handleDateChange}
+          value={selectedDate}
+          tileClassName={({ date, view }) =>
+            view === 'month' && isHoliday(date) ? 'holiday-tile' : null
+          }
+          tileContent={({ date, view }) =>
+            view === 'month' && events.some(e =>
+              new Date(e.date).toDateString() === date.toDateString()
+            ) ? (
+              <div className="event-bar"></div>
+            ) : null
+          }
+        />
       </div>
 
-      {/* Hidden printable content */}
-      <div style={{ display: 'none' }}>
-        <div ref={componentRef} style={{ padding: '20px' }}>
-          <h3 style={{ textAlign: 'center' }}>
-            Monthly Report - {selectedDate.toLocaleString('default', { month: 'long' })} {selectedDate.getFullYear()}
-          </h3>
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-            <thead>
-              <tr>
-                <th style={{ border: '1px solid black', padding: '8px' }}>Date</th>
-                <th style={{ border: '1px solid black', padding: '8px' }}>Event Name</th>
-                <th style={{ border: '1px solid black', padding: '8px' }}>Client Name</th>
-                <th style={{ border: '1px solid black', padding: '8px' }}>Event ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getEventsForSelectedMonth().map((event, index) => (
-                <tr key={index}>
-                  <td style={{ backgroundColor: '#e67e22', border: '1px solid black', padding: '8px' }}>
-                    {new Date(event.date).toLocaleDateString()}
-                  </td>
-                  <td style={{ border: '1px solid black', padding: '8px' }}>{event.name}</td>
-                  <td style={{ border: '1px solid black', padding: '8px' }}>{event.clientName}</td>
-                  <td style={{ border: '1px solid black', padding: '8px' }}>{event.eventId}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="events-for-selected-day">
+        <h3> Events for {selectedDate.toLocaleDateString()}</h3>
+        {getEventsForSelectedDay().length === 0 ? (
+          <p>No events for this day.</p>
+        ) : (
+          <ul>
+            {getEventsForSelectedDay().map((event, index) => (
+              <li key={index} onClick={() => handleEventClick(event._id)}>
+                <strong>{new Date(event.date).toLocaleTimeString()}</strong> - {event.name} - {event.clientName}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      {/* Visible content for screen */}
-      <div className="monthly-report-section">
+    <div className="monthly-report-section">
         <h3>Monthly Report - {selectedDate.toLocaleString('default', { month: 'long' })} {selectedDate.getFullYear()}</h3>
         {getEventsForSelectedMonth().length === 0 ? (
           <p>No events for this month.</p>
         ) : (
           <ul>
             {getEventsForSelectedMonth().map((event, index) => (
-              <li key={index} onClick={() => handleEventClick(event._id)} style={{ cursor: 'pointer' }}>
+              <li key={index} onClick={() => handleEventClick(event._id)}>
                 <strong>{new Date(event.date).toLocaleDateString()}</strong> - {event.name} - {event.clientName}
               </li>
             ))}
           </ul>
         )}
-
-        <div style={{ marginTop: '20px' }}>
-          <button onClick={handlePrint} style={buttonStyle}>Print</button>
-          <button onClick={handleDownloadPDF} style={buttonStyle}>Download PDF</button>
-          <button onClick={handleDownloadExcel} style={buttonStyle}>Download Excel</button>
-          
+        <div >
+          <button onClick={handlePrint} className="report-button">Print</button>
+          <button onClick={handleDownloadExcel} className="report-button">Download Excel</button>
         </div>
+    </div>
+
+      <div className='model-report-details'>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Event Details"
+         
+        >
+          {selectedEvent && (
+            <>
+              <h2>{selectedEvent.name}</h2>
+              <p><strong>Client:</strong> {selectedEvent.clientName}</p>
+              <p><strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString()}</p>
+              <p><strong>Time:</strong> {new Date(selectedEvent.date).toLocaleTimeString()}</p>
+              <p><strong>Event ID:</strong> {selectedEvent.eventId}</p>
+              <p><strong>Phone:</strong> {selectedEvent.clientPhoneNumber}</p>
+              <p><strong>Email:</strong> {selectedEvent.clientMail}</p>
+              <button onClick={closeModal} >Close</button>
+              <button onClick={handleSingleEventExcel} >Download Excel</button>
+            </>
+          )}
+        </Modal>
       </div>
 
-      {/* Modal for quick event view */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Event Details"
-        style={{
-          content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: '#f8af8d',
-            color: 'white',
-            padding: '20px',
-            borderRadius: '10px',
-          },
-        }}
-      >
-        {selectedEvent && (
-          <>
-            <h2>{selectedEvent.name}</h2>
-            <p><strong>Client:</strong> {selectedEvent.clientName}</p>
-            <p><strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString()}</p>
-            <p><strong>Time:</strong> {new Date(selectedEvent.date).toLocaleTimeString()}</p>
-            <p><strong>Event ID:</strong> {selectedEvent.eventId}</p>
-            <p><strong>Phone:</strong> {selectedEvent.clientPhoneNumber}</p>
-            <p><strong>Email:</strong> {selectedEvent.clientMail}</p>
-            <button onClick={closeModal} style={{ marginTop: '10px', ...buttonStyle }}>Close</button>
-            <button onClick={handleDownloadExcel} style={{ marginTop: '10px', ...buttonStyle }}>Download Excel</button>
-            
-          </>
-        )}
-      </Modal>
     </div>
   );
 }
 
-const buttonStyle = {
-  backgroundColor: '#e67e22',
-  color: 'white',
-  padding: '10px 20px',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-  marginRight: '10px'
-};
+
 
 export default Home;

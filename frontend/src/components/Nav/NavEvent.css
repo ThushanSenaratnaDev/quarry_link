@@ -1,57 +1,31 @@
-/* Nav Container Styling */
-.nav-container {
-    background-color: #ffffff; /* White background for the navbar */
-    padding: 15px 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  /* Unordered list styling */
-  .home-ul {
-    list-style: none;
-    display: flex;
-    gap: 20px; /* Space between menu items */
-    margin: 0;
-  }
-  
-  /* List item styling */
-  .home-ll {
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  
-  /* Link styling */
-  .home-ll a {
-    text-decoration: none;
-    color: #e67e22; /* Orange color for links */
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-  
-  /* Hover effect on links */
-  .home-ll a:hover {
-    color: #d35400; /* Darker orange for hover */
-    transform: translateY(-2px); /* Subtle lift effect */
-  }
-  
-  /* Active link styling (if necessary) */
-  .home-ll a.active {
-    color: #c0392b; /* Redder color for active state */
-    border-bottom: 2px solid #c0392b; /* Adds an underline for active links */
-  }
-  
-  /* Media query for responsiveness */
-  @media screen and (max-width: 768px) {
-    .home-ul {
-      flex-direction: column; /* Stack items vertically for small screens */
-      gap: 15px;
-    }
-    
-    .home-ll a {
-      font-size: 1.1em; /* Slightly smaller font size on mobile */
-    }
-  }
+.navEvent-container {
+  background-color: #ff8c00; /* Dark orange */
+  padding: 10px;
+}
+
+.navEvent-container .home-ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.navEvent-container .home-ll {
+  padding: 10px 20px;
+}
+
+.navEvent-container .home-ll a {
+  text-decoration: none;
+  color: #fff5e6; /* Light orange shade for text */
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
+.navEvent-container .home-ll a:hover {
+  background-color: #ffa54f; /* Lighter orange on hover */
+  color: white;
+}
