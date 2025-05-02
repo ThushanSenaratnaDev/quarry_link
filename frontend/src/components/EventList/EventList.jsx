@@ -8,6 +8,9 @@ import Search from '../Search/Search';
 import { sendWhatsAppMessage } from '../../utils/notification';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
 
 import './EventList.css';
 
@@ -80,6 +83,33 @@ function EventList() {
     setEventToUpdate(null);
   };
 
+  const handleDownloadExcel = () => {
+    if (events.length === 0) {
+      toast.warn('⚠️ No events to download');
+      return;
+    }
+  
+    const rows = events.map((event) => ({
+      Date: new Date(event.date).toLocaleDateString(),
+      'Event Name': event.name,
+      'Client Name': event.clientName,
+      'Client Email': event.clientMail,
+      'Client Phone': event.clientPhoneNumber,
+      'Event ID': event.eventId,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Events');
+  
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(blob, 'Events_Report.xlsx');
+  
+    toast.success('📊 Excel Report Downloaded');
+  };
+  
+
   return (
 
 
@@ -141,9 +171,9 @@ function EventList() {
         )}
       </div>
 
-      <button className="print-btn" onClick={handlePrint}>
-        Download Report
-      </button>
+     
+      <button onClick={handleDownloadExcel} className="report-button">Download Report</button>
+
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (

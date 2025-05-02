@@ -8,9 +8,8 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import Modal from 'react-modal';
-import 'react-calendar/dist/Calendar.css'; // If you're using the react-calendar package
-
-
+import 'react-calendar/dist/Calendar.css';
+import holidays from "../Holidays"; // Import holidays
 
 Modal.setAppElement('#root');
 
@@ -19,7 +18,6 @@ function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [holidays, setHolidays] = useState([]);
   const componentRef = useRef();
 
   useEffect(() => {
@@ -36,28 +34,6 @@ function Home() {
     fetchEvents();
   }, []);
 
-  useEffect(() => {
-    const fetchHolidays = async () => {
-      try {
-        const year = selectedDate.getFullYear();
-        const response = await axios.get('https://calendarific.com/api/v2/holidays', {
-          params: {
-            api_key: 'YS21nWjXoJzHs7O8yuYv0FwJ2YPfLtyRR',
-            country: 'LK',
-            year: year,
-            type: 'national',
-          },
-        });
-        setHolidays(response.data.response.holidays || []);
-      } catch (error) {
-        console.error('Error fetching holidays:', error);
-        setHolidays([]);
-      }
-    };
-
-    fetchHolidays();
-  }, [selectedDate]);
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -71,7 +47,7 @@ function Home() {
           eventDate.getFullYear() === selectedDate.getFullYear()
         );
       })
-      .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort events by date
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
   };
 
   const getEventsForSelectedDay = () => {
@@ -174,15 +150,13 @@ function Home() {
     saveAs(data, `${selectedEvent.name}_event_report.xlsx`);
   };
 
-  const isHoliday = (date) =>
-    holidays.some(h => new Date(h.date.iso).toDateString() === date.toDateString());
+  const isHoliday = (date) => {
+    return holidays.hasOwnProperty(date.toISOString().split('T')[0]);
+  };
 
-  //UI part
   return (
-  
     <div className="home-container">
-      
-      <h2> Welcome  ,  Event  Planning </h2>
+      <h2>Welcome, Event Planning</h2>
 
       <div className="calendar-container">
         <Calendar
@@ -202,7 +176,7 @@ function Home() {
       </div>
 
       <div className="events-for-selected-day">
-        <h3> Events for {selectedDate.toLocaleDateString()}</h3>
+        <h3>Events for {selectedDate.toLocaleDateString()}</h3>
         {getEventsForSelectedDay().length === 0 ? (
           <p>No events for this day.</p>
         ) : (
@@ -216,7 +190,7 @@ function Home() {
         )}
       </div>
 
-    <div className="monthly-report-section">
+      <div className="monthly-report-section">
         <h3>Monthly Report - {selectedDate.toLocaleString('default', { month: 'long' })} {selectedDate.getFullYear()}</h3>
         {getEventsForSelectedMonth().length === 0 ? (
           <p>No events for this month.</p>
@@ -229,18 +203,17 @@ function Home() {
             ))}
           </ul>
         )}
-        <div >
-          <button onClick={handlePrint} className="report-button">Print</button>
-          <button onClick={handleDownloadExcel} className="report-button">Download Excel</button>
+        <div>
+          
+          <button onClick={handleDownloadExcel} className="report-button">Download Monthly Report</button>
         </div>
-    </div>
+      </div>
 
-      <div className='model-report-details'>
+      <div className="model-report-details">
         <Modal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Event Details"
-         
         >
           {selectedEvent && (
             <>
@@ -251,17 +224,14 @@ function Home() {
               <p><strong>Event ID:</strong> {selectedEvent.eventId}</p>
               <p><strong>Phone:</strong> {selectedEvent.clientPhoneNumber}</p>
               <p><strong>Email:</strong> {selectedEvent.clientMail}</p>
-              <button onClick={closeModal} >Close</button>
-              <button onClick={handleSingleEventExcel} >Download Excel</button>
+              <button onClick={closeModal}>Close</button>
+              <button onClick={handleSingleEventExcel}>Download Event</button>
             </>
           )}
         </Modal>
       </div>
-
     </div>
   );
 }
-
-
 
 export default Home;

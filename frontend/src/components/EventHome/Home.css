@@ -15,7 +15,6 @@
   }
 }
 
-/* Apply the animation */
 
 
 /* Main container holding calendar and events */
@@ -59,12 +58,21 @@
   border-radius: 2px;
 }
 
+
+/* Style for holiday dates in the calendar */
+.holiday-tile {
+  background-color: #da0909 !important; /* Light red background for holidays */
+  border-radius: 50%; /* Make the tile rounded */
+  color: rgb(5, 0, 14); /* Change text color to red */
+}
+
+
 /* Events list styles each selected day*/
 .events-for-selected-day {
   background-color: #e09936;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 18px rgba(231, 219, 219, 0.1);
 }
 
 .events-for-selected-day h3{
@@ -162,19 +170,6 @@
   background-color: #d35400;
 }
 
-/* Modal wrapper when comes clicking by event */
-
-.model-report-details {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #938df8;
-  color: rgb(5, 4, 4);
-  padding: 20px;
-  border-radius: 10px;
-}
-
 
 /* Override default react-modal styles */
 .ReactModal__Overlay {
@@ -229,15 +224,6 @@
   background-color: #cf711c;
 }
 
-.model-report-details button {
-  background-color: #e6227a;
-  color: rgb(32, 12, 12);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-}
 
 
 /* Calendar and events column (left corner) */
