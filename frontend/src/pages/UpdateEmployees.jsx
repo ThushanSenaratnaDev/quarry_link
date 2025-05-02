@@ -89,8 +89,7 @@ const inputStyle = {
   padding: "0.5rem",
   border: "1px solid #ccc",
   borderRadius: "6px",
-  boxSizing: "border-box",
-  backgroundColor: "#f9f9f9",
+  boxSizing: "border-box"
 };
 
 const selectStyle = { ...inputStyle };
@@ -404,7 +403,7 @@ const UpdateEmployee = () => {
           </div>
 
           <button type="button" style={updateButtonStyle} onClick={openModal}>Update</button>
-          <button onClick={() => navigate("/employee-management")} style={updateButtonStyle}>Cancel</button>
+          <button type="button" style={updateButtonStyle} onClick={() => navigate("/employee-management")}>Cancel</button>
         </form>
 
         {showModal && (
