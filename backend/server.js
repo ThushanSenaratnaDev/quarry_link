@@ -59,7 +59,7 @@ app.use("/api/blasts", blastRoute);
 app.use("/api/inventory", inventoryRoutes);//Inventory Routes
 app.use("/Clients", router1);
 app.use("/Orders", router2);
-app.use("/api/event", eventRoute);
+app.use("/api/event", eventRoutes);
 app.use("/api/conflicts", conflictRoutes);
 
 
