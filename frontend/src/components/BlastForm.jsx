@@ -308,7 +308,7 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
 )}
 
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="schedule-form">
         {(plannedBy || blast?.plannedBy) && (
           <div className="planned-by">
             Planned By: <span className="text-black">{plannedBy || blast?.plannedBy}</span>

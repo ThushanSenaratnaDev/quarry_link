@@ -13,6 +13,8 @@ import holidays from "../components/Holidays";
 import { toast } from 'sonner';
 import { motion } from "framer-motion"; // 🆕 For animation
 import { Search } from "lucide-react"; // 🆕 Search Icon
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 
 // 🟡 JWT Decode helper
@@ -241,7 +243,7 @@ const CalendarPage = () => {
       onClick={() => setIsSearchExpanded(true)}
       className="search-icon-button"
     >
-      <Search size={20} />
+      <Search size={25} />
     </button>
 
     <input
@@ -328,6 +330,13 @@ const CalendarPage = () => {
           onSelectEvent={handleEventClick}
         />
         <Tooltip />
+
+        {/* PDF Button */}
+      <div className="report">
+        <button onClick={generatePDFReport} className="pdf-button">
+          Get monthly Report
+        </button>
+      </div>
       </div>
 
       {/* Sidebar Monthly View */}
@@ -336,14 +345,14 @@ const CalendarPage = () => {
         <div className="mini-calendar-grid">
           {getMonthDates().map((date, idx) => (
             <div key={idx} className="mini-calendar-item">
-  <MiniCalendar
-  value={date}
-  tileContent={({ date, view }) => {
-    if (view === 'month') {
-      const formatted = moment(date).format('YYYY-MM-DD');
-      const events = filteredBlasts.filter(e => moment(e.start).format('YYYY-MM-DD') === formatted);
+        <MiniCalendar
+        value={date}
+       tileContent={({ date, view }) => {
+        if (view === 'month') {
+        const formatted = moment(date).format('YYYY-MM-DD');
+        const events = filteredBlasts.filter(e => moment(e.start).format('YYYY-MM-DD') === formatted);
   
-      if (events.length > 0) {
+        if (events.length > 0) {
         // 🟡 Build tooltip content
         const eventList = events
           .filter(e => !e.isHoliday)
@@ -399,12 +408,7 @@ const CalendarPage = () => {
         </div>
       </div>
 
-      {/* PDF Button */}
-      <div className="absolute top-5 right-5">
-        <button onClick={generatePDFReport} className="pdf-button">
-          Get monthly Report
-        </button>
-      </div>
+      
 
       {/* Blast Form Modal */}
       {showForm && (
@@ -425,6 +429,7 @@ const CalendarPage = () => {
       )}
     </div>
   );
+
 };
 
 export default CalendarPage;

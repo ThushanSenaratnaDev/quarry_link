@@ -11,45 +11,47 @@
 }
 
 /* Container */
-.search-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-    border: 1px solid var(--secondary-color);
-    border-radius: var(--border-radius);
-    padding: 1.25rem;
-    background: white;
-    box-shadow: var(--box-shadow);
+.detonation-planning-container .search-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: #f9fafb;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Search bar with icon and input */
-.search-bar-wrapper {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    border-radius: var(--border-radius);
-    background: var(--button-color);
-    box-shadow: var(--box-shadow);
-    padding: 0.5rem 0.75rem;
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease-in-out;
-    position: relative;
+.detonation-planning-container .search-bar-wrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #1f2937;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease-in-out;
+  position: relative;
 }
 
-.search-icon-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    color: var(--primary-color);
-    background: none;
-    border: none;
-    cursor: pointer;
+.detonation-planning-container .search-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: #38bdf8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
 }
 
 .search-input {
@@ -175,39 +177,56 @@
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--text-color);
-}
+    color: #1f2937;
+    text-align: center;
+  }
 
-/* Mini Calendar Highlight */
+  
 .highlighted-date {
-    background-color: var(--primary-color) !important;
+    background-color: #f09737 !important; 
     border-radius: 10%;
     color: white;
     font-weight: 600;
-}
+  }
+  
+  .sidebar-calendar .react-calendar__tile{
+    background-color: #eae7e7;
+    color: #1e1d1d;
+  }
 
-/* PDF Button */
-.pdf-button {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background-color: var(--button-color);
-    color: white;
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--border-radius);
+  .sidebar-calendar .react-calendar__navigation button {
+    background: none;
     border: none;
-    font-weight: 400;
+    font-size: 1.1rem;
     cursor: pointer;
-    font-size: 1rem;
-    transition: opacity 0.2s ease;
+    padding: 0.25rem;
+    color: #1f2937;
+    background-color: #eae7e7;
+  }
+
+  /* PDF Button */
+.pdf-button {
+  font-family: sans-serif;
+  background-color: #18266d;
+  color: #fcfcfc;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 400;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+  margin-top: 1.5rem; /* Pushes the button down from the calendar */
+  display: block;
 }
 
-.pdf-button:hover {
-    opacity: 0.9;
-}
-
-/* Modal */
-.modal-overlay {
+  
+  .pdf-button:hover {
+    background-color: #5951cb;
+  }
+  
+  /* Modal */
+  .modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 50;
@@ -226,10 +245,12 @@
     max-width: 30rem;
     min-height: 400px;
     position: relative;
-    box-shadow: var(--box-shadow);
-}
-
-.modal-close-button {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    background-color: #c7ac95;
+  }
+  
+  
+  .modal-content .modal-close-button {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -239,15 +260,15 @@
     border: none;
     cursor: pointer;
     transition: color 0.2s;
-}
-
-.modal-close-button:hover {
-    color: var(--error-color);
-}
-
-.react-tooltip {
-    background-color: var(--button-color);
-    color: white;
+  }
+  
+  .modal-content .modal-close-button:hover {
+    color: #df0d0d;
+  }
+  
+  .sidebar-calendar .react-tooltip {
+    background-color: #1f2937; /* Dark background */
+    color: #ffffff; /* White text */
     font-size: 0.85rem;
     padding: 0.6rem 0.8rem;
     border-radius: var(--border-radius);
