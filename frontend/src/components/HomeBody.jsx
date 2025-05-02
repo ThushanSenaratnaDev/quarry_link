@@ -34,6 +34,7 @@ const HomeBody = () => {
   }, []);
 
   return (
+    <div className="homeBody" >
     <main className="body">
       <section className="notice-board">
         <h2>Notice Board</h2>
@@ -55,6 +56,7 @@ const HomeBody = () => {
         </ul>
       </section>
     </main>
+    </div>
   );
 };
 

@@ -11,6 +11,7 @@ const HomePage = () => {
       <main className="main-content">
         <HomeBody />
       </main>
+      <Footer></Footer>
       
     </div>
   );

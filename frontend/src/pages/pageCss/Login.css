@@ -1,43 +1,38 @@
-/* Center the login container */
 .login-container {
-  width: 400px; /* Increase width */
+  width: 400px;
   padding: 30px;
   background: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 
-  /* Centering using flexbox */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* Increase font size for better readability */
-h2 {
+.login-container h2 {
   margin-bottom: 20px;
   color: #333;
   font-size: 24px;
 }
 
-/* Improve form inputs */
-.login-form {
+.login-container .login-form {
   display: flex;
   flex-direction: column;
 }
 
-.login-input {
+.login-container .login-input {
   margin: 10px 0;
   padding: 12px;
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 18px; /* Make input text bigger */
+  font-size: 18px;
 }
 
-/* Make button larger and more visually appealing */
-.login-button {
+.login-container .login-button {
   background: #007bff;
   color: #fff;
   padding: 12px;
@@ -48,13 +43,12 @@ h2 {
   transition: background 0.3s ease;
 }
 
-.login-button:hover {
+.login-container .login-button:hover {
   background: #0056b3;
 }
 
-/* Adjust error message styling */
-.login-message {
+.login-container .login-message {
   margin-top: 10px;
-  color: red;
+  color: rgb(62, 35, 35);
   font-size: 16px;
 }

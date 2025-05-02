@@ -1,9 +1,9 @@
-.body {
+.homeBody .body {
   width: 100%;
   max-width: 1200px; /* Limit width only for the body content */
 }
 
-.notice-board {
+.homeBody .notice-board {
   width: 100%;
   background-color: white;
   padding: 20px 30px;
@@ -11,11 +11,11 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.notice-board:hover {
+.homeBody .notice-board:hover {
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
-.notice-board h2 {
+.homeBody .notice-board h2 {
   margin-bottom: 16px;
   color: #003366;
   font-size: 24px;
@@ -23,12 +23,12 @@
   padding-bottom: 5px;
 }
 
-.notice-board ul {
+.homeBody .notice-board ul {
   list-style-type: none;
   padding-left: 0;
 }
 
-.notice-board li {
+.homeBody .notice-board li {
   margin-bottom: 12px;
   padding: 8px 12px;
   border-left: 4px solid #004080;
@@ -37,21 +37,21 @@
   transition: background-color 0.2s;
 }
 
-.notice-board li:hover {
+.homeBody .notice-board li:hover {
   background-color: #e6f0ff;
 }
 
-.blast-header {
+.homeBody .blast-header {
   margin-top: 20px;
   font-weight: bold;
   color: #d9534f;
 }
 
-.blast-item {
+.homeBody .blast-item {
   border-left-color: #d9534f;
 }
 
-.no-blast {
+.homeBody .no-blast {
   font-style: italic;
   color: #28a745;
   border-left-color: #28a745;

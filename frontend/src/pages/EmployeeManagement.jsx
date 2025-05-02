@@ -10,7 +10,7 @@ const EmployeeManagement = () => {
 
     return (
         <div>
-        
+        <Header />
         <div className="employee-management-wrapper">
             
             <div className="employee-management-container">
@@ -25,8 +25,9 @@ const EmployeeManagement = () => {
                 <TableComponent />
                 
             </div>
+            
         </div>
-        
+        <Footer></Footer>
         </div>
     );
 };

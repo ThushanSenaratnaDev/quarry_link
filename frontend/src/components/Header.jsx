@@ -35,6 +35,7 @@ const Header = () => {// Header component to display the navigation bar and user
   return (
     <header className="header-unique">
       <div className="header-unique-top">
+        
         <div className="header-unique-user-section">
           <span className="header-unique-user-name">{userName}</span>
           <button className="header-unique-logout-btn" onClick={handleLogout}>Logout</button>
