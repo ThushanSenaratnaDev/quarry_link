@@ -1,7 +1,5 @@
-// UpdateEmployee.jsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "../pages/pageCss/UpdateEmployee.css";
 
 const mockPermissions = [
   "View Employees", "Edit Employees",
@@ -13,15 +11,9 @@ const mockPermissions = [
 ];
 
 const mockPositions = [
-  "Administrator",
-  "Administrator - Client",
-  "Administrator - Inventory",
-  "Administrator - Event",
-  "Administrator - Order",
-  "Administrator - Employees",
-  "General Employee",
-  "Owner",
-  "Explosives Engineer",
+  "Administrator", "Administrator - Client", "Administrator - Inventory",
+  "Administrator - Event", "Administrator - Order", "Administrator - Employees",
+  "General Employee", "Owner", "Explosives Engineer"
 ];
 
 const rolePermissionMap = {
@@ -33,6 +25,161 @@ const rolePermissionMap = {
   "Administrator - Employees": ["View Employees", "Edit Employees"],
   "Explosives Engineer": ["View Detonation", "Edit Detonation"],
   "Owner": mockPermissions.filter(p => p.startsWith("View"))
+};
+
+const pageStyle = {
+  padding: "2rem",
+  backgroundColor: "#f9f9f9",
+  minHeight: "100vh",
+};
+
+const containerStyle = {
+  backgroundColor: "white",
+  padding: "2rem",
+  borderRadius: "8px",
+  boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+  maxWidth: "900px",
+  margin: "auto"
+};
+
+const headingStyle = {
+  textAlign: "center",
+  marginBottom: "1.5rem",
+  color: "#333"
+};
+
+const editButtonStyle = {
+  marginBottom: "1.5rem",
+  backgroundColor: "#f0ad4e",
+  color: "#fff",
+  padding: "0.5rem 1rem",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer"
+};
+
+const formStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+  width: "100%",
+  maxWidth: "800px",
+};
+
+const fieldRowStyle = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "1rem",
+  alignItems: "center",
+  width: "100%",
+  maxWidth: "none"
+};
+
+const labelStyle = {
+  flexBasis: "100%",
+  fontWeight: "bold",
+  color: "#333"
+};
+
+const inputStyle = {
+  flex: "1",
+  width: "100%",
+  maxWidth: "none",
+  minWidth: "200px",
+  padding: "0.5rem",
+  border: "1px solid #ccc",
+  borderRadius: "6px",
+  boxSizing: "border-box",
+  backgroundColor: "#f9f9f9",
+};
+
+const selectStyle = { ...inputStyle };
+
+const smallButtonStyle = {
+  marginLeft: "auto",
+  padding: "0.4rem 0.8rem",
+  backgroundColor: "#007bff",
+  color: "white",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer"
+};
+
+const permissionsContainerStyle = {
+  marginTop: "1rem",
+  marginBottom: "2rem",
+};
+
+const permissionLabelStyle = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  margin: "0.5rem 1rem 0.5rem 0",
+  whiteSpace: "nowrap",
+  fontWeight: "500",
+};
+
+const updateButtonStyle = {
+  width: "100%",
+  maxWidth: "none",
+  marginTop: "2rem",
+  padding: "0.75rem",
+  backgroundColor: "#007bff",
+  color: "white",
+  fontWeight: "bold",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer"
+};
+
+const modalOverlayStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.6)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 1000
+};
+
+const modalContentStyle = {
+  backgroundColor: "white",
+  padding: "2rem",
+  borderRadius: "8px",
+  maxWidth: "700px",
+  width: "90%",
+  maxHeight: "90vh",
+  overflowY: "auto",
+};
+
+const modalActionsStyle = {
+  display: "flex",
+  justifyContent: "flex-end",
+  marginTop: "2rem",
+  gap: "1rem"
+};
+
+const modalConfirmButtonStyle = {
+  padding: "0.5rem 1.5rem",
+  backgroundColor: "#007bff",
+  color: "white",
+  fontWeight: "bold",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer"
+};
+
+const modalCancelButtonStyle = {
+  padding: "0.5rem 1.5rem",
+  backgroundColor: "#dc3545",
+  color: "white",
+  fontWeight: "bold",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer"
 };
 
 const UpdateEmployee = () => {
@@ -101,9 +248,7 @@ const UpdateEmployee = () => {
       const current = new Set(prev.permissions);
       if (checked) {
         current.add(value);
-        if (value.startsWith("Edit ")) {
-          current.add(value.replace("Edit", "View").trim());
-        }
+        if (value.startsWith("Edit ")) current.add(value.replace("Edit", "View").trim());
       } else {
         current.delete(value);
       }
@@ -136,12 +281,10 @@ const UpdateEmployee = () => {
 
     const response = await fetch(`http://localhost:5001/api/employees/update/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
     });
+
     const result = await response.json();
     if (response.ok) {
       alert("Employee updated successfully!");
@@ -157,101 +300,96 @@ const UpdateEmployee = () => {
   if (!employeeData) return <p>Loading...</p>;
 
   return (
-    <div className="update-employee-page">
-      <div className="update-employee-container">
-        <h2>Update Employee</h2>
-        <button className="edit-all-button" onClick={enableAllFields}>Enable All Fields</button>
-        <form className="add-employee-form">
+    <div style={pageStyle}>
+      <div style={containerStyle}>
+        <h2 style={headingStyle}>Update Employee</h2>
+        <button style={editButtonStyle} onClick={enableAllFields}>Enable All Fields</button>
+        <form style={formStyle}>
           <h3>Employee Information</h3>
-          <br />
           {["employeeId", "username", "name", "dateOfBirth", "contactNumber", "address", "qualification", "bankAccount", "hireDate", "salary"].map(name => (
-            <div className="field-row" key={name}>
-             <label>{name.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</label>
+            <div style={fieldRowStyle} key={name}>
+              <label style={labelStyle}>{name.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</label>
               <input
                 type={name === "dateOfBirth" || name === "hireDate" ? "date" : name === "salary" ? "number" : "text"}
                 name={name}
                 value={employeeData[name]}
                 onChange={handleChange}
                 readOnly={name === "employeeId" || name === "username" || (!editAll && !editableFields[name])}
+                style={inputStyle}
               />
               {name !== "employeeId" && name !== "username" && (
-                <button type="button" onClick={() => toggleEditField(name)}>
+                <button type="button" onClick={() => toggleEditField(name)} style={smallButtonStyle}>
                   {editableFields[name] ? "🔒 Lock" : "✏️ Edit"}
                 </button>
               )}
             </div>
           ))}
-          
+
           <h3>Emergency Contact</h3>
-          <br />
           {["emergencyContactName", "emergencyContactPhone", "emergencyContactRelationship"].map(name => (
-            <div className="field-row" key={name}>
-              <label>{name.replace("emergencyContact", "Emergency Contact ")}</label>
+            <div style={fieldRowStyle} key={name}>
+              <label style={labelStyle}>{name.replace("emergencyContact", "Emergency Contact ")}</label>
               <input
                 type="text"
                 name={name}
                 value={employeeData[name]}
                 onChange={handleChange}
                 readOnly={!editAll && !editableFields[name]}
+                style={inputStyle}
               />
-              <button type="button" onClick={() => toggleEditField(name)}>
+              <button type="button" onClick={() => toggleEditField(name)} style={smallButtonStyle}>
                 {editableFields[name] ? "🔒 Lock" : "✏️ Edit"}
               </button>
             </div>
           ))}
-            <br />
+
           <h3>Employee Status</h3>
-          <br />
-          <div className="field-row">
-            <label>Employment Status</label>
+          <div style={fieldRowStyle}>
+            <label style={labelStyle}>Employment Status</label>
             <select
               name="employmentStatus"
               value={employeeData.employmentStatus}
               onChange={handleChange}
               disabled={!editAll && !editableFields["employmentStatus"]}
+              style={selectStyle}
             >
               <option value="Full-Time">Full-Time</option>
               <option value="Part-Time">Part-Time</option>
               <option value="Contract">Contract</option>
               <option value="Intern">Intern</option>
             </select>
-            <button type="button" onClick={() => toggleEditField("employmentStatus")}> 
+            <button type="button" onClick={() => toggleEditField("employmentStatus")} style={smallButtonStyle}>
               {editableFields["employmentStatus"] ? "🔒 Lock" : "✏️ Edit"}
             </button>
           </div>
 
-          <div className="field-row">
-            <label>Position</label>
+          <div style={fieldRowStyle}>
+            <label style={labelStyle}>Position</label>
             <select
               name="position"
               value={employeeData.position}
               onChange={handleChange}
               disabled={!editAll && !editableFields["position"]}
+              style={selectStyle}
             >
               <option value="">Select Position</option>
               {mockPositions.map(pos => (
                 <option key={pos} value={pos}>{pos}</option>
               ))}
             </select>
-            <button type="button" onClick={() => toggleEditField("position")}> 
+            <button type="button" onClick={() => toggleEditField("position")} style={smallButtonStyle}>
               {editableFields["position"] ? "🔒 Lock" : "✏️ Edit"}
             </button>
           </div>
 
-          <div className="permissions-container">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <label>Permissions:</label>
-              <button
-                type="button"
-                onClick={() => applyRoleDefaults(employeeData.position)}
-                style={{ marginLeft: "auto", background: "#e2e8f0", border: "1px solid #ccc", borderRadius: "5px", padding: "5px 10px", cursor: "pointer" }}
-              >
-                Reset to Role Defaults
-              </button>
-            </div>
+          <div style={permissionsContainerStyle}>
+            <label>Permissions:</label>
+            <button type="button" onClick={() => applyRoleDefaults(employeeData.position)} style={smallButtonStyle}>
+              Reset to Role Defaults
+            </button>
             <div>
               {mockPermissions.map(perm => (
-                <label key={perm}>
+                <label key={perm} style={permissionLabelStyle}>
                   <input
                     type="checkbox"
                     value={perm}
@@ -265,23 +403,22 @@ const UpdateEmployee = () => {
             </div>
           </div>
 
-          <button type="button" className="update-submit-button" onClick={openModal}>Update</button>
+          <button type="button" style={updateButtonStyle} onClick={openModal}>Update</button>
+          <button onClick={() => navigate("/employee-management")} style={updateButtonStyle}>Cancel</button>
         </form>
 
         {showModal && (
-          <div className="modal-overlay">
-            <div className="modal-content">
+          <div style={modalOverlayStyle}>
+            <div style={modalContentStyle}>
               <h2>Confirm Changes</h2>
               <ul>
                 {Object.entries(getChangedFields()).map(([key, value]) => (
-                  <li key={key} style={{ color: "green" }}>
-                    <strong>{key}:</strong> {JSON.stringify(value)}
-                  </li>
+                  <li key={key} style={{ color: "green" }}><strong>{key}:</strong> {JSON.stringify(value)}</li>
                 ))}
               </ul>
-              <div className="modal-actions">
-                <button onClick={handleUpdateConfirm}>Confirm</button>
-                <button onClick={closeModal}>Cancel</button>
+              <div style={modalActionsStyle}>
+                <button onClick={handleUpdateConfirm} style={modalConfirmButtonStyle}>Confirm</button>
+                <button onClick={closeModal} style={modalCancelButtonStyle}>Cancel</button>
               </div>
             </div>
           </div>
