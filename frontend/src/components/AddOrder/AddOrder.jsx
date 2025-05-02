@@ -208,9 +208,8 @@ function AddOrder() {
                     <label htmlFor="status">Status</label>
                     <select name="status" value={inputs.status} onChange={handleChange} required>
                         <option value="status">Status</option>
-                        <option value="instock">In Stock</option>
-                        <option value="outofstock">Out of Stock</option>
                         <option value="completed">Completed</option>
+                        <option value="prossesing">Prossesing</option>
                         <option value="cancled">Canceled</option>
                     </select>
                 </div>
