@@ -55,6 +55,12 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
   }, [blast, selectedDate]);
 
   useEffect(() => {
+    if (formData.expDate) {
+      checkForConflicts();
+    }
+  }, [formData.expDate]);
+
+  useEffect(() => {
     const fetchTextContent = async () => {
       if (formData.documentation && typeof formData.documentation === "string" && formData.documentation.endsWith(".txt")) {
         try {
@@ -97,10 +103,17 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === 'documentation') {
       setFormData((prevData) => ({
         ...prevData,
         documentation: files[0],
+      }));
+    } else if (name === 'expDate') {
+      const formattedDate = new Date(value).toISOString().split('T')[0];
+      setFormData((prevData) => ({
+        ...prevData,
+        expDate: formattedDate,
       }));
     } else {
       setFormData((prevData) => ({
@@ -108,7 +121,7 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
         [name]: value,
       }));
     }
-  };
+};
 
 
 
@@ -223,15 +236,20 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
     formData.explosives;
 
     const checkForConflicts = async () => {
-      const start = new Date(`${formData.expDate}T${formData.expStartTime}`);
-      const end = new Date(`${formData.expDate}T${formData.expEndTime}`);
+      if (!formData.expDate) {
+        console.log("Skipping conflict check, required data missing");
+        return;
+      }
+    
+      const formattedDate = new Date(formData.expDate).toISOString().split('T')[0]; // Force as String
+    
+      console.log("Running conflict check for date:", formattedDate);
+    
       try {
-        const response = await axios.post('/api/check-conflicts', { start, end });
+        const response = await axios.post('http://localhost:5001/api/conflicts/check-conflicts', { date: formattedDate });
         if (response.data.conflicts.length > 0) {
           setConflicts(response.data.conflicts);
           setShowPopup(true);
-        } else {
-          // Proceed with scheduling
         }
       } catch (error) {
         console.error('Error checking conflicts:', error);
@@ -274,6 +292,20 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
   </div>
 )}
 
+{conflicts.length > 0 && (
+  <div className="conflict-warning-banner">
+    <h4>⚡ Conflict Detected!</h4>
+    <p>There are other planned events during this time. Please review carefully:</p>
+    <ul>
+      {conflicts.map((conflict, index) => (
+        <li key={index}>
+          <strong>{conflict.type === 'blast' ? 'Blast' : 'Event'}:</strong> {conflict.title} <br />
+          <strong>Time:</strong> {new Date(conflict.start).toLocaleString()} - {new Date(conflict.end).toLocaleString()}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
 
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
