@@ -15,13 +15,13 @@ export const loginEmployee = async (req, res) => {
         // Check if employee exists
         const employee = await Employee.findOne({ username });
         if (!employee) {
-            return res.status(404).json({ message: "Employee not found - authController." });
+            return res.status(404).json({ message: "Employee not found." });
         }
 
         // Validate password
         const isPasswordValid = await bcrypt.compare(password, employee.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid username or password - authController." });
+            return res.status(401).json({ message: "Invalid username or password " });
         }
 
         // Generate JWT token with permissions

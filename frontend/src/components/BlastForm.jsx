@@ -317,7 +317,7 @@ const BlastForm = ({ selectedDate, blast, plannedBy, onClose, onSave }) => {
         </label>
 
         <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button type="submit" style={{ ...inputStyle, backgroundColor: '#0D1D25', color: '#fff' }} disabled={!isFormValid}>
+          <button type="submit" style={{ ...inputStyle, backgroundColor: '#C5630C', color: '#fff' }} disabled={!isFormValid}>
             {blast ? 'Save Changes' : 'Create Blast'}
           </button>
 

@@ -6,6 +6,12 @@
     flex-direction: column;
 }
 
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
 .headerTop {
     display: flex;
     justify-content: flex-end;

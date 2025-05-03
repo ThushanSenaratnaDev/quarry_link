@@ -3,7 +3,10 @@
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  background-color: #f4f6f8;
+  background-size: cover;
+  background-position: center;
+  animation: backgroundSlideshow 24s infinite;
+  transition: background-image 1s ease-in-out;
 }
 
 .mainContent {
@@ -12,4 +15,24 @@
   display: flex;
   justify-content: center;
   padding: 40px 20px;
+
+}
+
+/* Keyframes for rotating background images */
+@keyframes backgroundSlideshow {
+  0% {
+    background-image: url("/public/images/main1.jpeg");
+  }
+  25% {
+    background-image: url("/public/images/main2.jpeg");
+  }
+  50% {
+    background-image: url("/public/images/main3.jpeg");
+  }
+  75% {
+    background-image: url("/public/images/main4.jpeg");
+  }
+  100% {
+    background-image: url("/public/images/main1.jpeg");
+  }
 }

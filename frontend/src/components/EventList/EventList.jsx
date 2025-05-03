@@ -13,6 +13,8 @@ import { saveAs } from 'file-saver';
 import './EventList.css';
 import Header from "../Header";
 import Footer from "../Footer";
+import moment from 'moment';
+
 
 const URL = 'http://localhost:5001/api/event';
 
@@ -171,7 +173,7 @@ function EventList() {
               <h3>{event.name}</h3>
               <p><strong>Client:</strong> {event.clientName}</p>
               <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
-              <p><strong>Time:</strong> {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}</p>
+              <p><strong>Time:</strong> {moment(event.date).format('hh:mm A')}</p>
               <p><strong>Event ID:</strong> {event.eventId}</p>
               <p><strong>Client Phone:</strong> {event.clientPhoneNumber}</p>
               <p><strong>Client Email:</strong> {event.clientMail}</p>

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Dashboard.css';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -195,6 +198,9 @@ function Dashboard() {
   };
 
   return (
+    <>
+
+    <Header/>
     <div className="dashboard-container">
       <h1 className="dashboard-title">Smart Sales & Order Analytics Dashboard</h1>
 
@@ -260,6 +266,8 @@ function Dashboard() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 

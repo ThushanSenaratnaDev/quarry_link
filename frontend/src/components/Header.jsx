@@ -31,16 +31,29 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <h1 style={{ 
-  textAlign: "center", 
-  margin: "10px 0", 
-  fontSize: "28px", 
-  fontWeight: "bold", 
-  color: "FFFF", 
-  letterSpacing: "1px" 
+<div style={{ 
+  display: 'flex', 
+  alignItems: 'center', 
+  justifyContent: 'center' 
 }}>
-  Quarry Link
-</h1>
+  <div className={styles.headerLeft} style={{ marginRight: "10px" }}>
+    <img 
+      src="/images/QuarryLink.svg" 
+      alt="Quarry Link Logo" 
+      style={{ height: "80px", width: "auto" }} 
+    />
+  </div>
+  <h1 style={{ 
+    margin: "10px 0", 
+    fontSize: "28px", 
+    fontWeight: "bold", 
+    color: "#FFFF", 
+    letterSpacing: "1px" 
+  }}>
+    Quarry Link
+  </h1>
+</div>
+
       <div className={styles.headerTop}>
         <div className={styles.userSection}>
           <span className={styles.userName}>{userName}</span>
@@ -67,7 +80,7 @@ const Header = () => {
         {permissions.includes("View Inventory") && (
           <Link to="/inventory-control">Inventory Control</Link>
         )}
-        {permissions.includes("View Event") && (
+        {permissions.includes("View Events") && (
           <Link to="/eventHome">Event Planning</Link>
         )}
         {permissions.includes("View Orders") && (

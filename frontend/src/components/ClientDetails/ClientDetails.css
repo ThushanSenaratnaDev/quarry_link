@@ -1,7 +1,7 @@
 .client-details-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  background: radial-gradient(circle at center, #F0A35E 8%, #ffffff);
   min-height: 100vh;
   width: 100%;
 }

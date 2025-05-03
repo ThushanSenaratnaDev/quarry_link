@@ -4,7 +4,7 @@
     align-items: flex-start;
     min-height: 100vh;
     padding: 30px;
-    background-color: var(--background-color);
+    background: radial-gradient(circle at top right, white 55%, #F0A35E);
 }
 
 .container {

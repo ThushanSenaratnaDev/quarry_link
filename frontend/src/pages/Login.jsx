@@ -48,6 +48,7 @@ const Login = () => {
         fontSize: "36px",
         fontWeight: "bold",
         letterSpacing: "2px",
+        
     };
 
     const contentStyle = {
@@ -55,6 +56,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        backgroundImage: "url('/images/QuarryLink5.svg')",
     };
 
     const loginContainerStyle = {
@@ -165,7 +167,8 @@ const Login = () => {
                             Login
                         </button>
                     </form>
-                    {message && <p style={messageStyle}>{message}</p>}
+                    
+                    {message && <p style={{ color: "green",textAlign:"center", fontWeight: "bold" }}>{message}</p>}
                 </div>
             </div>
 

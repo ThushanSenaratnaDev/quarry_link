@@ -7,7 +7,7 @@
   gap: 1.5rem;
   padding: 1.5rem;
   position: relative;
-  background-color: #dbe1eb;
+  background: radial-gradient(circle at center, #F0A35E 8%, #ffffff);
 }
 
 /* Container */
@@ -25,14 +25,20 @@ font-family: 'Inter', sans-serif;
 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+.input-white-placeholder::placeholder {
+  color: #ffff;
+  opacity: 1; /* Ensures it's not semi-transparent */
+}
+
+
 /* Search bar with icon and input */
 .detonation-planning-container .search-bar-wrapper {
 display: flex;
 align-items: center;
 overflow: hidden;
 border-radius: 9999px;
-background: #1f2937;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+background: #C5630C;
+box-shadow: 0 2px 6px rgba(224, 111, 6, 0.1);
 padding: 0.5rem 0.75rem;
 width: 100%;
 max-width: 400px;
@@ -60,7 +66,7 @@ border: none;
 outline: none;
 font-size: 1rem;
 padding-left: 0.75rem;
-color: #f9fafb;
+color: #ffff;
 background: transparent;
 transition: opacity 0.3s ease;
 }
@@ -160,6 +166,7 @@ transform: translateY(-1px);
   font-family: sans-serif;
   flex-grow: 1;
   min-width: 350px;
+  background: radial-gradient(circle at center, #F0A35E 8%, #ffffff);
 }
 
 .main-calendar h2 {

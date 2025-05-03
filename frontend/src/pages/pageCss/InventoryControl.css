@@ -1,6 +1,6 @@
 .inventory-control {
   font-family: "Arial", sans-serif;
-  background-color: #f4f4f9;
+  background: radial-gradient(circle at center, #F0A35E 8%, #ffffff);
   margin: 0;
   padding: 50px;
   border-radius: 10px;
