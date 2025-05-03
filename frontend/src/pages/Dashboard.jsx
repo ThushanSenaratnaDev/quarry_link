@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Dashboard.css';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -72,7 +75,7 @@ function Dashboard() {
           .filter(order => new Date(order.orderDate) >= oneWeekAgo)
           .reduce((sum, order) => sum + order.totalPrice, 0);
 
-        // ✅ FIXED: Aggregate by each product in order.products
+        
         const productSales = orders.reduce((acc, order) => {
           if (Array.isArray(order.products)) {
             order.products.forEach((product) => {
@@ -195,6 +198,8 @@ function Dashboard() {
   };
 
   return (
+    <>
+        <Header />
     <div className="dashboard-container">
       <h1 className="dashboard-title">Smart Sales & Order Analytics Dashboard</h1>
 
@@ -260,6 +265,8 @@ function Dashboard() {
         </div>
       </div>
     </div>
+    <Footer />
+        </>
   );
 }
 

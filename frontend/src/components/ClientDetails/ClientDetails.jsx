@@ -24,7 +24,7 @@ function Clients() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredClients, setFilteredClients] = useState([]);
 
- // ✅ Instead of content: () => componentRef.current
+
 const componentRef = useRef(null);
 
 const handlePrint = useReactToPrint({
