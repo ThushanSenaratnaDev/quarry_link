@@ -73,8 +73,8 @@ const ChatWidget = ({ currentUser, isOpen, setIsOpen }) => {
     <div
       style={{
         position: "fixed",
-        bottom: "1px",
-        right: "1px",
+        bottom: "78px",
+        right: "15px",
         zIndex: 1000,
         width: "35%",
       }}
@@ -102,11 +102,13 @@ const ChatWidget = ({ currentUser, isOpen, setIsOpen }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            width: "100%",
-            height: "10%",
+            width: "90%",
+            marginTop: "5%",
+            marginLeft: "5%",
+            marginRight: "5%",
           }}
         >
-          <span>Chat with Order Manager</span>
+          <span>Chat with Inventory Manager</span>
           <button
             onClick={() => setIsOpen(false)}
             style={{
@@ -161,10 +163,12 @@ const ChatWidget = ({ currentUser, isOpen, setIsOpen }) => {
                     style={{
                       backgroundColor: isOwnMessage ? "#dcf8c6" : "#f1f0f0",
                       borderRadius: "10px",
-                      padding: "8px 12px",
-                      maxWidth: "70%",
+                      padding: "2px 8px",
+                      maxWidth: "40%",
+                      maxHeight: "90%",
                       textAlign: "left",
-                      marginLeft: isOwnMessage ? "auto" : "0",
+                      marginLeft: isOwnMessage ? "auto" : "50px",
+                      marginTop: "10px",
                     }}
                   >
                     {!isOwnMessage && (
@@ -207,7 +211,20 @@ const ChatWidget = ({ currentUser, isOpen, setIsOpen }) => {
               placeholder="Type message..."
               style={{ flex: 1, padding: "0.5rem" }}
             />
-            <button onClick={sendMessage} disabled={!content.trim()}>
+            <button
+              onClick={sendMessage}
+              disabled={!content.trim()}
+              style={{
+                padding: "8px 16px",
+                borderRadius: "6px",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                backgroundColor: "#e6890f",
+                borderColor: "white",
+                color: "white",
+              }}
+            >
               Send
             </button>
           </div>

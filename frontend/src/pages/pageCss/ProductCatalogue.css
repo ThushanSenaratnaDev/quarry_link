@@ -75,13 +75,20 @@
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
+  width: 60%;
 }
 
-.search-bar,
+.search-bar {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .search-filter {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  width: 42%;
 }
 
 /* Product Cards */
@@ -164,8 +171,8 @@
   font-size: 12px; /* Slightly smaller than input text */
   display: block; /* Ensures it stays below the input field */
   text-align: left; /* Aligns to the left of the input field */
-  margin-left: 5px;
-  height: 16px; /* Fixed height ensures space is always reserved */
+  margin-left: 45px;
+  height: 25px; /* Fixed height ensures space is always reserved */
   visibility: hidden; /* Initially hidden */
   background-color: #f8d7da; /* Light red background */
   border-radius: 20px; /* Rounded corners, making it capsule-like */

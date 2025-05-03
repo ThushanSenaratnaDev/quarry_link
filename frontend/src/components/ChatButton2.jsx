@@ -5,8 +5,8 @@ const ChatButton = ({ onClick }) => {
     <div
       style={{
         position: "fixed",
-        bottom: "50px",
-        right: "10px",
+        bottom: "110px",
+        right: "20px",
         width: "250px",
         height: "3%",
         padding: "0",
@@ -25,7 +25,7 @@ const ChatButton = ({ onClick }) => {
           fontWeight: "bold",
         }}
       >
-        💬 Chat with Order Manager
+        💬 Chat with Inventory Manager
       </button>
     </div>
   );

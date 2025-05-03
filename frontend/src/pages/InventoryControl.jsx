@@ -10,7 +10,6 @@ import ChatButton from "../components/ChatButton";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-
 const getCurrentUser = () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
@@ -132,7 +131,6 @@ const InventoryControl = () => {
       doc.setFontSize(18);
       doc.text("Inventory Report", 14, 20);
 
-      // 🧾 Generate table
       const tableBody = data.map((item, i) => [
         i + 1,
         item.name,
@@ -169,7 +167,6 @@ const InventoryControl = () => {
         headStyles: { fillColor: [22, 160, 133] },
       });
 
-      // 🔁 Group products by category
       const groupedByCategory = {};
       data.forEach((item) => {
         if (!groupedByCategory[item.category]) {
@@ -186,7 +183,6 @@ const InventoryControl = () => {
         const ordered = products.map((p) => p.orderedStock);
         const available = products.map((p) => p.availableStock);
 
-        // 🖼️ Draw chart for this category
         const chart = new Chart(ctx, {
           type: "bar",
           data: {
@@ -196,13 +192,13 @@ const InventoryControl = () => {
                 label: "Ordered Stock",
                 data: ordered,
                 backgroundColor: "red",
-                barThickness: 20, // ✅ fixed width for each bar
+                barThickness: 20,
               },
               {
                 label: "Available Stock",
                 data: available,
                 backgroundColor: "green",
-                barThickness: 20, // ✅ match for consistency
+                barThickness: 20,
               },
             ],
           },
@@ -234,15 +230,14 @@ const InventoryControl = () => {
           },
         });
 
-        // Wait for canvas to render chart
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         const image = ctx.canvas.toDataURL("image/png");
 
-        doc.addPage(); // 📄 Start new page for each chart
-        doc.addImage(image, "PNG", 15, 20, 260, 100); // adjust size/position as needed
+        doc.addPage();
+        doc.addImage(image, "PNG", 15, 20, 260, 100);
 
-        chart.destroy(); // cleanup
+        chart.destroy();
       }
 
       doc.save("inventory_report_with_barcharts.pdf");
@@ -250,123 +245,126 @@ const InventoryControl = () => {
       console.error("Failed to generate report:", err);
       alert("Error generating report.");
     } finally {
-      setIsGenerating(false); // 🟢 Hide overlay
+      setIsGenerating(false);
     }
   };
 
   return (
     <>
       <Header />
-    <div className="inventory-control">
-      <h2>Inventory Control</h2>
-      <button onClick={generateInventoryReport} style={{ margin: "1rem 0" }}>
-        Download Inventory Report
-      </button>
-      <canvas
-        id="categoryBarChart"
-        width="800"
-        height="400"
-        style={{ display: "none" }}
-      ></canvas>
-
-      <ChatButton onClick={() => setIsChatOpen(true)} />
-      <ChatWidget
-        currentUser={getCurrentUser()}
-        isOpen={isChatOpen}
-        setIsOpen={setIsChatOpen}
-      />
-      <div className="inventory-header">
-        <select
-          onChange={(e) => setSearchBy(e.target.value)}
-          className="search-filter"
+      <div className="inventory-control">
+        <h2>Inventory Control</h2>
+        <button
+          onClick={generateInventoryReport}
+          style={{ margin: "1rem 0", marginLeft: "40.5%" }}
         >
-          <option value="name">Search by Name</option>
-          <option value="category">Search by Category</option>
-        </select>
-        <input
-          type="text"
-          placeholder={`Search by ${searchBy}...`}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar"
+          Download Inventory Report
+        </button>
+        <canvas
+          id="categoryBarChart"
+          width="800"
+          height="400"
+          style={{ display: "none" }}
+        ></canvas>
+
+        <ChatButton onClick={() => setIsChatOpen(true)} />
+        <ChatWidget
+          currentUser={getCurrentUser()}
+          isOpen={isChatOpen}
+          setIsOpen={setIsChatOpen}
         />
-      </div>
-
-      {/* Group products by category */}
-      {Array.from(
-        new Set(filteredProducts.map((product) => product.category))
-      ).map((category) => (
-        <div key={category}>
-          <h3>{category}</h3>
-          <table border="1" className="im-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Ordered Stock</th>
-                <th>Available Stock</th>
-                <th>Total Stock</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts
-                .filter((product) => product.category === category)
-                .map((product) => (
-                  <tr key={product._id}>
-                    <td>{product.name}</td>
-
-                    {/* Ordered Stock Field */}
-                    <td>
-                      {editingRow === product._id ? (
-                        <input
-                          type="number"
-                          value={editedValues.orderedStock}
-                          onChange={(e) =>
-                            handleChange("orderedStock", e.target.value)
-                          }
-                        />
-                      ) : (
-                        product.orderedStock
-                      )}
-                    </td>
-
-                    {/* Available Stock Field */}
-                    <td>
-                      {editingRow === product._id ? (
-                        <input
-                          type="number"
-                          value={editedValues.availableStock}
-                          onChange={(e) =>
-                            handleChange("availableStock", e.target.value)
-                          }
-                        />
-                      ) : (
-                        product.availableStock
-                      )}
-                    </td>
-
-                    {/* Total Stock (Read-only) */}
-                    <td>{product.orderedStock + product.availableStock}</td>
-
-                    {/* Action Button */}
-                    <td>
-                      {editingRow === product._id ? (
-                        <button onClick={() => saveEdit(product._id)}>
-                          Save
-                        </button>
-                      ) : (
-                        <button onClick={() => startEditing(product)}>
-                          Edit
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+        <div className="inventory-header">
+          <select
+            onChange={(e) => setSearchBy(e.target.value)}
+            className="search-filter"
+          >
+            <option value="name">Search by Name</option>
+            <option value="category">Search by Category</option>
+          </select>
+          <input
+            type="text"
+            placeholder={`Search by ${searchBy}...`}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-bar"
+          />
         </div>
-      ))}
-      {isGenerating && <LoadingOverlay />}
-    </div>
+
+        {/* Group products by category */}
+        {Array.from(
+          new Set(filteredProducts.map((product) => product.category))
+        ).map((category) => (
+          <div key={category}>
+            <h3>{category}</h3>
+            <table border="1" className="im-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Ordered Stock</th>
+                  <th>Available Stock</th>
+                  <th>Total Stock</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts
+                  .filter((product) => product.category === category)
+                  .map((product) => (
+                    <tr key={product._id}>
+                      <td>{product.name}</td>
+
+                      {/* Ordered Stock Field */}
+                      <td>
+                        {editingRow === product._id ? (
+                          <input
+                            type="number"
+                            value={editedValues.orderedStock}
+                            onChange={(e) =>
+                              handleChange("orderedStock", e.target.value)
+                            }
+                          />
+                        ) : (
+                          product.orderedStock
+                        )}
+                      </td>
+
+                      {/* Available Stock Field */}
+                      <td>
+                        {editingRow === product._id ? (
+                          <input
+                            type="number"
+                            value={editedValues.availableStock}
+                            onChange={(e) =>
+                              handleChange("availableStock", e.target.value)
+                            }
+                          />
+                        ) : (
+                          product.availableStock
+                        )}
+                      </td>
+
+                      {/* Total Stock (Read-only) */}
+                      <td>{product.orderedStock + product.availableStock}</td>
+
+                      {/* Action Button */}
+                      <td>
+                        {editingRow === product._id ? (
+                          <button onClick={() => saveEdit(product._id)}>
+                            Save
+                          </button>
+                        ) : (
+                          <button onClick={() => startEditing(product)}>
+                            Edit
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+        {isGenerating && <LoadingOverlay />}
+      </div>
       <Footer />
     </>
   );
