@@ -266,15 +266,22 @@ function Home() {
     };
   };
 
+
+
+
+  
   return (
     <>
     
       <Header />
     <div className="home-container">
-      <div className="page-buttons">
-        <button onClick={() => navigate('/addevent')}>Add Event</button>
-        <button onClick={() => navigate('/eventlist')}>Event List</button>
-      </div>
+    <div
+  className="page-buttons"
+  style={{ display: "flex", justifyContent: "flex-start", gap: "10px", marginBottom: "20px" }}
+>
+  <button onClick={() => navigate('/addevent')}>Add Event</button>
+  <button onClick={() => navigate('/eventlist')}>Event List</button>
+</div>
 
       <h2>Welcome, Event Planning</h2>
 
@@ -475,70 +482,92 @@ function Home() {
           </ul>
         )}
         <div>
-          <button onClick={handleDownloadExcel} className="report-button">Download Monthly Report</button>
+        <div style={{
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '20vh'  
+}}>
+  <button 
+    onClick={handleDownloadExcel} 
+    style={{
+      backgroundColor: "#C5630C",
+      color: "white",
+      padding: "20px 30px",
+      border: "none",
+      borderRadius: "5px",
+      fontWeight: "bold",
+      cursor: "pointer"
+    }}
+  >
+    Download Monthly Report
+  </button>
+</div>
+
         </div>
       </div>
 
       <Modal
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
-        className="event-modal"
-        overlayClassName="event-modal-overlay"
-      >
-        {selectedEvent && (
-          <div className="event-modal-content">
-            <h2>{selectedEvent.name}</h2>
-            <div className="event-details">
-              <p><strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString()}</p>
-              <p><strong>Time:</strong> {new Date(selectedEvent.date).toLocaleTimeString([], { 
-                hour: '2-digit', 
-                minute: '2-digit',
-                hour12: true 
-              })}</p>
-              <p><strong>Client:</strong> {selectedEvent.clientName}</p>
-              <p><strong>Status:</strong> 
-                <span className="status-badge" style={{ backgroundColor: getStatusColor(selectedEvent.status) }}>
-                  {selectedEvent.status}
-                </span>
-              </p>
-            </div>
-            <div className="status-actions">
-              <h3>Change Status</h3>
-              <div className="status-buttons">
-                {['Planned', 'In Progress', 'Completed', 'Cancelled'].map(status => (
-                  <button
-                    key={status}
-                    onClick={() => handleStatusChange(selectedEvent._id, status)}
-                    className={selectedEvent.status === status ? 'active' : ''}
-                    style={{ backgroundColor: getStatusColor(status) }}
-                  >
-                    {status}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="status-history">
-              <h3>Status History</h3>
-              <ul>
-                {selectedEvent.statusHistory?.map((history, index) => (
-                  <li key={index}>
-                    <span className="status-badge" style={{ backgroundColor: getStatusColor(history.status) }}>
-                      {history.status}
-                    </span>
-                    <span className="history-date">
-                      {new Date(history.changedAt).toLocaleString()}
-                    </span>
-                    <span className="history-user">
-                      by {history.changedBy}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <button className="close-modal" onClick={() => setIsModalOpen(false)}>Close</button>
-          </div>
-        )}
-      </Modal>
+  isOpen={isModalOpen}
+  onRequestClose={() => setIsModalOpen(false)}
+  className="event-modal"
+  overlayClassName="event-modal-overlay"
+>
+  {selectedEvent && (
+    <div className="event-modal-content">
+      <h2>{selectedEvent.name}</h2>
+      <div className="event-details">
+        <p><strong>Date:</strong> {new Date(selectedEvent.date).toLocaleDateString()}</p>
+        <p><strong>Time:</strong> {new Date(selectedEvent.date).toLocaleTimeString([], { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: true 
+        })}</p>
+        <p><strong>Client:</strong> {selectedEvent.clientName}</p>
+        <p><strong>Status:</strong> 
+          <span className="status-badge" style={{ backgroundColor: getStatusColor(selectedEvent.status) }}>
+            {selectedEvent.status}
+          </span>
+        </p>
+      </div>
+      <div className="status-actions">
+        <h3>Change Status</h3>
+        <div className="status-buttons">
+          {['Planned', 'In Progress', 'Completed', 'Cancelled'].map(status => (
+            <button
+              key={status}
+              onClick={() => handleStatusChange(selectedEvent._id, status)}
+              className={selectedEvent.status === status ? 'active' : ''}
+              style={{ backgroundColor: getStatusColor(status) }}
+            >
+              {status}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="status-history">
+        <h3>Status History</h3>
+        <ul>
+          {selectedEvent.statusHistory?.map((history, index) => (
+            <li key={index}>
+              <span className="status-badge" style={{ backgroundColor: getStatusColor(history.status) }}>
+                {history.status}
+              </span>
+              <span className="history-date">
+                {new Date(history.changedAt).toLocaleString()}
+              </span>
+              <span className="history-user">
+                by {history.changedBy}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button className="close-modal" onClick={() => setIsModalOpen(false)}>Close</button>
+    </div>
+  )}
+</Modal>
+
 
       <ToastContainer position="top-right" autoClose={3000} />
     </div>

@@ -170,11 +170,11 @@
  
 /* Submit (Create/Save) Button */
 .blast-form .submit-button {
-  background-color: #0D1D25;
+  background-color: #C5630C;
   color: #ffffff;
 }
 .blast-form .submit-button:hover {
-  background-color: #2563eb;
+  background-color: #f2a241;
 }
  
 /* Change File Button */

@@ -161,7 +161,7 @@ const CalendarPage = () => {
 
   const eventPropGetter = (event) => ({
     style: {
-      backgroundColor: event.isHoliday ? "#EF4444" : "#2563EB",
+      backgroundColor: event.isHoliday ? "#BC1823" : "#C5630C",
       color: "white",
       borderRadius: "0.375rem",
       padding: "0.25rem",
@@ -176,19 +176,26 @@ const CalendarPage = () => {
   ];
 
   return (
-
+   
     <>
       <Header />
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", padding: "1.5rem", backgroundColor: "#dbe1eb" }}>
+      <div style={{ 
+  display: "flex", 
+  flexWrap: "wrap", 
+  gap: "1.5rem", 
+  padding: "1.5rem", 
+  background: 'radial-gradient(circle at center, #F0A35E 8%, #ffffff)' 
+}}>
+
       {/* Search Bar */}
-      <div style={{ width: "100%", background: "#f9fafb", padding: "1.25rem", borderRadius: "1rem", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
+      <div style={{ width: "100%", background: "#f9fafb", padding: "1.25rem", borderRadius: "1rem", boxShadow: "0 4px 12px rgba(206, 22, 22, 0.05)" }}>
       <motion.div
   initial={{ width: 200 }}
   animate={{ width: isSearchExpanded ? 400 : 400 }}
   style={{
     display: "flex",
     alignItems: "center",
-    background: isSearchExpanded ? "#1f2937" : "#374151",
+    background: isSearchExpanded ? "#C5630C" : "#C5630C",
     borderRadius: "9999px",
     padding: "0.5rem 0.75rem",
     color: "#fff",
@@ -196,10 +203,11 @@ const CalendarPage = () => {
   }}
   onClick={() => setIsSearchExpanded(true)}
 >
-  <Search size={20} style={{ color: "#38bdf8" }} />
+  <Search size={20} style={{ color: "#ffff" }} />
   <input
     type="text"
     name="zone"
+    className="input-white-placeholder"
     placeholder="Search by "
     value={searchParams.zone}
     onChange={handleSearchChange}
@@ -207,7 +215,7 @@ const CalendarPage = () => {
     style={{
       flexGrow: 1,
       background: "transparent",
-      color: "#ffffff",
+      color: "#ffff",
       border: "none",
       paddingLeft: "0.75rem",
       opacity: isSearchExpanded ? 1 : 0.5,

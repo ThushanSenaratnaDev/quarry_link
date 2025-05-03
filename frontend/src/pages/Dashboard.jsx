@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './Dashboard.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./Dashboard.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -16,9 +16,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
-} from 'chart.js';
-import { Line, Pie, Bar, Radar } from 'react-chartjs-2';
+  Filler,
+} from "chart.js";
+import { Line, Pie, Bar, Radar } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -41,30 +41,33 @@ function Dashboard() {
     customerOrders: [],
     demandPredictions: [],
     stockLevels: [],
-    dailySales: []
+    dailySales: [],
   });
 
   const last7Days = Array.from({ length: 7 }, (_, i) => {
     const date = new Date();
     date.setDate(date.getDate() - i);
-    return date.toLocaleDateString('en-US', { weekday: 'short' });
+    return date.toLocaleDateString("en-US", { weekday: "short" });
   }).reverse();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [ordersRes, clientsRes] = await Promise.all([
-          axios.get('http://localhost:5001/Orders'),
-          axios.get('http://localhost:5001/Clients')
+          axios.get("http://localhost:5001/Orders"),
+          axios.get("http://localhost:5001/Clients"),
         ]);
 
         const orders = ordersRes.data.Orders;
         const clients = clientsRes.data.Clients;
 
-        const dailySales = last7Days.map(day => {
-          const dayOrders = orders.filter(order => {
+        const dailySales = last7Days.map((day) => {
+          const dayOrders = orders.filter((order) => {
             const orderDate = new Date(order.orderDate);
-            return orderDate.toLocaleDateString('en-US', { weekday: 'short' }) === day;
+            return (
+              orderDate.toLocaleDateString("en-US", { weekday: "short" }) ===
+              day
+            );
           });
           return dayOrders.reduce((sum, order) => sum + order.totalPrice, 0);
         });
@@ -72,14 +75,13 @@ function Dashboard() {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
         const weeklyTotal = orders
-          .filter(order => new Date(order.orderDate) >= oneWeekAgo)
+          .filter((order) => new Date(order.orderDate) >= oneWeekAgo)
           .reduce((sum, order) => sum + order.totalPrice, 0);
 
-        
         const productSales = orders.reduce((acc, order) => {
           if (Array.isArray(order.products)) {
             order.products.forEach((product) => {
-              const productType = product.productType || 'Unknown';
+              const productType = product.productType || "Unknown";
               const productTotal = product.unitPrice * product.quantity;
               acc[productType] = (acc[productType] || 0) + productTotal;
             });
@@ -87,36 +89,48 @@ function Dashboard() {
           return acc;
         }, {});
 
-        const customerOrders = clients.map(client => {
-          const clientOrders = orders.filter(order => order.clientId === client._id);
+        const customerOrders = clients.map((client) => {
+          const clientOrders = orders.filter(
+            (order) => order.clientId === client._id
+          );
           return {
             name: client.name,
             totalOrders: clientOrders.length,
-            totalSpent: clientOrders.reduce((sum, order) => sum + order.totalPrice, 0)
+            totalSpent: clientOrders.reduce(
+              (sum, order) => sum + order.totalPrice,
+              0
+            ),
           };
         });
 
-        const demandPredictions = Object.entries(productSales).map(([type, sales]) => ({
-          type,
-          predictedDemand: Math.round(sales * 1.1)
-        }));
+        const demandPredictions = Object.entries(productSales).map(
+          ([type, sales]) => ({
+            type,
+            predictedDemand: Math.round(sales * 1.1),
+          })
+        );
 
-        const stockLevels = Object.entries(productSales).map(([type, sales]) => ({
-          type,
-          currentStock: Math.round(sales * 0.8),
-          demand: sales
-        }));
+        const stockLevels = Object.entries(productSales).map(
+          ([type, sales]) => ({
+            type,
+            currentStock: Math.round(sales * 0.8),
+            demand: sales,
+          })
+        );
 
         setSalesData({
           weeklyTotal,
-          productSales: Object.entries(productSales).map(([type, amount]) => ({ type, amount })),
+          productSales: Object.entries(productSales).map(([type, amount]) => ({
+            type,
+            amount,
+          })),
           customerOrders,
           demandPredictions,
           stockLevels,
-          dailySales
+          dailySales,
         });
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error("Error fetching dashboard data:", error);
       }
     };
 
@@ -129,62 +143,64 @@ function Dashboard() {
     labels: last7Days,
     datasets: [
       {
-        label: 'Daily Sales',
+        label: "Daily Sales",
         data: salesData.dailySales || Array(7).fill(0),
-        borderColor: '#e6890f',
-        backgroundColor: 'rgba(230, 137, 15, 0.1)',
+        borderColor: "#e6890f",
+        backgroundColor: "rgba(230, 137, 15, 0.1)",
         fill: true,
-        tension: 0.4
-      }
-    ]
+        tension: 0.4,
+      },
+    ],
   };
 
   const pieChartData = {
-    labels: salesData.productSales.map(product => product.type),
+    labels: salesData.productSales.map((product) => product.type),
     datasets: [
       {
-        data: salesData.productSales.map(product => product.amount),
+        data: salesData.productSales.map((product) => product.amount),
         backgroundColor: [
-          '#e6890f',
-          '#28a745',
-          '#dc3545',
-          '#17a2b8',
-          '#6610f2',
-          '#fd7e14'
-        ]
-      }
-    ]
+          "#e6890f",
+          "#28a745",
+          "#dc3545",
+          "#17a2b8",
+          "#6610f2",
+          "#fd7e14",
+        ],
+      },
+    ],
   };
 
   const barChartData = {
-    labels: salesData.customerOrders.map(customer => customer.name),
+    labels: salesData.customerOrders.map((customer) => customer.name),
     datasets: [
       {
-        label: 'Total Spent',
-        data: salesData.customerOrders.map(customer => customer.totalSpent),
-        backgroundColor: '#e6890f'
-      }
-    ]
+        label: "Total Spent",
+        data: salesData.customerOrders.map((customer) => customer.totalSpent),
+        backgroundColor: "#e6890f",
+      },
+    ],
   };
 
   const radarChartData = {
-    labels: salesData.demandPredictions.map(prediction => prediction.type),
+    labels: salesData.demandPredictions.map((prediction) => prediction.type),
     datasets: [
       {
-        label: 'Current Demand',
-        data: salesData.stockLevels.map(item => item.demand),
-        backgroundColor: 'rgba(230, 137, 15, 0.2)',
-        borderColor: '#e6890f',
-        borderWidth: 2
+        label: "Current Demand",
+        data: salesData.stockLevels.map((item) => item.demand),
+        backgroundColor: "rgba(230, 137, 15, 0.2)",
+        borderColor: "#e6890f",
+        borderWidth: 2,
       },
       {
-        label: 'Predicted Demand',
-        data: salesData.demandPredictions.map(prediction => prediction.predictedDemand),
-        backgroundColor: 'rgba(40, 167, 69, 0.2)',
-        borderColor: '#28a745',
-        borderWidth: 2
-      }
-    ]
+        label: "Predicted Demand",
+        data: salesData.demandPredictions.map(
+          (prediction) => prediction.predictedDemand
+        ),
+        backgroundColor: "rgba(40, 167, 69, 0.2)",
+        borderColor: "#28a745",
+        borderWidth: 2,
+      },
+    ],
   };
 
   const chartOptions = {
@@ -192,16 +208,16 @@ function Dashboard() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top'
-      }
-    }
+        position: "top",
+      },
+    },
   };
 
   return (
-    <>
-        <Header />
     <div className="dashboard-container">
-      <h1 className="dashboard-title">Smart Sales & Order Analytics Dashboard</h1>
+      <h1 className="dashboard-title">
+        Smart Sales & Order Analytics Dashboard
+      </h1>
 
       <div className="dashboard-grid">
         <div className="dashboard-card">
@@ -209,7 +225,9 @@ function Dashboard() {
           <div className="chart-container">
             <Line data={lineChartData} options={chartOptions} />
           </div>
-          <p className="sales-amount">Total: Rs. {salesData.weeklyTotal.toLocaleString()}</p>
+          <p className="sales-amount">
+            Total: Rs. {salesData.weeklyTotal.toLocaleString()}
+          </p>
         </div>
 
         <div className="dashboard-card">
@@ -245,7 +263,9 @@ function Dashboard() {
                     <div className="bar-container">
                       <div
                         className="bar-fill stock"
-                        style={{ width: `${(item.currentStock / item.demand) * 100}%` }}
+                        style={{
+                          width: `${(item.currentStock / item.demand) * 100}%`,
+                        }}
                       ></div>
                     </div>
                   </div>
@@ -254,7 +274,7 @@ function Dashboard() {
                     <div className="bar-container">
                       <div
                         className="bar-fill demand"
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       ></div>
                     </div>
                   </div>
@@ -265,8 +285,6 @@ function Dashboard() {
         </div>
       </div>
     </div>
-    <Footer />
-        </>
   );
 }
 

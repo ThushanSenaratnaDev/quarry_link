@@ -1,10 +1,4 @@
-/* Background image rotation */
-@keyframes rotateBackground {
-  0% { background-image: url('../../../public/images/h2.jpeg'); }
-  33% { background-image: url('../../../public/images/h3.jpeg'); }
-  66% { background-image: url('../../../public/images/h4.jpeg'); }
-  100% { background-image: url('../../../public/images/h5.jpeg'); }
-}
+
 
 /* Main container */
 .home-container {
@@ -13,6 +7,7 @@
   background-size: cover;
   background-position: center;
   animation: rotateBackground 10s infinite;
+  background: radial-gradient(circle at center, #F0A35E 8%, #ffffff);
   padding: 20px;
   max-width: 100%;
   margin: 0;
@@ -23,10 +18,11 @@
 }
 
 .home-container h2 {
-  font-size: 4em;
-  color: #fff;
+  font-size: 2em;
+  color: #030100;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 /* Navigation buttons */
@@ -34,16 +30,19 @@
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  justify-content: flex-start; 
+  align-items: left;         
 }
-
 .page-buttons button {
   padding: 8px 16px;
-  background-color: #C5630C;
+  background-color: #dc781b;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  align-items: left;   
+  
 }
 
 .page-buttons button:hover {
@@ -118,10 +117,13 @@
   position: sticky;
   top: 20px;
   height: fit-content;
+  background-color: #ffffff;
+  border-radius: 12px;
+  
 }
 
-.events-for-selected-day {
-  background: white;
+.s-for-selected-day {
+  background: rgb(216, 177, 126);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -144,7 +146,7 @@
   margin-bottom: 12px;
   padding: 8px;
   border-radius: 6px;
-  background-color: #f0f0f0;
+  background-color: #f0dbc6;
   transition: background-color 0.3s ease;
 }
 
@@ -171,20 +173,20 @@
   font-size: 0.8em;
   color: white;
 }
-
 /* Modal Styles */
 .event-modal {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: rgb(255, 255, 255);
   padding: 30px;
   border-radius: 8px;
   max-width: 600px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .event-modal-overlay {
@@ -194,15 +196,43 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.event-modal-content {
+  width: 100%;
+}
+
+h2 {
+  font-size: 1.6em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.event-details p {
+  font-size: 1.1em;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+strong {
+  font-weight: bold;
+  color: #333;
 }
 
 .status-badge {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
   color: white;
   font-size: 0.9em;
   margin-left: 8px;
+}
+
+.status-actions {
+  margin-top: 20px;
 }
 
 .status-buttons {
@@ -213,7 +243,7 @@
 }
 
 .status-buttons button {
-  padding: 8px 16px;
+  padding: 10px 20px;
   background: #C5630C;
   color: white;
   border: none;
@@ -221,6 +251,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   min-width: 120px;
+  font-size: 1em;
 }
 
 .status-buttons button:hover {
@@ -241,10 +272,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px;
+  padding: 12px;
   background-color: #f8f9fa;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 8px;
+  font-size: 0.95em;
+  color: #333;
 }
 
 .history-date {
@@ -252,28 +285,26 @@
 }
 
 .history-user {
-  color: #495057;
+  color: #d77e25;
 }
 
 .close-modal {
-  padding: 8px 16px;
-  background-color: #6c757d;
+  padding: 10px 20px;
+  background-color: #e79129;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 20px;
+  width: 100%;
 }
 
 .close-modal:hover {
   background-color: #5a6268;
 }
 
-/* Status Colors */
-.planned { border-left: 4px solid #3498db; }
-.in-progress { border-left: 4px solid #f1c40f; }
-.completed { border-left: 4px solid #2ecc71; }
-.cancelled { border-left: 4px solid #e74c3c; }
+
 
 /* Calendar customization */
 .react-calendar {
@@ -417,17 +448,8 @@
   color: #333;
 }
 
-.report-button {
-  background-color: #C5630C;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
 .report-button:hover {
-  background-color: #a55209;
+  background-color: #f09647;
 }
 
 /* Monthly report section */
@@ -454,7 +476,7 @@
 }
 
 .monthly-report-section li {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(237, 211, 183, 0.8);
   padding: 15px;
   border-radius: 8px;
   cursor: pointer;
@@ -489,11 +511,12 @@
   padding: 15px;
   border-radius: 8px;
   text-align: center;
+  color:#000;
 }
 
 .stat-card.total {
-  background: linear-gradient(135deg, #C5630C, #e67e22);
-  color: white;
+  background: linear-gradient(140deg, #ffffff, #ffffff);
+  color: rgb(255, 255, 255);
 }
 
 .stat-card.planned { border-left: 3px solid #3498db; }
